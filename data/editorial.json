@@ -3,24 +3,43 @@
   "selected_ids": [
     0,
     2,
-    3,
+    4,
     5,
     7,
-    8,
+    9,
     10,
-    11,
     12,
-    17,
-    18,
+    13,
+    14,
     19,
     20,
+    21,
     22,
-    67,
+    66,
     71
   ],
   "stories": [
     {
       "article_id": 0,
+      "headline": "Insomniac Clears the Air After Marvel's Wolverine Fans Confuse Lady Deathstrike for Psylocke",
+      "dek": "Insomniac Games has cleared the air after a new trailer for Marvel's Wolverine had fans confusing Lady Deathstrike for Psylocke.",
+      "summary": "Insomniac Games has cleared the air after a new trailer for Marvel's Wolverine had fans confusing Lady Deathstrike for Psylocke.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Insomniac Clears the Air After Marvel's Wolverine Fans Confuse Lady Deathstrike for Psylocke",
+        "H2: Nailed it."
+      ],
+      "headings": {
+        "h1": [
+          "Insomniac Clears the Air After Marvel's Wolverine Fans Confuse Lady Deathstrike for Psylocke"
+        ],
+        "h2": [
+          "Nailed it."
+        ]
+      }
+    },
+    {
+      "article_id": 2,
       "headline": "The Blood of Dawnwalker Passes 1 Million Copies Sold in Just 2 Days",
       "dek": "Single-player RPG and new IP The Blood of Dawnwalker has sold 1 million copies just two days after its launch, publisher Bandai Namco and developer Rebel Wolves have announced.",
       "summary": "Single-player RPG and new IP The Blood of Dawnwalker has sold 1 million copies just two days after its launch, publisher Bandai Namco and developer Rebel Wolves have announced.",
@@ -39,7 +58,7 @@
       }
     },
     {
-      "article_id": 2,
+      "article_id": 4,
       "headline": "The Best Deals Today: Nintendo Switch 2 Consoles, Granblue Fantasy: Relink, Fire Emblem: Fortune's Weave, and More",
       "dek": "Historia publicada por la fuente original.",
       "summary": "Consulta la fuente original para leer la historia completa.",
@@ -57,65 +76,59 @@
         "h2": [
           "Save $50 off a Switch 2 console.",
           "Save 14% Off Granblue Fantasy: Relink - Endless Ragnarok",
-          "Nintendo Switch 2 for $449.99"
+          "Nintendo Switch 2 for $449.99",
+          "Dragon Quest I & II HD-2D Remake for $39.99"
         ]
       }
     },
     {
-      "article_id": 3,
+      "article_id": 5,
       "headline": "Tesla’s Cybercab has been deployed, and it’s already under investigation",
       "dek": "The US government is investigating whether the Cybercab meets vehicle safety standards.",
       "summary": "The US government is investigating whether the Cybercab meets vehicle safety standards.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Tesla’s Cybercab has been deployed, and it’s already under investigation"
+        "Fuente: Ars Technica"
       ],
       "headings": {
-        "h1": [
-          "Tesla’s Cybercab has been deployed, and it’s already under investigation"
-        ],
+        "h1": [],
         "h2": []
       }
     },
     {
-      "article_id": 5,
+      "article_id": 7,
       "headline": "4 Best Alexa Speakers I’ve Tested (2026)",
       "dek": "I’ve rounded up the best smart speakers that let you talk to Alexa, from the popular Echo Dot to the newest Echo Studio.",
       "summary": "I’ve rounded up the best smart speakers that let you talk to Alexa, from the popular Echo Dot to the newest Echo Studio.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: The Best Alexa Speakers I’ve Tried",
         "H2: Featured in this article",
         "H2: Best Overall Alexa Speaker",
         "H2: Best Affordable Alexa Speaker"
       ],
       "headings": {
-        "h1": [
-          "The Best Alexa Speakers I’ve Tried"
-        ],
+        "h1": [],
         "h2": [
           "Featured in this article",
           "Best Overall Alexa Speaker",
-          "Best Affordable Alexa Speaker"
+          "Best Affordable Alexa Speaker",
+          "Best Alexa Smart Display"
         ]
       }
     },
     {
-      "article_id": 7,
+      "article_id": 9,
       "headline": "There May Not Be an iPhone 18 This Year",
       "dek": "Apple is expected to announce several products at its September event next week—including a folding phone—but the iPhone 18 might not be among them. It would be a first for the company.",
       "summary": "Apple is expected to announce several products at its September event next week—including a folding phone—but the iPhone 18 might not be among them. It would be a first for the company.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: There May Not Be an iPhone 18 This Year",
         "H2: Comments",
         "H2: You Might Also Like",
         "H2: Wired Coupons"
       ],
       "headings": {
-        "h1": [
-          "There May Not Be an iPhone 18 This Year"
-        ],
+        "h1": [],
         "h2": [
           "Comments",
           "You Might Also Like",
@@ -124,30 +137,28 @@
       }
     },
     {
-      "article_id": 8,
+      "article_id": 10,
       "headline": "OpenAI Agents Hacked Another Website",
       "dek": "Plus: Tens of millions of US and Canadian drivers’ licenses go up for sale on the dark web, the US military finally tries to tackle the risk online ad data poses to troops, and more.",
       "summary": "Plus: Tens of millions of US and Canadian drivers’ licenses go up for sale on the dark web, the US military finally tries to tackle the risk online ad data poses to troops, and more.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Security News This Week: OpenAI Agents Hacked Another Website",
         "H2: Before Hugging Face, OpenAI Agents Took Over a German Website to Create a Message Board",
         "H2: More Than 153 Million US and Canadian Driver’s Licenses for Sale Online",
         "H2: US Military Disables Ad Trackers After Years of Warnings"
       ],
       "headings": {
-        "h1": [
-          "Security News This Week: OpenAI Agents Hacked Another Website"
-        ],
+        "h1": [],
         "h2": [
           "Before Hugging Face, OpenAI Agents Took Over a German Website to Create a Message Board",
           "More Than 153 Million US and Canadian Driver’s Licenses for Sale Online",
-          "US Military Disables Ad Trackers After Years of Warnings"
+          "US Military Disables Ad Trackers After Years of Warnings",
+          "Spyware Notifications Make Up “Largest Documented Wave” of Surveillance in Serbia"
         ]
       }
     },
     {
-      "article_id": 10,
+      "article_id": 12,
       "headline": "Tomb Raider: Legacy of Atlantis Could Be Great, But There's Some Things We Can't Ignore...",
       "dek": "Tomb Raider: Legacy of Atlantis shows massive potential, but controversial changes like skill trees and modern hand-holding threaten to frustrate fans. And some of that food looks very suspicious.",
       "summary": "Tomb Raider: Legacy of Atlantis shows massive potential, but controversial changes like skill trees and modern hand-holding threaten to frustrate fans. And some of that food looks very suspicious.",
@@ -166,44 +177,39 @@
       }
     },
     {
-      "article_id": 11,
+      "article_id": 13,
       "headline": "Scientists Put Caterpillars in an Ultraquiet Chamber to Learn How They Hear Without Ears",
       "dek": "The research could do more than help unlock the mystery of caterpillar hearing. It could also help make microphones better.",
       "summary": "The research could do more than help unlock the mystery of caterpillar hearing. It could also help make microphones better.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Scientists Put Caterpillars in an Ultraquiet Chamber to Learn How They Hear Without Ears",
         "H2: What Happens in the Anechoic Chamber",
         "H2: Finding the Caterpillars’ “Ears”",
         "H2: Comments"
       ],
       "headings": {
-        "h1": [
-          "Scientists Put Caterpillars in an Ultraquiet Chamber to Learn How They Hear Without Ears"
-        ],
+        "h1": [],
         "h2": [
           "What Happens in the Anechoic Chamber",
           "Finding the Caterpillars’ “Ears”",
-          "Comments"
+          "Comments",
+          "You Might Also Like"
         ]
       }
     },
     {
-      "article_id": 12,
+      "article_id": 14,
       "headline": "The Watch World Went Crazy This Week. Here Are the 10 You Need to See",
       "dek": "The main action took place at Geneva Watch Days, but others dialed in remotely to make sure it wasn't just a Swiss party.",
       "summary": "The main action took place at Geneva Watch Days, but others dialed in remotely to make sure it wasn't just a Swiss party.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: The Watch World Went Crazy This Week. Here Are the 10 You Need to See",
         "H2: Comments",
         "H2: You Might Also Like",
         "H2: Wired Coupons"
       ],
       "headings": {
-        "h1": [
-          "The Watch World Went Crazy This Week. Here Are the 10 You Need to See"
-        ],
+        "h1": [],
         "h2": [
           "Comments",
           "You Might Also Like",
@@ -212,7 +218,7 @@
       }
     },
     {
-      "article_id": 17,
+      "article_id": 19,
       "headline": "14 Predictions for the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
       "dek": "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
       "summary": "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
@@ -235,7 +241,7 @@
       }
     },
     {
-      "article_id": 18,
+      "article_id": 20,
       "headline": "'No One Puts Double Fine Out of Business Except for Me' — Tim Schafer Explains How He Kept Double Fine Afloat After Leaving Xbox",
       "dek": "Tim Schafer, game designer and founder of Psychonauts developer Double Fine, gave a strong response after Xbox divested the studio as part of its massive restructuring efforts this summer.",
       "summary": "Tim Schafer, game designer and founder of Psychonauts developer Double Fine, gave a strong response after Xbox divested the studio as part of its massive restructuring efforts this summer.",
@@ -254,7 +260,7 @@
       }
     },
     {
-      "article_id": 19,
+      "article_id": 21,
       "headline": "gamescom Apologizes for Its Initial Response to Thefts, Promises Improved Security Measures",
       "dek": "gamescom has provided a second response regarding the theft of developers’ equipment during its event, offering an apology for its initial reaction to the ordeal.",
       "summary": "gamescom has provided a second response regarding the theft of developers’ equipment during its event, offering an apology for its initial reaction to the ordeal.",
@@ -273,67 +279,42 @@
       }
     },
     {
-      "article_id": 20,
+      "article_id": 22,
       "headline": "Halloween: The Game Review So Far",
       "dek": "So far this asymmetrical horror game is more trick than treat.",
       "summary": "So far this asymmetrical horror game is more trick than treat.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
         "H1: Halloween: The Game Review So Far",
-        "H2: So far this asymmetrical horror game is more trick than treat.",
-        "H2: What is the best asymmetrical horror game?"
+        "H2: So far this asymmetrical horror game is more trick than treat."
       ],
       "headings": {
         "h1": [
           "Halloween: The Game Review So Far"
         ],
         "h2": [
-          "So far this asymmetrical horror game is more trick than treat.",
-          "What is the best asymmetrical horror game?"
+          "So far this asymmetrical horror game is more trick than treat."
         ]
       }
     },
     {
-      "article_id": 22,
-      "headline": "Fury of Dracula (5th Edition) Board Game Review",
-      "dek": "Historia publicada por la fuente original.",
-      "summary": "Consulta la fuente original para leer la historia completa.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Fury of Dracula (5th Edition) Board Game Review",
-        "H2: Time for a vampire hunt.",
-        "H2: How long should a board game take to play?"
-      ],
-      "headings": {
-        "h1": [
-          "Fury of Dracula (5th Edition) Board Game Review"
-        ],
-        "h2": [
-          "Time for a vampire hunt.",
-          "How long should a board game take to play?"
-        ]
-      }
-    },
-    {
-      "article_id": 67,
+      "article_id": 66,
       "headline": "Foreo Discount Codes and Deals: Up to 50% Off",
       "dek": "Save on Foreo favorites, including LUNA cleansing brushes, BEAR microcurrent devices, and masks and accessories to level up your daily skincare routine at home.",
       "summary": "Save on Foreo favorites, including LUNA cleansing brushes, BEAR microcurrent devices, and masks and accessories to level up your daily skincare routine at home.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Foreo Offers: LUNA Cleansers, LED Devices and Skincare Tool Deals",
         "H2: 30% Off Foreo LUNA 3 Plus: Heated Cleansing and Microcurrent in one Device",
         "H2: Foreo BEAR: Get 25% Off the Full Facial Workout Device",
         "H2: Foreo UFO 2 Deal: 29% Off 5-in-1 Spa Facials"
       ],
       "headings": {
-        "h1": [
-          "Foreo Offers: LUNA Cleansers, LED Devices and Skincare Tool Deals"
-        ],
+        "h1": [],
         "h2": [
           "30% Off Foreo LUNA 3 Plus: Heated Cleansing and Microcurrent in one Device",
           "Foreo BEAR: Get 25% Off the Full Facial Workout Device",
-          "Foreo UFO 2 Deal: 29% Off 5-in-1 Spa Facials"
+          "Foreo UFO 2 Deal: 29% Off 5-in-1 Spa Facials",
+          "Wired Coupons"
         ]
       }
     },
@@ -344,19 +325,17 @@
       "summary": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Tuft & Needle Promo Codes for September 2026",
         "H2: Best Tuft & Needle Promo Codes and Coupons",
         "H2: Top Tuft & Needle Pillow Discounts for Better Sleep",
         "H2: Upgrade Your Sleep With Tuft & Needle Sleep Technology"
       ],
       "headings": {
-        "h1": [
-          "Tuft & Needle Promo Codes for September 2026"
-        ],
+        "h1": [],
         "h2": [
           "Best Tuft & Needle Promo Codes and Coupons",
           "Top Tuft & Needle Pillow Discounts for Better Sleep",
-          "Upgrade Your Sleep With Tuft & Needle Sleep Technology"
+          "Upgrade Your Sleep With Tuft & Needle Sleep Technology",
+          "Deals on Our Favorite Tuft & Needle Mattresses"
         ]
       }
     }
@@ -367,25 +346,25 @@
       "ids": [
         0,
         2,
-        3,
+        4,
         5,
         7,
-        8,
+        9,
         10,
-        11,
         12,
-        17,
-        18,
+        13,
+        14,
         19,
         20,
+        21,
         22,
-        67,
+        66,
         71
       ]
     }
   ],
   "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
-  "generatedAt": "2026-09-05T21:29:30.318413+00:00",
+  "generatedAt": "2026-09-05T22:30:01.580537+00:00",
   "model": "zero-cost",
   "status": "rss",
   "editorial_profile": {
