@@ -49,6 +49,12 @@ function layoutFor(index){
   const layouts=["layout-feature","layout-news","layout-image","layout-quote","layout-short","layout-dark"];
   return layouts[Math.abs(Number(index)||0)%layouts.length]
 }
+function coverImage(a,cls="cover-image",label="WEEKLY FEATURE"){return a?.image?`<div class="${cls}"><img src="${esc(a.image)}" alt=""><span>${esc(label)}</span></div>`:`<div class="${cls}"><span>${esc(label)}</span></div>`}
+function storyTitle(a){const st=storyFor(a);return st?.headline||a?.title||"UNTITLED STORY"}
+function layoutFor(index){
+  const layouts=["layout-feature","layout-news","layout-image","layout-quote","layout-short","layout-dark"];
+  return layouts[Math.abs(Number(index)||0)%layouts.length]
+}
 function storyWords(a){
   return storyBlocks(a).map(b=>b.text).join(" ").replace(/\s+/g," ").trim();
 }
@@ -137,17 +143,6 @@ function buildReaderPages(){
     parts.forEach((_,pi)=>{pages.push(articlePageHtml(a,pi,parts.length,physical+1));physical++});
   });
   pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ISSUE 036</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
-  return {pages,articleStarts};
-}
-function buildReaderPages(){
-  const stories=state.selected.length?state.selected:state.articles; const pages=[]; const articleStarts={};
-  if(!stories.length)return {pages,articleStarts};
-  const cover=stories[0]; const tags=articleTags(cover);
-  pages.push(`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ISSUE 036</strong></p></section>`);
-  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("");
-  pages.push(`<section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${stories.length} stories · selected from ${state.articles.length} collected articles.</p><div class="toc">${tocItems}</div></section>`);
-  let physical=2;
-  stories.forEach((a,i)=>{a._storyIndex=i;const parts=articleTextPages(a);articleStarts[i]=physical;parts.forEach((_,pi)=>{pages.push(articlePageHtml(a,pi,parts.length,physical+1));physical++})});
   return {pages,articleStarts};
 }
 function totalSpreads(){const {pages}=buildReaderPages();return Math.max(1,Math.ceil(pages.length/2))}
