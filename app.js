@@ -48,18 +48,64 @@ function articleTags(a){return(a?.tags?.length?a.tags:deriveTags(a)).slice(0,5)}
 function coverImage(a,cls="cover-image",label="WEEKLY FEATURE"){return a?.image?`<div class="${cls}"><img src="${esc(a.image)}" alt=""><span>${esc(label)}</span></div>`:`<div class="${cls}"><span>${esc(label)}</span></div>`}
 function storyTitle(a){const st=storyFor(a);return st?.headline||a?.title||"UNTITLED STORY"}
 function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=i+1;renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
-function totalSpreads(){return 1+Math.max(1,state.selected.length)}
-function layoutFor(index){const types=["feature","news","image-left","shorts","feature-dark","news","image-right"];return types[index%types.length]}
+const PAGE_CHAR_TARGET=1800;
+function storyBlocks(a){
+  const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
+  if(blocks.length)return blocks.filter(b=>b&&b.text).map(b=>({type:b.type||"p",text:String(b.text).trim()}));
+  const fallback=[];
+  if(a?.headings?.h1?.length) fallback.push({type:"h1",text:a.headings.h1[0]});
+  if(a?.description) fallback.push({type:"p",text:a.description});
+  return fallback;
+}
+function paginateBlocks(blocks,target=PAGE_CHAR_TARGET){
+  const pages=[]; let page=[]; let chars=0;
+  const pushPage=()=>{if(page.length){pages.push(page);page=[];chars=0}};
+  for(const b of blocks){
+    const text=b.text||""; if(!text)continue;
+    if(text.length<=target-chars || chars===0){
+      if(text.length<=target-chars || chars===0){
+        if(chars===0 && text.length>target){
+          let rest=text; while(rest.length>target){const cut=rest.lastIndexOf(" ",target);const n=cut>500?cut:target;pages.push([{type:b.type,text:rest.slice(0,n).trim()}]);rest=rest.slice(n).trim()} if(rest) {page=[{type:b.type,text:rest}];chars=rest.length;} continue;
+        }
+        page.push(b); chars+=text.length+2; continue;
+      }
+    }
+    pushPage();
+    if(text.length>target){let rest=text;while(rest.length>target){const cut=rest.lastIndexOf(" ",target);const n=cut>500?cut:target;pages.push([{type:b.type,text:rest.slice(0,n).trim()}]);rest=rest.slice(n).trim()}if(rest){page=[{type:b.type,text:rest}];chars=rest.length}}
+    else {page=[b];chars=text.length+2}
+  }
+  pushPage(); return pages.length?pages:[[{type:"p",text:"The source did not expose article text. Read the original article for the complete story."}]];
+}
+function articleTextPages(a){return paginateBlocks(storyBlocks(a));}
+function blockHtml(b){if(b.type==="h1"||b.type==="h2"||b.type==="h3"||b.type==="h4")return `<h3 class="source-body-heading">${esc(b.text)}</h3>`;if(b.type==="blockquote")return `<blockquote class="source-quote">${esc(b.text)}</blockquote>`;return `<p>${esc(b.text)}</p>`}
+function articlePageHtml(a,pageIndex,totalPages,globalNumber){
+  const pages=articleTextPages(a); const blocks=pages[pageIndex]||[]; const first=pageIndex===0; const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):""; const h=a.headings||{}; const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE"); const date=esc((a.published||"").slice(0,10));
+  const type=layoutFor(a._storyIndex||0);
+  return `<section class="page article-page source-text-page ${first?"source-first":"source-continuation"} ${type}"><div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0" )} / ${String(totalPages).padStart(2,"0")}</div>`}<div class="source-body">${blocks.map(blockHtml).join("")}</div>${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}${pageIndex===totalPages-1?`<div class="source-end">END OF STORY · ${linkButton(a)}</div>`:""}<div class="page-number">${String(globalNumber).padStart(2,"0")}</div></section>`;
+}
+function buildReaderPages(){
+  const stories=state.selected.length?state.selected:state.articles; const pages=[]; const articleStarts={};
+  if(!stories.length)return {pages,articleStarts};
+  const cover=stories[0]; const tags=articleTags(cover);
+  pages.push(`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ISSUE 036</strong></p></section>`);
+  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("");
+  pages.push(`<section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${stories.length} stories · selected from ${state.articles.length} collected articles.</p><div class="toc">${tocItems}</div></section>`);
+  let physical=2;
+  stories.forEach((a,i)=>{a._storyIndex=i;const parts=articleTextPages(a);articleStarts[i]=physical;parts.forEach((_,pi)=>{pages.push(articlePageHtml(a,pi,parts.length,physical+1));physical++})});
+  return {pages,articleStarts};
+}
+function totalSpreads(){const {pages}=buildReaderPages();return Math.max(1,Math.ceil(pages.length/2))}
 function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">READ ORIGINAL ↗</a>`:""}
-function hList(items,empty){return items?.length?`<ul>${items.slice(0,5).map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:`<p class="muted-copy">${esc(empty)}</p>`}
-function renderReader(){sync();const stories=state.selected.length?state.selected:state.articles;if(!stories.length)return;const total=totalSpreads();state.readerPage=Math.max(0,Math.min(state.readerPage,total-1));const p=state.readerPage;$("#reader-page").textContent=`${String(p+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;$("#reader-status").textContent=`SPREAD ${String(p+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-if(p===0){const cover=stories[0];const st=storyFor(cover);const tags=articleTags(cover);$("#spread").innerHTML=`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(st?.dek||cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ISSUE 036</strong></p></section><section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${stories.length} stories selected from ${state.articles.length} collected articles.</p><div class="toc">${stories.slice(0,10).map((a,i)=>`<button data-reader-index="${i+1}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("")}</div>${stories.length>10?`<p class="muted-copy">+ ${stories.length-10} more stories in the full issue.</p>`:""}</section>`;
-$("#spread").querySelectorAll("[data-reader-index]").forEach(b=>b.onclick=()=>{state.readerPage=Number(b.dataset.readerIndex);renderReader()});return}
-const a=stories[p-1];const st=storyFor(a)||{};const h=a.headings||{};const h1=(h.h1||[]).filter(Boolean);const h2=(h.h2||[]).filter(Boolean);const desc=a.description||"";const type=layoutFor(p-1);const tags=articleTags(a);const sourceLabel=esc(a.source||"ORIGINAL SOURCE");const pageDate=esc((a.published||"").slice(0,10));const image=coverImage(a,"reader-story-image","ORIGINAL IMAGE");
-if(type==="feature"||type==="feature-dark"){ $("#spread").innerHTML=`<section class="page article-page layout-feature ${type}">${image}<div class="story-running"><span>${sourceLabel}</span><span>${pageDate}</span></div><div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(desc||st.dek||h1[0]||"")}</p><div class="feature-number">${String(p).padStart(2,"0")}</div></section><section class="page article-page editorial-page"><div class="story-head"><span>THE STORY</span><h3>${esc(h1[0]||storyTitle(a))}</h3></div><div class="columns"><div><p>${esc(desc||"The original feed did not provide a longer description.")}</p>${h1[1]?`<p class="source-heading secondary">${esc(h1[1])}</p>`:""}</div><div><h3>HEADLINES</h3>${hList(h2,"No H2 headings were exposed by the source page.")}</div></div><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>${linkButton(a)}</section>`;return}
-if(type==="image-left"||type==="image-right"){const spacer="<div class=\"image-spacer\"></div>";const first=type==="image-left"?image:spacer;const second=type==="image-right"?image:spacer;$("#spread").innerHTML=`<section class="page article-page image-page"><div class="story-running"><span>${sourceLabel}</span><span>${pageDate}</span></div>${first}<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(desc||st.dek||"")}</p>${linkButton(a)}</section><section class="page article-page image-page"><div class="story-running"><span>WEEKLY</span><span>${String(p).padStart(2,"0")}</span></div>${second}<div class="story"><h3>ORIGINAL STRUCTURE</h3>${hList([...h1,...h2],"This source did not expose article headings.")}</div><div class="story"><h3>FROM THE SOURCE</h3><p>${esc(desc||"Read the original article for the complete story.")}</p></div></section>`;return}
-if(type==="shorts"){const related=stories.slice(Math.max(0,p-3),p+2).filter(x=>x!==a).slice(0,4);$("#spread").innerHTML=`<section class="page article-page shorts-page"><div class="story-running"><span>${sourceLabel}</span><span>${pageDate}</span></div>${image}<div class="tag">${esc((a.category||"OTHER").toUpperCase())} · SHORT READ</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(desc||st.dek||"")}</p>${linkButton(a)}</section><section class="page shorts-index"><div class="index-kicker">QUICK READS</div><h2>MORE FROM THIS ISSUE</h2>${related.map((x,i)=>`<article><span>${String(i+1).padStart(2,"0")}</span><div><b>${esc((x.category||"OTHER").toUpperCase())}</b><h3>${esc(storyTitle(x))}</h3><small>${esc(x.source||"")}</small></div></article>`).join("")}<div class="story source-box"><h3>SOURCE NOTES</h3><p>${esc(desc||"The full article lives at the original publication.")}</p>${linkButton(a)}</div></section>`;return}
-$("#spread").innerHTML=`<section class="page article-page news-page"><div class="story-running"><span>${sourceLabel}</span><span>${pageDate}</span></div><div class="tag">${esc((a.category||"OTHER").toUpperCase())} · ${esc(a.source||"")}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(desc||st.dek||"")}</p>${image}<div class="story"><h3>HEADLINE STRUCTURE</h3><p class="source-heading">${esc(h1[0]||a.title)}</p>${h1[1]?`<p class="source-heading secondary">${esc(h1[1])}</p>`:""}</div></section><section class="page article-page editorial-page"><div class="story-head"><span>ARTICLE MAP</span><h3>WHAT THE SOURCE SAYS</h3></div>${hList(h2,"No H2 headings were exposed by the source page.")}<div class="story"><h3>DESCRIPTION</h3><p>${esc(desc||"Read the original article for the full story.")}</p></div><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>${linkButton(a)}</section>`}
+function renderReader(){
+  sync(); const model=buildReaderPages(); const pages=model.pages; if(!pages.length)return;
+  const total=Math.ceil(pages.length/2); state.readerPage=Math.max(0,Math.min(state.readerPage,total-1)); const spreadStart=state.readerPage*2;
+  $("#reader-page").textContent=`${String(spreadStart+1).padStart(2,"0")}–${String(Math.min(spreadStart+2,pages.length)).padStart(2,"0")} / ${String(pages.length).padStart(2,"0")}`;
+  $("#reader-status").textContent=`SPREAD ${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
+  const right=pages[spreadStart+1]||`<section class="page blank-page"><span>WEEKLY</span></section>`;
+  $("#spread").innerHTML=`${pages[spreadStart]}${right}`;
+  $("#spread").querySelectorAll("[data-reader-target]").forEach(b=>b.onclick=()=>{const idx=Number(b.dataset.readerTarget);state.readerPage=Math.floor(model.articleStarts[idx]/2);renderReader()});
+}
+
 async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
 try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}}
 function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} SOURCES`;$(`#found-stat`).textContent=`${state.articles.length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}

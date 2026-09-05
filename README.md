@@ -22,7 +22,7 @@ WEEKLY now uses several magazine page layouts (feature, news, image-led, shorts)
 ## V0.8.1 — Custom Topics
 This Week now supports persistent custom topics in addition to automatically detected tags. Custom topics search titles, descriptions, H1/H2, source names and existing tags. Common shortcuts include ANIME, MARVEL, DC, RETRO GAMING, POKEMON and STAR WARS. No OpenAI credits are required.
 
-## V0.8.2 — Magazine rhythm
+## V0.8.3 — Magazine rhythm
 - Print-inspired cover treatment and issue header.
 - Stronger editorial typography, running heads and page metadata.
 - More pronounced magazine/spread visual hierarchy.

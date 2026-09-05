@@ -11,36 +11,77 @@ SUPABASE_URL=os.environ.get("SUPABASE_URL","").rstrip("/")
 SUPABASE_SECRET_KEY=os.environ.get("SUPABASE_SECRET_KEY","")
 MAX_PER_FEED=100
 MAX_TOTAL=300
-ENRICH_LIMIT=24
+ENRICH_LIMIT=120
 
 class PageParser(HTMLParser):
+    """Extract the main article image, headings and readable text blocks."""
+    SKIP={"script","style","nav","header","footer","aside","form","noscript","svg"}
+    BLOCKS={"p","h1","h2","h3","h4","blockquote","li"}
+    SIGNALS=("article","post","entry","content","story","body","main")
     def __init__(self):
         super().__init__()
-        self.h1=[]; self.h2=[]; self.og_image=""; self._tag=None; self._buf=[]
+        self.h1=[]; self.h2=[]; self.og_image=""
+        self.blocks=[]; self._stack=[]; self._tag=None; self._buf=[]; self._score=0
     def handle_starttag(self, tag, attrs):
-        a=dict(attrs)
-        tag=tag.lower()
-        if tag in ("h1","h2"):
-            self._tag=tag; self._buf=[]
+        tag=tag.lower(); a=dict(attrs)
         if tag=="meta":
             key=(a.get("property") or a.get("name") or "").lower()
             if key in ("og:image","twitter:image") and a.get("content") and not self.og_image:
                 self.og_image=a["content"]
+        cls=f"{a.get('id','')} {a.get('class','')}".lower()
+        signal=any(x in cls for x in self.SIGNALS)
+        delta=0
+        if tag in ("article","main"): delta+=4
+        if signal: delta+=2
+        if tag in self.SKIP: delta-=100
+        self._stack.append((tag, self._score, tag in self.SKIP or any(x[2] for x in self._stack)))
+        if self._stack[-1][2]: return
+        self._score+=delta
+        if tag in self.BLOCKS:
+            self._tag=tag; self._buf=[]; self._block_score=self._score
     def handle_data(self, data):
-        if self._tag: self._buf.append(data)
+        if self._tag and data.strip(): self._buf.append(data)
     def handle_endtag(self, tag):
         tag=tag.lower()
         if tag==self._tag:
             text=clean(" ".join(self._buf))
             if text:
-                target=self.h1 if tag=="h1" else self.h2
-                if text not in target and len(target)<3: target.append(text)
+                if tag=="h1" and len(self.h1)<3 and text not in self.h1: self.h1.append(text)
+                elif tag=="h2" and len(self.h2)<6 and text not in self.h2: self.h2.append(text)
+                self.blocks.append({"type":tag,"text":text,"score":self._block_score})
             self._tag=None; self._buf=[]
+        if self._stack:
+            _,old_score,was_skip=self._stack.pop()
+            self._score=old_score
+
+    def readable_blocks(self):
+        if not self.blocks: return []
+        best=max(b["score"] for b in self.blocks)
+        # Prefer blocks inside the strongest article/content container, while allowing
+        # neighboring blocks at nearly the same depth.
+        chosen=[b for b in self.blocks if b["score"]>=max(1,best-1)]
+        if len(chosen)<3: chosen=self.blocks
+        out=[]; seen=set()
+        for b in chosen:
+            t=b["text"]
+            if len(t)<25 and b["type"]=="p": continue
+            if t.lower() in seen: continue
+            seen.add(t.lower()); out.append({"type":b["type"],"text":t})
+        # Keep the generated data reasonably small while retaining enough text for several magazine pages.
+        total=0; trimmed=[]
+        for b in out:
+            if total>=30000: break
+            t=b["text"]
+            remaining=30000-total
+            if len(t)>remaining: t=t[:remaining].rsplit(" ",1)[0].strip()
+            if not t: break
+            trimmed.append({"type":b["type"],"text":t}); total+=len(t)+2
+        return trimmed
 
 def load_feeds():
     if SUPABASE_URL and SUPABASE_SECRET_KEY:
         url=SUPABASE_URL+"/rest/v1/sources?select=id,name,url,category,enabled&enabled=eq.true&order=created_at.asc"
-        req=urllib.request.Request(url,headers={"apikey":SUPABASE_SECRET_KEY,"User-Agent":"WEEKLY/0.7"})
+        req=urllib.request.Request(url,headers={"apikey":SUPABASE_SECRET_KEY,"User-Agent":"WEEKLY/0.8.3"})
         with urllib.request.urlopen(req,timeout=20) as r: rows=json.loads(r.read().decode("utf-8"))
         if rows:
             print(f"Loaded {len(rows)} enabled feeds from Supabase")
@@ -76,7 +117,7 @@ def image_from_item(el,base=""):
     return urljoin(base,m.group(1)) if m else ""
 
 def parse(feed):
-    req=urllib.request.Request(feed["url"],headers={"User-Agent":"WEEKLY/0.7 (+personal RSS reader)"})
+    req=urllib.request.Request(feed["url"],headers={"User-Agent":"WEEKLY/0.8.3 (+personal RSS reader)"})
     with urllib.request.urlopen(req,timeout=25) as r: raw=r.read(); final_url=r.geturl()
     root=ET.fromstring(raw); out=[]
     for item in root.findall(".//item")[:MAX_PER_FEED]:
@@ -117,13 +158,16 @@ def score(a,all_articles):
 def enrich_article(a):
     """Fetch the article page once to capture the main image and H1/H2s. Failure is non-fatal."""
     try:
-        req=urllib.request.Request(a["link"],headers={"User-Agent":"Mozilla/5.0 (compatible; WEEKLY/0.7; +personal reader)"})
+        req=urllib.request.Request(a["link"],headers={"User-Agent":"Mozilla/5.0 (compatible; WEEKLY/0.8.3; +personal reader)"})
         with urllib.request.urlopen(req,timeout=10) as r:
             raw=r.read(700000); final=r.geturl()
         html=raw.decode("utf-8",errors="replace")
         p=PageParser(); p.feed(html)
         if p.og_image: a["image"]=urljoin(final,p.og_image)
+        blocks=p.readable_blocks()
         a["headings"]={"h1":p.h1[:2],"h2":p.h2[:4]}
+        a["contentBlocks"]=blocks
+        a["contentText"]="\n\n".join(b["text"] for b in blocks if b["type"] in ("p","blockquote"))
     except Exception as e:
         a.setdefault("headings",{"h1":[],"h2":[]}); a["enrichError"]=str(e)[:180]
     return a
@@ -193,6 +237,6 @@ for n,a in enumerate(selected[:ENRICH_LIMIT],1):
     enrich_article(a)
 
 payload={"updatedAt":datetime.now(timezone.utc).isoformat(),"articles":unique,"selected":selected,"clusters":clusters,"errors":errors,
-         "editor":{"version":"0.7-zero-cost","note":"WEEKLY uses RSS metadata, source images and article headings. No AI credits are required."}}
+         "editor":{"version":"0.8.3-source-text","note":"WEEKLY uses RSS metadata, source images, headings and readable source text. Magazine pages target about 1800 characters. No AI credits are required."}}
 with open(OUT_FILE,"w",encoding="utf-8") as f: json.dump(payload,f,ensure_ascii=False,indent=2)
 print(f"Fetched {len(unique)} articles; {len(clusters)} clusters; {len(selected)} selected; enriched={min(ENRICH_LIMIT,len(selected))}; errors={len(errors)}")

@@ -72,3 +72,29 @@
 .tag-row span{background:rgba(0,0,0,.025)}
 .reader-nav{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}
 @media(max-width:720px){.issue-top{grid-template-columns:auto auto}.issue-label{display:none}.cover-title{font-size:48px}.cover-image{height:230px}.reader-top{grid-template-columns:auto 1fr auto}.reader-mode{display:none}.spread:after{display:none}.page:before{right:12px}.story-running{font-size:6px}.cover-caption{font-size:6px}}
+
+/* V0.8.3 — full source text / fixed-length magazine pages */
+.source-text-page{padding:38px 34px 28px;position:relative;background:#e8e3d8;color:#17191b;display:flex;flex-direction:column;box-sizing:border-box;}
+.source-text-page .story-running{flex:0 0 auto}
+.source-text-page h2{font-size:clamp(30px,3.3vw,52px);line-height:.9;letter-spacing:-.055em;max-width:16ch;margin:5px 0 9px}
+.source-text-page .dek{max-width:58ch;margin:0 0 13px;color:#4d4a45;font-size:11px;line-height:1.35}
+.source-text-page .reader-story-image{height:185px;flex:0 0 185px;margin:0 0 14px}
+.source-body{font-family:Georgia,'Times New Roman',serif;font-size:12px;line-height:1.52;columns:1;column-gap:28px;overflow:hidden;flex:1}
+.source-first .source-body{max-height:300px}
+.source-continuation .source-body{max-height:560px}
+.source-body p{margin:0 0 9px;break-inside:avoid}
+.source-body-heading{font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.05;text-transform:none;letter-spacing:-.02em;margin:13px 0 6px;break-after:avoid}
+.source-quote{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:15px;line-height:1.15;border-left:4px solid #17191b;padding:2px 0 2px 12px;margin:13px 0;break-inside:avoid}
+.continued-kicker{font:900 8px Arial;letter-spacing:.18em;border-top:2px solid #17191b;padding-top:7px;margin-bottom:12px}
+.source-end{margin-top:auto;padding-top:9px;border-top:2px solid #17191b;font:900 8px Arial;letter-spacing:.12em;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.source-end .source-link{margin:0;padding:7px 9px}
+.page-number{position:absolute;bottom:12px;left:18px;font:900 8px Arial;letter-spacing:.12em;color:#77736c}
+.blank-page{display:flex;align-items:center;justify-content:center;background:#dcd7cd;color:#77736c;font:900 10px Arial;letter-spacing:.2em}
+.article-page.source-text-page.feature-dark{background:#17191b;color:#eeeae1}
+.article-page.source-text-page.feature-dark .story-running{color:#aaa69e;border-color:#555}
+.article-page.source-text-page.feature-dark .dek,.article-page.source-text-page.feature-dark .source-body{color:#d4d0c8}
+.article-page.source-text-page.feature-dark .continued-kicker,.article-page.source-text-page.feature-dark .source-end{border-color:#eeeae1}
+.article-page.source-text-page.feature-dark .source-body-heading{color:#fff}
+.article-page.source-text-page.feature-dark .source-quote{border-color:#c8ff31}
+@media(min-width:1050px){.source-first .source-body{columns:2;max-height:280px}.source-continuation .source-body{columns:2;max-height:560px}}
+@media(max-width:720px){.source-text-page{padding:34px 20px 24px}.source-text-page .reader-story-image{height:145px;flex-basis:145px}.source-body{font-size:11px}.source-first .source-body,.source-continuation .source-body{columns:1;max-height:none}.source-text-page{overflow-y:auto}.source-text-page .source-body{overflow:visible;flex:none}.page-number{bottom:8px}}
