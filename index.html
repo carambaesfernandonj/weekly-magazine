@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WEEKLY — revista personal de noticias, tecnología y videojuegos.">
+  <title>WEEKLY — Personal Edition</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">W<span>EEKLY</span></div>
+      <nav aria-label="Navegación principal">
+        <button class="nav-btn active" data-screen="dashboard">01 · Dashboard</button>
+        <button class="nav-btn" data-screen="sources">02 · My Sources</button>
+        <button class="nav-btn" data-screen="articles">03 · This Week</button>
+        <button class="nav-btn" data-screen="magazine">04 · Magazine</button>
+        <button class="nav-btn" data-screen="archive">05 · Archive</button>
+      </nav>
+      <div class="side-info"><strong>V0.1</strong><br>Personal Edition<br>RSS ready for next step</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h2 id="screen-title">Dashboard</h2>
+        <span>PERSONAL EDITION · <span id="today"></span></span>
+      </header>
+
+      <section class="screen active" id="dashboard">
+        <h1 class="hero-title">YOUR WEEK.<br>EDITED.</h1>
+        <p class="lead">WEEKLY recoge tus fuentes, encuentra las historias importantes y las convierte en una revista que puedes leer de principio a fin.</p>
+        <div class="stat-grid">
+          <div class="card"><div class="fake-image"></div><h3 id="source-stat">6 SOURCES</h3><p>Tus medios y feeds favoritos.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="found-stat">126 STORIES</h3><p>Historias encontradas esta semana.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="selected-stat">24 SELECTED</h3><p>Historias candidatas para la edición.</p></div>
+        </div>
+        <div class="actions">
+          <button class="primary" data-go="articles">REVIEW THIS WEEK →</button>
+          <button data-go="sources">MANAGE SOURCES</button>
+        </div>
+      </section>
+
+      <section class="screen" id="sources">
+        <div class="section-head"><h1>MY SOURCES</h1><span id="source-count">6 ACTIVE FEEDS</span></div>
+        <p class="lead">Añade tus medios favoritos. En esta V0.1 las fuentes son locales y simuladas; la siguiente versión conectará RSS/Atom reales.</p>
+        <div class="source-grid" id="source-grid"></div>
+        <div class="actions"><button class="primary" id="add-source">+ ADD SOURCE</button></div>
+      </section>
+
+      <section class="screen" id="articles">
+        <div class="section-head"><h1>THIS WEEK</h1><span id="article-count">0 SELECTED · 126 FOUND</span></div>
+        <p class="lead">Selecciona las historias que quieres que el editor utilice para construir la próxima edición.</p>
+        <div class="article-list" id="article-list"></div>
+        <div class="actions"><button class="primary" id="generate">GENERATE MAGAZINE →</button></div>
+      </section>
+
+      <section class="screen" id="magazine">
+        <div class="issue-preview">
+          <div class="issue-top"><div class="issue-logo">WEEKLY</div><div>ISSUE 036 · <span id="issue-date"></span></div></div>
+          <div class="cover-grid">
+            <div>
+              <div class="eyebrow">THE WEEKLY BRIEFING</div>
+              <h1 class="cover-title">THE NEWS DESERVES A BETTER INTERFACE.</h1>
+              <p class="cover-dek" id="cover-dek">24 stories seleccionadas · 18 fuentes · una edición construida automáticamente.</p>
+              <div class="cover-image"><span>MAIN FEATURE</span></div>
+            </div>
+            <div id="cover-stories"></div>
+          </div>
+          <div class="dots">● ○ ○ ○ ○ ○ ○ ○</div>
+        </div>
+        <div class="actions center">
+          <button id="back-to-articles">← EDIT SELECTION</button>
+          <button class="primary" id="open-reader">OPEN FULL MAGAZINE →</button>
+        </div>
+      </section>
+
+      <section class="screen" id="reader">
+        <div class="reader-shell">
+          <div class="reader-top">
+            <button id="close-reader">← BACK</button>
+            <strong>WEEKLY #036</strong>
+            <span id="reader-page">01 / 04</span>
+          </div>
+          <div class="spread" id="spread"></div>
+          <div class="reader-nav">
+            <button id="prev-page">← PREV</button>
+            <span id="reader-status">SPREAD 01 / 04</span>
+            <button id="next-page">NEXT →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="archive">
+        <div class="section-head"><h1>ARCHIVE</h1><span>3 EDITIONS</span></div>
+        <div class="archive">
+          <article><div class="archive-cover"><b>WEEKLY<br>#036</b></div><small>05 SEP 2026 · 24 STORIES</small></article>
+          <article><div class="archive-cover"><b>WEEKLY<br>#035</b></div><small>29 AUG 2026 · 27 STORIES</small></article>
+          <article><div class="archive-cover"><b>WEEKLY<br>#034</b></div><small>22 AUG 2026 · 21 STORIES</small></article>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
