@@ -1,0 +1,49 @@
+{
+  "cover_story": 0,
+  "selected_ids": [
+    0,
+    1,
+    2,
+    4,
+    6,
+    7,
+    9,
+    10,
+    11,
+    16,
+    17,
+    18,
+    19,
+    21,
+    66,
+    71
+  ],
+  "sections": [
+    {
+      "name": "WEEKLY PICKS",
+      "ids": [
+        0,
+        1,
+        2,
+        4,
+        6,
+        7,
+        9,
+        10,
+        11,
+        16,
+        17,
+        18,
+        19,
+        21,
+        66,
+        71
+      ]
+    }
+  ],
+  "editor_note": "AI editor unavailable; using the automatic fallback selection.",
+  "generatedAt": "2026-09-05T19:14:21.266666+00:00",
+  "model": "fallback",
+  "status": "fallback",
+  "error": "HTTP Error 400: Bad Request"
+}
