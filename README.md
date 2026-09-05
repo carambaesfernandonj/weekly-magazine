@@ -1,44 +1,52 @@
-# WEEKLY V0.1
+# WEEKLY V0.2 — real RSS/Atom feeds
 
-Web app estática para experimentar con el concepto de una revista semanal de noticias, tecnología y videojuegos.
+Esta versión mantiene la interfaz de V0.1, pero añade una primera capa de feeds reales.
 
-## Qué incluye
+## Cómo funciona
 
-- Dashboard
-- Gestión local de fuentes simuladas
-- Selección de artículos
-- Generación de una portada
-- Lector de revista con doble página
-- Navegación con botones y flechas del teclado
-- Archivo de ediciones de ejemplo
-- Diseño responsive para escritorio y móvil
+GitHub Pages no es un backend y muchos sitios bloquean las peticiones RSS directas desde el navegador por CORS. Por eso V0.2 usa GitHub Actions:
 
-## Ejecutar
+1. `data/feeds.json` contiene las fuentes.
+2. Una GitHub Action ejecuta `scripts_fetch_rss.py`.
+3. El script descarga RSS/Atom, normaliza artículos y escribe `data/articles.json`.
+4. La Action hace commit del JSON.
+5. GitHub Pages lee ese JSON y la revista muestra los artículos reales.
 
-No necesita servidor. Abre `index.html` directamente en el navegador.
+La Action corre diariamente y también puede ejecutarse manualmente desde GitHub → Actions.
 
-Para publicarla en GitHub Pages:
+## Fuentes iniciales
 
-1. Crea un repositorio.
-2. Sube `index.html`, `style.css` y `app.js`.
-3. En Settings → Pages, selecciona la rama principal y `/root`.
-4. GitHub generará una URL pública.
+- The Verge — Atom
+- IGN Games — RSS
+- Ars Technica — RSS
+- Wired — RSS
 
-## Próximo paso: RSS real
+Puedes editar `data/feeds.json` para añadir tus propias fuentes.
 
-La V0.1 usa datos simulados deliberadamente. Para conectar feeds RSS reales conviene añadir un pequeño backend/serverless porque muchos feeds no permiten ser consultados directamente desde el navegador por CORS.
+## Importante
 
-Arquitectura propuesta:
+Esta versión todavía NO:
+- agrupa noticias repetidas mediante IA;
+- genera resúmenes;
+- extrae imágenes automáticamente;
+- genera una edición semanal de forma editorial;
+- guarda fuentes añadidas desde la interfaz.
 
-Browser → API/serverless → RSS/Atom → normalización → base de datos → editor → revista
+Eso será la siguiente capa. Para que el botón `+ Add Source` modifique fuentes persistentes desde la web necesitaremos una base de datos/backend, probablemente Supabase.
 
-Después podemos añadir:
-- RSS/Atom real
-- URLs concretas
-- deduplicación de noticias
-- extracción de imágenes
-- resúmenes
-- ranking editorial
-- generación automática cada domingo
-- archivo persistente de revistas
-- Supabase para fuentes, artículos y ediciones
+## Activar
+
+Sube estos archivos al mismo repositorio de GitHub:
+
+- `index.html`
+- `style.css`
+- `app.js`
+- `data/feeds.json`
+- `data/articles.json`
+- `scripts_fetch_rss.py`
+- `.github/workflows/update-feeds.yml`
+
+Después entra en GitHub → Actions → **Update WEEKLY feeds** → **Run workflow**.
+
+Cuando termine, GitHub Pages debería mostrar los artículos reales.
+

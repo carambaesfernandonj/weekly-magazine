@@ -119,27 +119,3 @@ const d=new Date();
 $("#today").textContent=d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();
 $("#issue-date").textContent=d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();
 renderAll();
-// V0.2 REAL FEED LOADER
-async function loadRealFeeds(){
-  try{
-    const res=await fetch("data/articles.json?ts="+Date.now());
-    if(!res.ok) throw new Error("Feed data unavailable");
-    const payload=await res.json();
-    const real=(payload.articles||[]).slice(0,80);
-    if(!real.length) return;
-    state.articles=real.map((a,i)=>[
-      a.title,a.source,(a.category||"OTHER").toUpperCase(),
-      Math.max(60,100-Math.min(i,40)),i<8
-    ]);
-    renderAll();
-    const sourceNames=[...new Set(real.map(a=>a.source))];
-    state.sources=sourceNames.map(name=>{
-      const first=real.find(a=>a.source===name);
-      return {name,cat:first?.category||"Other"};
-    });
-    renderAll();
-  }catch(err){
-    console.warn("WEEKLY feed data not loaded; using demo data.",err);
-  }
-}
-loadRealFeeds();

@@ -1,0 +1,28 @@
+{
+  "feeds": [
+    {
+      "name": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "category": "Technology",
+      "enabled": true
+    },
+    {
+      "name": "IGN Games",
+      "url": "https://www.ign.com/rss/articles/feed?tags=games",
+      "category": "Gaming",
+      "enabled": true
+    },
+    {
+      "name": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "category": "Technology",
+      "enabled": true
+    },
+    {
+      "name": "Wired",
+      "url": "https://www.wired.com/feed/rss",
+      "category": "Technology",
+      "enabled": true
+    }
+  ]
+}
