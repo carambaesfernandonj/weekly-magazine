@@ -222,12 +222,56 @@ while unused:
         if sim>=.38: group.append(j); unused.remove(j)
     best=max(group,key=lambda k:unique[k]["editorialScore"]); clusters.append({"lead":best,"articleIds":group})
 leads=sorted((unique[c["lead"]] for c in clusters),key=lambda a:a["editorialScore"],reverse=True)
-selected=[]; counts={}
+
+# Build a diverse weekly shortlist. The old selector walked the global ranking,
+# which meant one prolific feed (for example IGN) could fill almost the entire
+# 24-story issue. Round-robin the feeds first, then fill remaining slots by score.
+source_buckets={}
 for a in leads:
-    cat=a["category"]
-    if counts.get(cat,0)>=8: continue
-    selected.append(a); counts[cat]=counts.get(cat,0)+1
-    if len(selected)>=24: break
+    key=str(a.get("source") or "Unknown").strip() or "Unknown"
+    source_buckets.setdefault(key,[]).append(a)
+for key in source_buckets:
+    source_buckets[key].sort(key=lambda x:x.get("editorialScore",0),reverse=True)
+
+selected=[]; selected_keys=set(); source_counts={}; category_counts={}
+source_order=sorted(source_buckets, key=lambda k: source_buckets[k][0].get("editorialScore",0), reverse=True)
+
+# First pass: give every feed a chance to contribute, then make a second pass
+# for feeds with more stories. This is deliberately source-aware rather than
+# category-only.
+while len(selected)<24:
+    progressed=False
+    for source_name in source_order:
+        bucket=source_buckets[source_name]
+        if not bucket: continue
+        a=bucket.pop(0); key=a.get("link") or a.get("id")
+        if key in selected_keys: continue
+        # Avoid one source swallowing the issue while still allowing large feeds.
+        if source_counts.get(source_name,0)>=4: continue
+        cat=a.get("category") or "Other"
+        if category_counts.get(cat,0)>=8: continue
+        selected.append(a); selected_keys.add(key)
+        source_counts[source_name]=source_counts.get(source_name,0)+1
+        category_counts[cat]=category_counts.get(cat,0)+1
+        progressed=True
+        if len(selected)>=24: break
+    if not progressed: break
+
+# If diversity constraints left empty slots, fill them with the best remaining
+# stories while keeping the 4-per-source cap.
+if len(selected)<24:
+    remaining=sorted(
+        (a for a in unique if (a.get("link") or a.get("id")) not in selected_keys),
+        key=lambda x:x.get("editorialScore",0), reverse=True
+    )
+    for a in remaining:
+        source_name=str(a.get("source") or "Unknown").strip() or "Unknown"
+        cat=a.get("category") or "Other"
+        if source_counts.get(source_name,0)>=4 or category_counts.get(cat,0)>=8: continue
+        selected.append(a); selected_keys.add(a.get("link") or a.get("id"))
+        source_counts[source_name]=source_counts.get(source_name,0)+1
+        category_counts[cat]=category_counts.get(cat,0)+1
+        if len(selected)>=24: break
 for a in selected: a["selected"]=True
 for a in unique: a.setdefault("selected",False)
 
@@ -239,4 +283,4 @@ for n,a in enumerate(selected[:ENRICH_LIMIT],1):
 payload={"updatedAt":datetime.now(timezone.utc).isoformat(),"articles":unique,"selected":selected,"clusters":clusters,"errors":errors,
          "editor":{"version":"0.8.3-source-text","note":"WEEKLY uses RSS metadata, source images, headings and readable source text. Magazine pages target about 1800 characters. No AI credits are required."}}
 with open(OUT_FILE,"w",encoding="utf-8") as f: json.dump(payload,f,ensure_ascii=False,indent=2)
-print(f"Fetched {len(unique)} articles; {len(clusters)} clusters; {len(selected)} selected; enriched={min(ENRICH_LIMIT,len(selected))}; errors={len(errors)}")
+print(f"Fetched {len(unique)} articles; {len(clusters)} clusters; {len(selected)} selected; sources_in_issue={len(set(a.get("source") for a in selected))}; enriched={min(ENRICH_LIMIT,len(selected))}; errors={len(errors)}")
