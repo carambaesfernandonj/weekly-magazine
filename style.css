@@ -151,17 +151,23 @@
  .layout-feature .reader-story-image,.layout-dark .reader-story-image,.layout-image .reader-story-image{height:190px;flex-basis:190px}.layout-short .reader-story-image{width:100%;height:140px;flex-basis:140px}.pull-quote{max-width:100%}.closing-page{padding:28px 22px}.closing-copy h2{font-size:54px}.closing-mark{font-size:75vw}
 }
 
-/* V0.8.4 — immersive magazine fullscreen reader */
+/* V0.8.4.2 — immersive magazine reader: fit the spread, scroll the page content */
 #fullscreen-reader{white-space:nowrap;padding:7px 9px;min-height:30px;font-size:8px;letter-spacing:.1em}
-.reader-fullscreen{position:fixed!important;inset:0!important;z-index:9999!important;background:var(--bg)!important;padding:16px!important;overflow:auto!important;display:block!important}
-.reader-fullscreen .reader-shell{max-width:none;width:100%;height:calc(100vh - 32px);min-height:0;display:flex;flex-direction:column;padding:12px}
+.reader-fullscreen{position:fixed!important;inset:0!important;z-index:9999!important;background:var(--bg)!important;padding:12px!important;overflow:hidden!important;display:block!important}
+.reader-fullscreen .reader-shell{max-width:none;width:100%;height:calc(100vh - 24px);min-height:0;display:flex;flex-direction:column;padding:8px}
 .reader-fullscreen .reader-top{flex:0 0 auto}
-.reader-fullscreen .spread{flex:1 1 auto;min-height:0;height:auto}
-.reader-fullscreen .page{min-height:0;height:100%;}
+.reader-fullscreen .spread{flex:1 1 auto;min-height:0;height:auto;overflow:hidden}
+.reader-fullscreen .page{min-height:0;height:100%;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scroll-behavior:smooth}
+.reader-fullscreen .page::-webkit-scrollbar{width:7px}
+.reader-fullscreen .source-text-page .source-body{max-height:none!important;overflow:visible!important;flex:none}
+.reader-fullscreen .source-text-page .source-first .source-body,.reader-fullscreen .source-text-page .source-continuation .source-body{columns:2}
 .reader-fullscreen .reader-nav{flex:0 0 auto}
+@media(max-width:1050px){.reader-fullscreen .source-text-page .source-first .source-body,.reader-fullscreen .source-text-page .source-continuation .source-body{columns:1}}
 @media(max-width:720px){
  #fullscreen-reader{font-size:7px;padding:6px 7px}
- .reader-fullscreen{padding:8px!important}
- .reader-fullscreen .reader-shell{height:calc(100vh - 16px);padding:8px}
+ .reader-fullscreen{padding:6px!important}
+ .reader-fullscreen .reader-shell{height:calc(100vh - 12px);padding:6px}
  .reader-fullscreen .spread{min-height:0}
+ .reader-fullscreen .page{height:100%;overflow-y:auto}
+ .reader-fullscreen .source-text-page .source-body{columns:1!important}
 }
