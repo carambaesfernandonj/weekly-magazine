@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T22:30:01.524874+00:00",
+  "updatedAt": "2026-09-05T22:35:31.071949+00:00",
   "articles": [
     {
       "id": "ec304502-ea4c-41c8-89f7-86b18c79d089",
@@ -1791,7 +1791,7 @@
         "GAMING",
         "XBOX"
       ],
-      "editorialScore": 72,
+      "editorialScore": 71,
       "selected": false
     },
     {
@@ -2142,6 +2142,23 @@
       "selected": false
     },
     {
+      "id": "69a5cf29a4156f3d517b71cc",
+      "title": "Mattress Firm Coupons: Save up to $700",
+      "link": "https://www.wired.com/story/mattress-firm-coupon/",
+      "description": "Use a Mattress Firm promo code to save on top mattresses, score a free adjustable base, and unlock up to $300 in instant credits.",
+      "published": "2026-09-04T05:00:00+00:00",
+      "source": "Wired",
+      "category": "Technology",
+      "image": "https://media.wired.com/photos/67b63b9283a9f95e0ab9b215/master/pass/WIRED-Coupons-R2_3.png",
+      "tags": [
+        "TECHNOLOGY",
+        "BUSINESS",
+        "DEALS"
+      ],
+      "editorialScore": 71,
+      "selected": false
+    },
+    {
       "id": "69dfd0c19b1e43c44b034961",
       "title": "Foreo Discount Codes and Deals: Up to 50% Off",
       "link": "https://www.wired.com/story/foreo-promo-code/",
@@ -2232,23 +2249,6 @@
       "tags": [
         "TECHNOLOGY",
         "HARDWARE",
-        "BUSINESS",
-        "DEALS"
-      ],
-      "editorialScore": 71,
-      "selected": false
-    },
-    {
-      "id": "69a5cf29a4156f3d517b71cc",
-      "title": "Mattress Firm Coupons: Save up to $700",
-      "link": "https://www.wired.com/story/mattress-firm-coupon/",
-      "description": "Use a Mattress Firm promo code to save on top mattresses, score a free adjustable base, and unlock up to $300 in instant credits.",
-      "published": "2026-09-04T05:00:00+00:00",
-      "source": "Wired",
-      "category": "Technology",
-      "image": "https://media.wired.com/photos/67b63b9283a9f95e0ab9b215/master/pass/WIRED-Coupons-R2_3.png",
-      "tags": [
-        "TECHNOLOGY",
         "BUSINESS",
         "DEALS"
       ],
@@ -2356,23 +2356,6 @@
       "selected": false
     },
     {
-      "id": "69d676a75ed03f09403e5ea0",
-      "title": "Bartesian Discount Codes: 35% Off",
-      "link": "https://www.wired.com/story/bartesian-discount-code/",
-      "description": "Upgrade your home bar with the latest Bartesian coupon codes and discounts. Save on the Professional Cocktail Maker, enjoy subscription discounts, and get free shipping on your favorite capsules.",
-      "published": "2026-09-04T05:00:00+00:00",
-      "source": "Wired",
-      "category": "Technology",
-      "image": "https://media.wired.com/photos/67b63b98fb14553f0ebd9ffd/master/pass/WIRED-Coupons-R2_15.png",
-      "tags": [
-        "TECHNOLOGY",
-        "BUSINESS",
-        "DEALS"
-      ],
-      "editorialScore": 76,
-      "selected": false
-    },
-    {
       "id": "6859959712304f4d67bd7fd3",
       "title": "30% Off Tempur-Pedic Promo Codes | September 2026",
       "link": "https://www.wired.com/story/tempur-pedic-promo-code/",
@@ -2387,6 +2370,23 @@
         "DEALS"
       ],
       "editorialScore": 81,
+      "selected": false
+    },
+    {
+      "id": "69d676a75ed03f09403e5ea0",
+      "title": "Bartesian Discount Codes: 35% Off",
+      "link": "https://www.wired.com/story/bartesian-discount-code/",
+      "description": "Upgrade your home bar with the latest Bartesian coupon codes and discounts. Save on the Professional Cocktail Maker, enjoy subscription discounts, and get free shipping on your favorite capsules.",
+      "published": "2026-09-04T05:00:00+00:00",
+      "source": "Wired",
+      "category": "Technology",
+      "image": "https://media.wired.com/photos/67b63b98fb14553f0ebd9ffd/master/pass/WIRED-Coupons-R2_15.png",
+      "tags": [
+        "TECHNOLOGY",
+        "BUSINESS",
+        "DEALS"
+      ],
+      "editorialScore": 76,
       "selected": false
     },
     {
@@ -4600,15 +4600,15 @@
     {
       "lead": 66,
       "articleIds": [
-        66,
-        70,
-        74
+        66
       ]
     },
     {
       "lead": 67,
       "articleIds": [
-        67
+        67,
+        70,
+        75
       ]
     },
     {
@@ -4628,7 +4628,7 @@
       "articleIds": [
         71,
         73,
-        75
+        74
       ]
     },
     {
