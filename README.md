@@ -1,61 +1,59 @@
-# WEEKLY V0.4 — Real AI editorial engine
+# WEEKLY V0.5 — Persistent Sources
 
-Esta versión hace que WEEKLY sea realmente un producto funcional:
+WEEKLY V0.5 connects the source manager to Supabase.
 
-RSS/Atom → GitHub Actions → normalización → OpenAI → selección editorial → revista.
+Architecture:
 
-## 1. Configurar OpenAI
+Supabase Sources → GitHub Actions → RSS/Atom → OpenAI editor → GitHub Pages
 
-En tu repositorio de GitHub:
+## 1. Configure the web app
 
-**Settings → Secrets and variables → Actions → New repository secret**
+Copy `config.example.js` to `config.js`.
 
-Nombre:
+Open `config.js` and replace:
+
+- `supabaseUrl` with your Supabase Project URL.
+- `supabaseAnonKey` with your Supabase **Publishable key** (`sb_publishable_...`).
+
+Do **not** put a Supabase Secret key (`sb_secret_...`) here.
+
+`config.js` is intentionally a frontend configuration file. The publishable key is designed for browser code; RLS controls what it can do.
+
+## 2. GitHub Actions secrets
+
+In GitHub:
+
+Settings → Secrets and variables → Actions → New repository secret
+
+Create:
 
 `OPENAI_API_KEY`
+`SUPABASE_URL`
+`SUPABASE_SECRET_KEY`
 
-Valor:
+For `SUPABASE_SECRET_KEY`, use a Supabase Secret key (`sb_secret_...`). Never put it in `config.js` or any frontend file.
 
-tu API key de OpenAI.
+## 3. What V0.5 does
 
-La clave se usa exclusivamente dentro de GitHub Actions; NO está incluida en el frontend ni en el repositorio.
+- My Sources reads feeds directly from Supabase.
+- `+ ADD SOURCE` stores a new RSS/Atom feed in Supabase.
+- `REMOVE` deletes a feed from Supabase.
+- `REFRESH` reloads the live list.
+- GitHub Actions reads enabled sources from Supabase before fetching RSS.
+- If the Supabase secrets are not configured in Actions, the RSS script falls back to `data/feeds.json`.
+- The existing OpenAI editorial step remains unchanged.
 
-La aplicación usa la Responses API y Structured Outputs para pedir al modelo una selección JSON estructurada. OpenAI documenta la Responses API y el uso de claves mediante variables de entorno.
+## 4. Security note
 
-## 2. Ejecutar
+This first V0.5 prototype uses the existing public/anonymous RLS policies you created for `sources`, so the source-management UI is intentionally simple. Anyone who can access the public app and its publishable key can exercise whatever the `anon` policies allow.
 
-Ve a:
+For a personal prototype this is acceptable for testing, but the next hardening step should be Supabase Auth + `authenticated` RLS policies before treating the app as a public service.
 
-GitHub → Actions → **Build WEEKLY issue → Run workflow**
+## 5. Supabase keys
 
-El workflow:
+Supabase now recommends:
 
-1. descarga los feeds;
-2. normaliza y deduplica;
-3. extrae imágenes cuando están disponibles;
-4. manda candidatos al editor IA;
-5. selecciona 12–24 historias;
-6. elige portada;
-7. crea secciones;
-8. genera `data/editorial.json`;
-9. publica la edición en GitHub Pages.
+- Publishable key → browser/frontend.
+- Secret key → server/CI/backend only.
 
-También se ejecuta automáticamente cada domingo a las 08:00 UTC.
-
-## 3. Modelo
-
-V0.4 utiliza `gpt-5.6-luna`, orientado a cargas sensibles a coste. Puedes cambiarlo en `scripts_editor.py`.
-
-## 4. Seguridad
-
-Nunca pongas `OPENAI_API_KEY` en `app.js`, `index.html`, `data/*.json` ni en ningún archivo que llegue al navegador.
-
-## 5. Qué queda para V0.5
-
-- panel real para añadir/eliminar feeds sin editar JSON;
-- Supabase para guardar configuración;
-- resumen editorial de cada noticia;
-- mejor clustering de noticias repetidas;
-- layouts elegidos por IA;
-- portada y spreads generados según contenido;
-- generación automática semanal + histórico persistente.
+Do not expose the Secret key.

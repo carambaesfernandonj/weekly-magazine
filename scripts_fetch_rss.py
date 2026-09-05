@@ -1,4 +1,4 @@
-import json, re, urllib.request, xml.etree.ElementTree as ET
+import json, os, re, urllib.request, urllib.parse, xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from html import unescape
@@ -6,8 +6,24 @@ from urllib.parse import urljoin
 
 FEEDS_FILE="data/feeds.json"
 OUT_FILE="data/articles.json"
+SUPABASE_URL=os.environ.get("SUPABASE_URL","").rstrip("/")
+SUPABASE_SECRET_KEY=os.environ.get("SUPABASE_SECRET_KEY","")
 MAX_PER_FEED=100
 MAX_TOTAL=300
+
+def load_feeds():
+    """Load enabled sources from Supabase when configured; otherwise use local feeds.json."""
+    if SUPABASE_URL and SUPABASE_SECRET_KEY:
+        url=SUPABASE_URL+"/rest/v1/sources?select=id,name,url,category,enabled&enabled=eq.true&order=created_at.asc"
+        req=urllib.request.Request(url,headers={"apikey":SUPABASE_SECRET_KEY,"User-Agent":"WEEKLY/0.5"})
+        with urllib.request.urlopen(req,timeout=20) as r:
+            rows=json.loads(r.read().decode("utf-8"))
+        if rows:
+            print(f"Loaded {len(rows)} enabled feeds from Supabase")
+            return rows
+        print("Supabase returned no enabled feeds; falling back to data/feeds.json")
+    with open(FEEDS_FILE,encoding="utf-8") as f:
+        return json.load(f)["feeds"]
 
 def clean(s):
     if not s: return ""
@@ -95,7 +111,7 @@ def score(a, all_articles):
     except Exception: pass
     return min(100,55 + min(25,related*5) + min(15,rec*2) + (5 if a.get("image") else 0))
 
-with open(FEEDS_FILE,encoding="utf-8") as f: feeds=json.load(f)["feeds"]
+feeds=load_feeds()
 articles=[]; errors=[]
 for feed in feeds:
     if not feed.get("enabled",True): continue

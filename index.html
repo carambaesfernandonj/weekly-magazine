@@ -6,6 +6,7 @@
   <meta name="description" content="WEEKLY — revista personal de noticias, tecnología y videojuegos.">
   <title>WEEKLY — Personal Edition</title>
   <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
 </head>
 <body>
   <div id="app" class="app-shell">
@@ -18,7 +19,7 @@
         <button class="nav-btn" data-screen="magazine">04 · Magazine</button>
         <button class="nav-btn" data-screen="archive">05 · Archive</button>
       </nav>
-      <div class="side-info"><strong>V0.1</strong><br>Personal Edition<br>RSS ready for next step</div>
+      <div class="side-info"><strong>V0.5</strong><br>Personal Edition<br><span id="connection-status">CONNECTING…</span></div>
     </aside>
 
     <main class="main">
@@ -43,9 +44,9 @@
 
       <section class="screen" id="sources">
         <div class="section-head"><h1>MY SOURCES</h1><span id="source-count">6 ACTIVE FEEDS</span></div>
-        <p class="lead">Añade tus medios favoritos. En esta V0.1 las fuentes son locales y simuladas; la siguiente versión conectará RSS/Atom reales.</p>
+        <p class="lead">Añade tus medios favoritos. Los feeds se guardan en Supabase y GitHub Actions los usará para construir la próxima edición.</p>
         <div class="source-grid" id="source-grid"></div>
-        <div class="actions"><button class="primary" id="add-source">+ ADD SOURCE</button></div>
+        <div class="actions"><button class="primary" id="add-source">+ ADD SOURCE</button><button id="refresh-sources">↻ REFRESH</button></div>
       </section>
 
       <section class="screen" id="articles">
