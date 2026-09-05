@@ -1,39 +1,61 @@
-# WEEKLY V0.3 — Editorial feed engine
+# WEEKLY V0.4 — Real AI editorial engine
 
-V0.3 convierte el lector en un primer **editor automático**, todavía sin IA externa.
+Esta versión hace que WEEKLY sea realmente un producto funcional:
 
-### Nuevo
+RSS/Atom → GitHub Actions → normalización → OpenAI → selección editorial → revista.
 
-- RSS/Atom real mediante GitHub Actions.
-- Extracción de imágenes desde RSS/Atom cuando el feed las expone.
-- Normalización y deduplicación.
-- Puntuación editorial heurística.
-- Agrupación básica de historias relacionadas.
-- Selección de hasta 24 historias.
-- Diversidad por categoría.
-- Revista que utiliza títulos, descripciones, imágenes y fuentes reales.
-- Lector con enlace a la fuente original.
+## 1. Configurar OpenAI
 
-### Flujo
+En tu repositorio de GitHub:
 
-Feeds → GitHub Action → `articles.json` → ranking → clusters → selección → WEEKLY.
+**Settings → Secrets and variables → Actions → New repository secret**
 
-### Cómo actualizar
+Nombre:
 
-Reemplaza tu V0.2 por estos archivos en el mismo repositorio y haz push.
+`OPENAI_API_KEY`
 
-Después:
-GitHub → Actions → **Update WEEKLY feeds and editorial selection** → **Run workflow**.
+Valor:
 
-La Action también corre diariamente.
+tu API key de OpenAI.
 
-### Limitación deliberada
+La clave se usa exclusivamente dentro de GitHub Actions; NO está incluida en el frontend ni en el repositorio.
 
-El "editor" de V0.3 es heurístico, no un modelo de IA. Esto permite probar el producto sin API keys ni costes.
+La aplicación usa la Responses API y Structured Outputs para pedir al modelo una selección JSON estructurada. OpenAI documenta la Responses API y el uso de claves mediante variables de entorno.
 
-El siguiente paso recomendado es V0.4:
-- conectar un modelo de IA para resumir;
-- detectar mejor que varias noticias hablan del mismo acontecimiento;
-- generar un titular editorial;
-- decidir el tipo de página/layout;
-- generar una edición semanal real.
+## 2. Ejecutar
+
+Ve a:
+
+GitHub → Actions → **Build WEEKLY issue → Run workflow**
+
+El workflow:
+
+1. descarga los feeds;
+2. normaliza y deduplica;
+3. extrae imágenes cuando están disponibles;
+4. manda candidatos al editor IA;
+5. selecciona 12–24 historias;
+6. elige portada;
+7. crea secciones;
+8. genera `data/editorial.json`;
+9. publica la edición en GitHub Pages.
+
+También se ejecuta automáticamente cada domingo a las 08:00 UTC.
+
+## 3. Modelo
+
+V0.4 utiliza `gpt-5.6-luna`, orientado a cargas sensibles a coste. Puedes cambiarlo en `scripts_editor.py`.
+
+## 4. Seguridad
+
+Nunca pongas `OPENAI_API_KEY` en `app.js`, `index.html`, `data/*.json` ni en ningún archivo que llegue al navegador.
+
+## 5. Qué queda para V0.5
+
+- panel real para añadir/eliminar feeds sin editar JSON;
+- Supabase para guardar configuración;
+- resumen editorial de cada noticia;
+- mejor clustering de noticias repetidas;
+- layouts elegidos por IA;
+- portada y spreads generados según contenido;
+- generación automática semanal + histórico persistente.
