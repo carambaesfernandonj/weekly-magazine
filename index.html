@@ -19,7 +19,7 @@
         <button class="nav-btn" data-screen="magazine">04 · Magazine</button>
         <button class="nav-btn" data-screen="archive">05 · Archive</button>
       </nav>
-      <div class="side-info"><strong>V0.8</strong><br>Personal Edition<br><span id="connection-status">CONNECTING…</span></div>
+      <div class="side-info"><strong>V0.8.1</strong><br>Personal Edition<br><span id="connection-status">CONNECTING…</span></div>
     </aside>
 
     <main class="main">
@@ -55,7 +55,8 @@
         <div class="tag-panel">
           <div class="tag-panel-head"><strong>CHOOSE YOUR TAGS</strong><span id="tag-count">0 TAGS</span></div>
           <div class="tag-cloud" id="tag-cloud"></div>
-          <div class="tag-help">Sin tags = todo el feed. Con tags = solo historias que coincidan con al menos uno.</div>
+          <div class="custom-topic"><div class="custom-topic-head"><strong>ADD YOUR OWN TOPIC</strong><span>e.g. anime · marvel · dc · retro gaming</span></div><div class="custom-topic-form"><input id="custom-topic-input" type="text" maxlength="40" placeholder="Type a topic…" autocomplete="off"><button id="add-custom-topic">+ ADD TOPIC</button></div><div class="topic-suggestions"><button data-topic="ANIME">ANIME</button><button data-topic="MARVEL">MARVEL</button><button data-topic="DC">DC</button><button data-topic="RETRO GAMING">RETRO GAMING</button><button data-topic="POKEMON">POKEMON</button><button data-topic="STAR WARS">STAR WARS</button></div></div>
+          <div class="tag-help">Los tags automáticos vienen del feed. Los temas personalizados buscan coincidencias en títulos, descripciones, H1, H2, fuente y tags. Puedes combinar ambos.</div>
         </div>
         <div class="selection-preview">
           <div><strong id="pool-stat">0 STORIES IN POOL</strong><small id="pool-note">Selecciona tags para acotar la piscina editorial.</small></div>

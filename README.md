@@ -1,4 +1,4 @@
-# WEEKLY V0.8 — Zero-Cost Editorial
+# WEEKLY V0.8.1 — Zero-Cost Editorial
 
 Personal RSS/Atom magazine reader. V0.8 does not require OpenAI credits.
 
@@ -18,3 +18,6 @@ The pipeline remains RSS/Atom → dedupe → scoring → tag enrichment → boun
 
 ## V0.8 — Real Magazine
 WEEKLY now uses several magazine page layouts (feature, news, image-led, shorts), a table of contents, clickable cover stories, page numbering, source imagery/headings and original-source links. The editorial layer remains zero-cost and source-first.
+
+## V0.8.1 — Custom Topics
+This Week now supports persistent custom topics in addition to automatically detected tags. Custom topics search titles, descriptions, H1/H2, source names and existing tags. Common shortcuts include ANIME, MARVEL, DC, RETRO GAMING, POKEMON and STAR WARS. No OpenAI credits are required.
