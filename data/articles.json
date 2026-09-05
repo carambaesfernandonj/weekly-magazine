@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-05T22:55:02.995743+00:00",
+  "updatedAt": "2026-09-05T23:04:18.497476+00:00",
   "articles": [
     {
       "id": "ec304502-ea4c-41c8-89f7-86b18c79d089",
@@ -1760,7 +1760,7 @@
       "tags": [
         "TECHNOLOGY"
       ],
-      "editorialScore": 72,
+      "editorialScore": 71,
       "selected": false
     },
     {
@@ -2142,23 +2142,6 @@
       "selected": false
     },
     {
-      "id": "69a5cf29a4156f3d517b71cc",
-      "title": "Mattress Firm Coupons: Save up to $700",
-      "link": "https://www.wired.com/story/mattress-firm-coupon/",
-      "description": "Use a Mattress Firm promo code to save on top mattresses, score a free adjustable base, and unlock up to $300 in instant credits.",
-      "published": "2026-09-04T05:00:00+00:00",
-      "source": "Wired",
-      "category": "Technology",
-      "image": "https://media.wired.com/photos/67b63b9283a9f95e0ab9b215/master/pass/WIRED-Coupons-R2_3.png",
-      "tags": [
-        "TECHNOLOGY",
-        "BUSINESS",
-        "DEALS"
-      ],
-      "editorialScore": 71,
-      "selected": false
-    },
-    {
       "id": "69dfd0c19b1e43c44b034961",
       "title": "Foreo Discount Codes and Deals: Up to 50% Off",
       "link": "https://www.wired.com/story/foreo-promo-code/",
@@ -2173,7 +2156,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 81,
+      "editorialScore": 80,
       "selected": true,
       "headings": {
         "h1": [],
@@ -2234,7 +2217,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 71,
+      "editorialScore": 70,
       "selected": false
     },
     {
@@ -2252,7 +2235,24 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 71,
+      "editorialScore": 70,
+      "selected": false
+    },
+    {
+      "id": "69a5cf29a4156f3d517b71cc",
+      "title": "Mattress Firm Coupons: Save up to $700",
+      "link": "https://www.wired.com/story/mattress-firm-coupon/",
+      "description": "Use a Mattress Firm promo code to save on top mattresses, score a free adjustable base, and unlock up to $300 in instant credits.",
+      "published": "2026-09-04T05:00:00+00:00",
+      "source": "Wired",
+      "category": "Technology",
+      "image": "https://media.wired.com/photos/67b63b9283a9f95e0ab9b215/master/pass/WIRED-Coupons-R2_3.png",
+      "tags": [
+        "TECHNOLOGY",
+        "BUSINESS",
+        "DEALS"
+      ],
+      "editorialScore": 70,
       "selected": false
     },
     {
@@ -2269,7 +2269,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 76,
+      "editorialScore": 75,
       "selected": false
     },
     {
@@ -2286,7 +2286,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 81,
+      "editorialScore": 80,
       "selected": true,
       "headings": {
         "h1": [],
@@ -2335,7 +2335,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 71,
+      "editorialScore": 70,
       "selected": false
     },
     {
@@ -2352,7 +2352,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 81,
+      "editorialScore": 80,
       "selected": false
     },
     {
@@ -2369,7 +2369,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 76,
+      "editorialScore": 75,
       "selected": false
     },
     {
@@ -2386,7 +2386,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 81,
+      "editorialScore": 80,
       "selected": false
     },
     {
@@ -2793,7 +2793,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 81,
+      "editorialScore": 80,
       "selected": true,
       "headings": {
         "h1": [],
@@ -2854,7 +2854,7 @@
         "BUSINESS",
         "DEALS"
       ],
-      "editorialScore": 81,
+      "editorialScore": 80,
       "selected": true,
       "headings": {
         "h1": [],
@@ -4600,15 +4600,15 @@
     {
       "lead": 66,
       "articleIds": [
-        66
+        66,
+        70,
+        74
       ]
     },
     {
       "lead": 67,
       "articleIds": [
-        67,
-        70,
-        74
+        67
       ]
     },
     {
