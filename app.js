@@ -1,145 +1,105 @@
-const state={
-  sources:[
-    {name:"IGN",cat:"Gaming"},
-    {name:"Eurogamer",cat:"Gaming"},
-    {name:"The Verge",cat:"Technology"},
-    {name:"Wired",cat:"Technology"},
-    {name:"Ars Technica",cat:"Technology"},
-    {name:"Rock Paper Shotgun",cat:"Gaming"}
-  ],
-  articles:[
-    ["El nuevo hardware que quiere cambiar cómo jugamos","IGN","GAMES",94,true],
-    ["La carrera por construir el ordenador personal definitivo","The Verge","TECH",91,true],
-    ["Por qué los videojuegos están recuperando una estética perdida","Eurogamer","GAMES",89,true],
-    ["Las revistas vuelven a ser objetos de diseño","Wired","CULTURE",84,false],
-    ["La interfaz que nadie esperaba encontrar en 2026","Ars Technica","TECH",81,false],
-    ["El diseño de sonido que está redefiniendo los videojuegos","Rock Paper Shotgun","GAMES",80,false]
-  ],
-  readerPage:0
-};
-
-const screens=["dashboard","sources","articles","magazine","reader","archive"];
+const state={sources:[],articles:[],selected:[],clusters:[],readerPage:0};
 const titles={dashboard:"Dashboard",sources:"My Sources",articles:"This Week",magazine:"Magazine",reader:"Reader",archive:"Archive"};
+const $=s=>document.querySelector(s);
 
-function $(s){return document.querySelector(s)}
 function show(id){
-  document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));
-  document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));
-  $("#screen-title").textContent=titles[id]||"Dashboard";
+ document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));
+ document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));
+ $("#screen-title").textContent=titles[id]||"Dashboard";
 }
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function renderSources(){
-  const box=$("#source-grid"); box.innerHTML="";
-  state.sources.forEach((s,i)=>{
-    const el=document.createElement("div"); el.className="source";
-    el.innerHTML='<span class="dot"></span><div><strong></strong><small></small></div><button class="remove">REMOVE</button>';
-    el.querySelector("strong").textContent=s.name;
-    el.querySelector("small").textContent=`${s.cat} · RSS`;
-    el.querySelector(".remove").addEventListener("click",()=>{state.sources.splice(i,1);renderAll()});
-    box.appendChild(el);
-  });
-  $("#source-count").textContent=`${state.sources.length} ACTIVE FEEDS`;
+ const box=$("#source-grid");box.innerHTML="";
+ state.sources.forEach((s,i)=>{
+  const el=document.createElement("div");el.className="source";
+  el.innerHTML='<span class="dot"></span><div><strong></strong><small></small></div><button class="remove">REMOVE</button>';
+  el.querySelector("strong").textContent=s.name;el.querySelector("small").textContent=`${s.category||"Other"} · RSS`;
+  el.querySelector(".remove").onclick=()=>{state.sources.splice(i,1);renderSources();updateDashboard()};
+  box.appendChild(el);
+ });
+ $("#source-count").textContent=`${state.sources.length} ACTIVE FEEDS`;
 }
 function renderArticles(){
-  const box=$("#article-list"); box.innerHTML="";
-  state.articles.forEach((a,i)=>{
-    const label=document.createElement("label"); label.className="article";
-    label.innerHTML='<input type="checkbox"><div><span class="cat"></span><h3></h3><p></p></div><span class="score"></span>';
-    const c=label.querySelector("input"); c.checked=a[4];
-    label.querySelector(".cat").textContent=a[2];
-    label.querySelector("h3").textContent=a[0];
-    label.querySelector("p").textContent=`${a[1]} · esta semana · ${Math.max(3,Math.round(a[3]/10))} fuentes relacionadas`;
-    label.querySelector(".score").textContent=a[3];
-    c.addEventListener("change",()=>{a[4]=c.checked;updateCounts()});
-    box.appendChild(label);
-  });
-  updateCounts();
+ const box=$("#article-list");box.innerHTML="";
+ state.articles.slice(0,80).forEach((a,i)=>{
+  const label=document.createElement("label");label.className="article";
+  label.innerHTML=`<input type="checkbox" ${a.selected?"checked":""}><div><span class="cat">${escapeHtml((a.category||"OTHER").toUpperCase())}</span><h3>${escapeHtml(a.title)}</h3><p>${escapeHtml(a.source)} · ${escapeHtml((a.published||"").slice(0,10))}</p></div><span class="score">${a.editorialScore||"-"}</span>`;
+  label.querySelector("input").onchange=e=>{a.selected=e.target.checked;syncSelected();updateCounts()};
+  box.appendChild(label);
+ });
+ updateCounts();
 }
+function syncSelected(){state.selected=state.articles.filter(a=>a.selected).slice(0,24)}
 function updateCounts(){
-  const n=state.articles.filter(a=>a[4]).length;
-  $("#article-count").textContent=`${n} SELECTED · 126 FOUND`;
-  $("#selected-stat").textContent=`${n} SELECTED`;
+ syncSelected();
+ $("#article-count").textContent=`${state.selected.length} SELECTED · ${state.articles.length} FOUND`;
+ $("#selected-stat").textContent=`${state.selected.length} SELECTED`;
+}
+function updateDashboard(){
+ $("#source-stat").textContent=`${state.sources.length} SOURCES`;
+ $("#found-stat").textContent=`${state.articles.length} STORIES`;
 }
 function renderMagazine(){
-  const selected=state.articles.filter(a=>a[4]);
-  $("#cover-dek").textContent=`${selected.length} stories seleccionadas · ${state.sources.length} fuentes · una edición construida automáticamente.`;
-  const box=$("#cover-stories");box.innerHTML="";
-  selected.slice(0,4).forEach(a=>{
-    const el=document.createElement("div");el.className="mini";
-    el.innerHTML='<b></b><h4></h4>';el.querySelector("b").textContent=a[2];el.querySelector("h4").textContent=a[0];box.appendChild(el);
-  });
+ const selected=state.selected.length?state.selected:state.articles.slice(0,6);
+ $("#cover-dek").textContent=`${selected.length} stories seleccionadas · ${state.sources.length} fuentes · editor v0.3`;
+ const box=$("#cover-stories");box.innerHTML="";
+ selected.slice(0,5).forEach(a=>{
+  const el=document.createElement("div");el.className="mini";
+  el.innerHTML=`<b>${escapeHtml((a.category||"OTHER").toUpperCase())}</b><h4>${escapeHtml(a.title)}</h4>`;
+  box.appendChild(el);
+ });
 }
 function renderReader(){
-  const p=state.readerPage;
-  const selected=state.articles.filter(a=>a[4]);
-  const stories=selected.length?selected:state.articles;
-  const left=stories[(p*2)%stories.length], right=stories[(p*2+1)%stories.length];
-  $("#reader-page").textContent=`${String(p+1).padStart(2,"0")} / 04`;
-  $("#reader-status").textContent=`SPREAD ${String(p+1).padStart(2,"0")} / 04`;
-  $("#spread").innerHTML=`
-    <section class="page">
-      <div class="tag">${left[2]} · ${left[1]}</div>
-      <h2>${escapeHtml(left[0])}</h2>
-      <div class="feature"></div>
-      <p>Una historia seleccionada para la edición semanal. En la versión conectada, aquí aparecerá el resumen generado a partir del artículo original y un enlace a la fuente.</p>
-      <p><strong>SCORE ${left[3]}</strong> · Selección editorial WEEKLY.</p>
-    </section>
-    <section class="page">
-      <div class="tag">${right[2]} · ${right[1]}</div>
-      <div class="story"><h3>${escapeHtml(right[0])}</h3><p>El editor agrupa historias relacionadas, elimina duplicados y decide qué piezas merecen protagonismo.</p></div>
-      <div class="story"><h3>THE EDITOR'S NOTE</h3><p>La revista no intenta competir con el flujo infinito de noticias. Su objetivo es convertir una semana de información en una edición que puedas terminar.</p></div>
-      <div class="story"><h3>WHAT'S NEXT</h3><p>RSS real, imágenes de las fuentes, resúmenes, agrupación automática y generación semanal.</p></div>
-    </section>`;
+ const stories=state.selected.length?state.selected:state.articles;
+ if(!stories.length)return;
+ const p=state.readerPage%4;
+ const left=stories[(p*2)%stories.length],right=stories[(p*2+1)%stories.length];
+ $("#reader-page").textContent=`${String(p+1).padStart(2,"0")} / 04`;
+ $("#reader-status").textContent=`SPREAD ${String(p+1).padStart(2,"0")} / 04`;
+ const img=(a)=>a.image?`<img src="${escapeHtml(a.image)}" alt="" style="width:100%;height:190px;object-fit:cover;background:#20242a" onerror="this.style.display='none'">`:`<div class="feature"></div>`;
+ $("#spread").innerHTML=`
+ <section class="page"><div class="tag">${escapeHtml((left.category||"OTHER").toUpperCase())} · ${escapeHtml(left.source)}</div>
+ <h2>${escapeHtml(left.title)}</h2>${img(left)}
+ <p>${escapeHtml(left.description||"Una historia seleccionada por el editor WEEKLY a partir de tus fuentes.")}</p>
+ <p><strong>SCORE ${left.editorialScore||"-"}</strong> · <a href="${escapeHtml(left.link)}" target="_blank" rel="noopener" style="color:inherit">READ SOURCE ↗</a></p></section>
+ <section class="page"><div class="tag">${escapeHtml((right.category||"OTHER").toUpperCase())} · ${escapeHtml(right.source)}</div>
+ <div class="story"><h3>${escapeHtml(right.title)}</h3><p>${escapeHtml(right.description||"Historia destacada de la semana.")}</p></div>
+ <div class="story"><h3>EDITOR'S NOTE</h3><p>El editor agrupa historias relacionadas, reduce duplicados y prioriza piezas con mayor relevancia y cobertura.</p></div>
+ <div class="story"><h3>THE WEEKLY INDEX</h3><p>${state.clusters.length} temas detectados · ${state.articles.length} artículos encontrados · ${state.selected.length} seleccionados.</p></div></section>`;
 }
-function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function renderAll(){
-  renderSources();renderArticles();renderMagazine();renderReader();
-  $("#source-stat").textContent=`${state.sources.length} SOURCES`;
-}
-document.querySelectorAll(".nav-btn").forEach(b=>b.addEventListener("click",()=>show(b.dataset.screen)));
-document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
-$("#add-source").addEventListener("click",()=>{
-  const name=prompt("Nombre del medio o fuente:");
-  if(!name?.trim())return;
-  const cat=prompt("Categoría (Gaming / Technology / Culture / World):","Technology")||"Technology";
-  state.sources.push({name:name.trim(),cat:cat.trim()});
+function renderAll(){renderSources();renderArticles();renderMagazine();renderReader();updateDashboard()}
+async function load(){
+ try{
+  const res=await fetch("data/articles.json?ts="+Date.now());
+  if(!res.ok)throw Error("No data");
+  const data=await res.json();
+  state.articles=data.articles||[];state.selected=data.selected||state.articles.filter(a=>a.selected);
+  state.clusters=data.clusters||[];
+  const names=[...new Set(state.articles.map(a=>a.source))];
+  state.sources=names.map(name=>{const a=state.articles.find(x=>x.source===name);return{name,category:a?.category||"Other"}});
   renderAll();
-});
-$("#generate").addEventListener("click",()=>{renderMagazine();show("magazine")});
-$("#back-to-articles").addEventListener("click",()=>show("articles"));
-$("#open-reader").addEventListener("click",()=>{state.readerPage=0;renderReader();show("reader")});
-$("#close-reader").addEventListener("click",()=>show("magazine"));
-$("#prev-page").addEventListener("click",()=>{state.readerPage=(state.readerPage+3)%4;renderReader()});
-$("#next-page").addEventListener("click",()=>{state.readerPage=(state.readerPage+1)%4;renderReader()});
-document.addEventListener("keydown",e=>{
-  if(!$("#reader").classList.contains("active"))return;
-  if(e.key==="ArrowLeft")$("#prev-page").click();
-  if(e.key==="ArrowRight")$("#next-page").click();
-});
-const d=new Date();
-$("#today").textContent=d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();
-$("#issue-date").textContent=d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();
-renderAll();
-// V0.2 REAL FEED LOADER
-async function loadRealFeeds(){
-  try{
-    const res=await fetch("data/articles.json?ts="+Date.now());
-    if(!res.ok) throw new Error("Feed data unavailable");
-    const payload=await res.json();
-    const real=(payload.articles||[]).slice(0,80);
-    if(!real.length) return;
-    state.articles=real.map((a,i)=>[
-      a.title,a.source,(a.category||"OTHER").toUpperCase(),
-      Math.max(60,100-Math.min(i,40)),i<8
-    ]);
-    renderAll();
-    const sourceNames=[...new Set(real.map(a=>a.source))];
-    state.sources=sourceNames.map(name=>{
-      const first=real.find(a=>a.source===name);
-      return {name,cat:first?.category||"Other"};
-    });
-    renderAll();
-  }catch(err){
-    console.warn("WEEKLY feed data not loaded; using demo data.",err);
-  }
+ }catch(e){console.warn("Using empty/demo state.",e);renderAll()}
 }
-loadRealFeeds();
+
+document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+$("#generate").onclick=()=>{renderMagazine();show("magazine")};
+$("#back-to-articles").onclick=()=>show("articles");
+$("#open-reader").onclick=()=>{state.readerPage=0;renderReader();show("reader")};
+$("#close-reader").onclick=()=>show("magazine");
+$("#prev-page").onclick=()=>{state.readerPage=(state.readerPage+3)%4;renderReader()};
+$("#next-page").onclick=()=>{state.readerPage=(state.readerPage+1)%4;renderReader()};
+$("#add-source").onclick=()=>{
+ const name=prompt("Nombre del medio:");
+ if(!name?.trim())return;
+ const url=prompt("URL del RSS/Atom (se añadirá a data/feeds.json en la siguiente edición):");
+ if(!url?.trim())return;
+ state.sources.push({name:name.trim(),category:"Other",url:url.trim()});renderSources();updateDashboard();
+ alert("Fuente añadida a esta sesión. Para hacerla persistente en GitHub, añádela a data/feeds.json.");
+};
+document.addEventListener("keydown",e=>{
+ if(!$("#reader").classList.contains("active"))return;
+ if(e.key==="ArrowLeft")$("#prev-page").click();if(e.key==="ArrowRight")$("#next-page").click();
+});
+const d=new Date();$("#today").textContent=d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();$("#issue-date").textContent=$("#today").textContent;
+load();
