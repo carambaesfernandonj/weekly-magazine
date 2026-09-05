@@ -29,3 +29,46 @@
 .custom-topic-list{width:100%;margin-bottom:7px}
 .custom-chip small{font-size:12px;line-height:1}
 .auto-tag-list{width:100%}
+
+/* V0.8.2 — magazine rhythm / print-inspired treatment */
+.issue-preview{position:relative;overflow:hidden;background:#e8e3d8;color:#17191b;border:1px solid #8b877f;box-shadow:0 22px 55px #0009}
+.issue-preview:before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.018) 0,rgba(0,0,0,.018) 1px,transparent 1px,transparent 4px);mix-blend-mode:multiply}
+.issue-top{position:relative;display:grid;grid-template-columns:auto 1fr auto;align-items:end;gap:16px;padding:14px 18px;border-bottom:2px solid #17191b;font:900 8px/1 Arial;letter-spacing:.12em}
+.issue-logo{font-size:25px;letter-spacing:-.08em}.issue-label{justify-self:center;font-size:7px;color:#66635d}
+.magazine-cover-grid{position:relative;padding:18px;gap:18px;background:#e8e3d8}
+.cover-grid>div:first-child{position:relative}
+.cover-grid .eyebrow{font-size:8px;color:#4f4d48;letter-spacing:.18em;margin-bottom:9px}
+.cover-title{font-size:clamp(42px,6vw,82px);line-height:.82;letter-spacing:-.075em;max-width:8ch;margin:0 0 15px}
+.cover-dek{font-size:12px;line-height:1.4;max-width:46ch;color:#4d4a45}
+.cover-image{height:360px;position:relative;background:#99948a;overflow:hidden;margin-top:16px}
+.cover-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.38),transparent 45%)}
+.cover-image span{z-index:2}
+#cover-stories{padding-top:28px}
+.mini-link{color:#1b1d1f;border-bottom:1px solid #aaa59c;padding:14px 28px 14px 0}
+.mini-link:hover{background:#dcd7cd}
+.mini-link b{color:#5d5b56}.mini-link small{color:#17191b}
+.cover-meta{margin:0 18px;padding:11px 0;border-top:2px solid #17191b;color:#45423e}
+.cover-caption{display:flex;justify-content:space-between;gap:10px;margin-top:6px;padding:8px 2px;font:900 7px Arial;letter-spacing:.14em;color:#747068}
+.reader-top{position:relative;display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center}
+.reader-mode{font:900 8px Arial;letter-spacing:.12em;color:var(--acid);border:1px solid var(--acid);padding:5px 7px}
+.spread{position:relative;overflow:hidden;box-shadow:0 20px 50px #000b}
+.spread:after{content:"";position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(0,0,0,.16);pointer-events:none}
+.page{overflow:hidden}
+.page:before{content:"WEEKLY / 036";position:absolute;top:11px;right:18px;font:900 7px Arial;letter-spacing:.13em;color:#77736c;z-index:5}
+.cover-page:before,.feature-dark:before{color:#777}
+.story-running{display:flex;justify-content:space-between;gap:12px;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid #aaa59c;font:900 7px Arial;letter-spacing:.12em;color:#66625c}
+.layout-feature .story-running{margin:12px 18px 0}
+.layout-feature .reader-story-image{height:300px}
+.editorial-page{padding-top:38px}
+.editorial-page .story-head{border-top:3px solid #222;padding-top:9px}
+.editorial-page h3{font-size:18px;letter-spacing:-.025em}
+.editorial-page .source-link{margin-top:auto}
+.news-page{padding-top:38px}
+.news-page .reader-story-image{height:245px}
+.image-page{padding-top:38px}
+.shorts-page{padding-top:38px}
+.shorts-page .reader-story-image{height:260px}
+.feature-number{font-size:78px;letter-spacing:-.08em}
+.tag-row span{background:rgba(0,0,0,.025)}
+.reader-nav{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}
+@media(max-width:720px){.issue-top{grid-template-columns:auto auto}.issue-label{display:none}.cover-title{font-size:48px}.cover-image{height:230px}.reader-top{grid-template-columns:auto 1fr auto}.reader-mode{display:none}.spread:after{display:none}.page:before{right:12px}.story-running{font-size:6px}.cover-caption{font-size:6px}}

@@ -19,7 +19,7 @@
         <button class="nav-btn" data-screen="magazine">04 · Magazine</button>
         <button class="nav-btn" data-screen="archive">05 · Archive</button>
       </nav>
-      <div class="side-info"><strong>V0.8.1</strong><br>Personal Edition<br><span id="connection-status">CONNECTING…</span></div>
+      <div class="side-info"><strong>V0.8.2</strong><br>Personal Edition<br><span id="connection-status">CONNECTING…</span></div>
     </aside>
 
     <main class="main">
@@ -68,10 +68,10 @@
 
       <section class="screen" id="magazine">
         <div class="issue-preview">
-          <div class="issue-top"><div class="issue-logo">WEEKLY</div><div>ISSUE <span id="issue-number">036</span> · <span id="issue-date"></span></div></div>
-          <div class="cover-grid">
+          <div class="issue-top"><div class="issue-logo">WEEKLY</div><div class="issue-label">PERSONAL EDITION</div><div>ISSUE <span id="issue-number">036</span> · <span id="issue-date"></span></div></div>
+          <div class="cover-grid magazine-cover-grid">
             <div>
-              <div class="eyebrow">THE WEEKLY BRIEFING</div>
+              <div class="eyebrow">THE WEEKLY BRIEFING · YOUR TOPICS</div>
               <h1 class="cover-title" id="mag-cover-title">THE NEWS DESERVES A BETTER INTERFACE.</h1>
               <p class="cover-dek" id="cover-dek">24 stories seleccionadas · 18 fuentes · una edición construida automáticamente.</p>
               <div class="cover-image"><span>MAIN FEATURE</span></div>
@@ -80,7 +80,7 @@
           </div>
           <div class="cover-meta"><span id="cover-tags">TAG MIX · RANDOMIZED</span><span id="cover-count">0 STORIES</span></div>
         </div>
-        <div class="actions center">
+        <div class="cover-caption"><span>EDITED FROM YOUR SOURCES</span><span>NO AI REQUIRED</span></div><div class="actions center">
           <button id="back-to-articles">← EDIT SELECTION</button>
           <button class="primary" id="open-reader">OPEN FULL MAGAZINE →</button>
         </div>
@@ -90,7 +90,7 @@
         <div class="reader-shell">
           <div class="reader-top">
             <button id="close-reader">← BACK</button>
-            <strong>WEEKLY #036 · EDITORIAL EDITION</strong>
+            <strong>WEEKLY #036 · EDITORIAL EDITION</strong><span class="reader-mode">RSS EDITOR</span>
             <span id="reader-page">01 / 26</span>
           </div>
           <div class="spread" id="spread"></div>
