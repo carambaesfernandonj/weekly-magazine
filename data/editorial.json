@@ -2,19 +2,19 @@
   "cover_story": 0,
   "selected_ids": [
     0,
-    1,
     2,
-    4,
-    6,
+    3,
+    5,
     7,
-    9,
+    8,
     10,
     11,
-    16,
+    12,
     17,
     18,
     19,
-    21,
+    20,
+    22,
     66,
     71
   ],
@@ -39,7 +39,7 @@
       }
     },
     {
-      "article_id": 1,
+      "article_id": 2,
       "headline": "The Best Deals Today: Nintendo Switch 2 Consoles, Granblue Fantasy: Relink, Fire Emblem: Fortune's Weave, and More",
       "dek": "Historia publicada por la fuente original.",
       "summary": "Consulta la fuente original para leer la historia completa.",
@@ -62,7 +62,7 @@
       }
     },
     {
-      "article_id": 2,
+      "article_id": 3,
       "headline": "Tesla’s Cybercab has been deployed, and it’s already under investigation",
       "dek": "The US government is investigating whether the Cybercab meets vehicle safety standards.",
       "summary": "The US government is investigating whether the Cybercab meets vehicle safety standards.",
@@ -78,7 +78,7 @@
       }
     },
     {
-      "article_id": 4,
+      "article_id": 5,
       "headline": "4 Best Alexa Speakers I’ve Tested (2026)",
       "dek": "I’ve rounded up the best smart speakers that let you talk to Alexa, from the popular Echo Dot to the newest Echo Studio.",
       "summary": "I’ve rounded up the best smart speakers that let you talk to Alexa, from the popular Echo Dot to the newest Echo Studio.",
@@ -101,7 +101,7 @@
       }
     },
     {
-      "article_id": 6,
+      "article_id": 7,
       "headline": "There May Not Be an iPhone 18 This Year",
       "dek": "Apple is expected to announce several products at its September event next week—including a folding phone—but the iPhone 18 might not be among them. It would be a first for the company.",
       "summary": "Apple is expected to announce several products at its September event next week—including a folding phone—but the iPhone 18 might not be among them. It would be a first for the company.",
@@ -124,7 +124,7 @@
       }
     },
     {
-      "article_id": 7,
+      "article_id": 8,
       "headline": "OpenAI Agents Hacked Another Website",
       "dek": "Plus: Tens of millions of US and Canadian drivers’ licenses go up for sale on the dark web, the US military finally tries to tackle the risk online ad data poses to troops, and more.",
       "summary": "Plus: Tens of millions of US and Canadian drivers’ licenses go up for sale on the dark web, the US military finally tries to tackle the risk online ad data poses to troops, and more.",
@@ -147,7 +147,7 @@
       }
     },
     {
-      "article_id": 9,
+      "article_id": 10,
       "headline": "Tomb Raider: Legacy of Atlantis Could Be Great, But There's Some Things We Can't Ignore...",
       "dek": "Tomb Raider: Legacy of Atlantis shows massive potential, but controversial changes like skill trees and modern hand-holding threaten to frustrate fans. And some of that food looks very suspicious.",
       "summary": "Tomb Raider: Legacy of Atlantis shows massive potential, but controversial changes like skill trees and modern hand-holding threaten to frustrate fans. And some of that food looks very suspicious.",
@@ -166,7 +166,7 @@
       }
     },
     {
-      "article_id": 10,
+      "article_id": 11,
       "headline": "Scientists Put Caterpillars in an Ultraquiet Chamber to Learn How They Hear Without Ears",
       "dek": "The research could do more than help unlock the mystery of caterpillar hearing. It could also help make microphones better.",
       "summary": "The research could do more than help unlock the mystery of caterpillar hearing. It could also help make microphones better.",
@@ -189,7 +189,7 @@
       }
     },
     {
-      "article_id": 11,
+      "article_id": 12,
       "headline": "The Watch World Went Crazy This Week. Here Are the 10 You Need to See",
       "dek": "The main action took place at Geneva Watch Days, but others dialed in remotely to make sure it wasn't just a Swiss party.",
       "summary": "The main action took place at Geneva Watch Days, but others dialed in remotely to make sure it wasn't just a Swiss party.",
@@ -212,7 +212,7 @@
       }
     },
     {
-      "article_id": 16,
+      "article_id": 17,
       "headline": "14 Predictions for the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
       "dek": "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
       "summary": "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
@@ -235,7 +235,7 @@
       }
     },
     {
-      "article_id": 17,
+      "article_id": 18,
       "headline": "'No One Puts Double Fine Out of Business Except for Me' — Tim Schafer Explains How He Kept Double Fine Afloat After Leaving Xbox",
       "dek": "Tim Schafer, game designer and founder of Psychonauts developer Double Fine, gave a strong response after Xbox divested the studio as part of its massive restructuring efforts this summer.",
       "summary": "Tim Schafer, game designer and founder of Psychonauts developer Double Fine, gave a strong response after Xbox divested the studio as part of its massive restructuring efforts this summer.",
@@ -254,7 +254,7 @@
       }
     },
     {
-      "article_id": 18,
+      "article_id": 19,
       "headline": "gamescom Apologizes for Its Initial Response to Thefts, Promises Improved Security Measures",
       "dek": "gamescom has provided a second response regarding the theft of developers’ equipment during its event, offering an apology for its initial reaction to the ordeal.",
       "summary": "gamescom has provided a second response regarding the theft of developers’ equipment during its event, offering an apology for its initial reaction to the ordeal.",
@@ -273,7 +273,7 @@
       }
     },
     {
-      "article_id": 19,
+      "article_id": 20,
       "headline": "Halloween: The Game Review So Far",
       "dek": "So far this asymmetrical horror game is more trick than treat.",
       "summary": "So far this asymmetrical horror game is more trick than treat.",
@@ -294,7 +294,7 @@
       }
     },
     {
-      "article_id": 21,
+      "article_id": 22,
       "headline": "Fury of Dracula (5th Edition) Board Game Review",
       "dek": "Historia publicada por la fuente original.",
       "summary": "Consulta la fuente original para leer la historia completa.",
@@ -366,26 +366,26 @@
       "name": "WEEKLY PICKS",
       "ids": [
         0,
-        1,
         2,
-        4,
-        6,
+        3,
+        5,
         7,
-        9,
+        8,
         10,
         11,
-        16,
+        12,
         17,
         18,
         19,
-        21,
+        20,
+        22,
         66,
         71
       ]
     }
   ],
   "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
-  "generatedAt": "2026-09-05T20:42:08.413119+00:00",
+  "generatedAt": "2026-09-05T21:04:22.970771+00:00",
   "model": "zero-cost",
   "status": "rss",
   "editorial_profile": {
