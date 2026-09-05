@@ -1,4 +1,4 @@
-// WEEKLY V0.7 — Supabase configuration
+// WEEKLY V0.5 — Supabase configuration
 // Copy this file as config.js and paste your project's values.
 // The publishable/anon key is safe to expose in a browser when RLS is configured correctly.
 // NEVER put a Supabase secret/service_role key here.
