@@ -1,24 +1,16 @@
 # WEEKLY V0.7 — Zero-Cost Editorial
 
-WEEKLY is a personal weekly magazine generated from RSS/Atom feeds.
+Personal RSS/Atom magazine reader. V0.7 does not require OpenAI credits.
 
-## What's new in V0.7
-- No OpenAI call is required to build the weekly issue.
-- RSS/Atom metadata remains the source of truth.
-- The fetcher enriches up to 24 selected articles by visiting their original pages and extracting:
-  - Open Graph / Twitter main image when available
-  - H1 headings
-  - H2 headings
-- The magazine uses original titles, descriptions, images and headings instead of AI-written summaries.
-- The editorial JSON status is `rss` / `zero-cost`.
-- Supabase source management remains unchanged.
+## This Week
+Instead of manually selecting individual stories, choose editorial tags. WEEKLY builds a candidate pool from matching stories and randomly selects up to 24 with category diversity. Use SHUFFLE to regenerate the selection.
 
-## Optional AI later
-The architecture keeps the editorial layer separate. A future version can re-enable AI behind an explicit flag (`ENABLE_AI=true`) without making the magazine depend on it.
+Tags are generated from feed category plus article title/description and the extractor's keyword taxonomy. The article list is now a preview of the pool, not a manual checklist.
 
-## Install
-Replace the project files in your GitHub repo with this version. **Keep your existing `config.js`**; it is intentionally not included in the ZIP.
+## Setup
+1. Keep your existing `config.js` with the Supabase publishable key.
+2. Run GitHub Actions → **Build WEEKLY issue**.
+3. Open the site and go to **This Week**.
+4. Pick tags, shuffle if desired, then generate the magazine.
 
-Then run GitHub Actions → **Build WEEKLY issue** → **Run workflow**.
-
-Check `data/articles.json` for `headings` and `image`, and `data/editorial.json` for `"status": "rss"`.
+The pipeline remains RSS/Atom → dedupe → scoring → tag enrichment → bounded page enrichment (image/H1/H2) → magazine. No AI call is made.

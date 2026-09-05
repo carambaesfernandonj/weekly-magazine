@@ -128,6 +128,35 @@ def enrich_article(a):
         a.setdefault("headings",{"h1":[],"h2":[]}); a["enrichError"]=str(e)[:180]
     return a
 
+TAG_RULES={
+    "GAMING":[r"\bgame(?:s)?\b",r"gaming",r"nintendo",r"zelda",r"xbox",r"playstation",r"tomb raider",r"psychonauts",r"double fine",r"gamescom",r"dracula",r"halloween"],
+    "NINTENDO":[r"nintendo",r"zelda",r"switch"],
+    "XBOX":[r"xbox",r"microsoft"],
+    "PLAYSTATION":[r"playstation",r"ps5",r"sony"],
+    "HARDWARE":[r"iphone",r"ipad",r"mac",r"speaker",r"console",r"device",r"hardware",r"microphone",r"phone",r"watch"],
+    "APPLE":[r"apple",r"iphone",r"ipad",r"mac"],
+    "AI":[r"\bai\b",r"artificial intelligence",r"openai",r"agent(?:s)?\b",r"machine learning"],
+    "SCIENCE":[r"scientist",r"science",r"research",r"caterpillar",r"microphone",r"study",r"researchers"],
+    "SPACE":[r"space",r"nasa",r"rocket",r"satellite"],
+    "AUTOMOTIVE":[r"tesla",r"cybercab",r"vehicle",r"car(?:s)?\b",r"automotive"],
+    "BUSINESS":[r"business",r"sales",r"sold",r"million",r"deal",r"discount",r"promo",r"coupon"],
+    "DEALS":[r"deal(?:s)?\b",r"discount",r"promo",r"coupon",r"save ",r"off\b"],
+    "HORROR":[r"horror",r"halloween",r"dracula",r"vampire",r"blood",r"terror"],
+    "CULTURE":[r"culture",r"watch world",r"fashion",r"movie",r"film",r"music"],
+    "SECURITY":[r"hack(?:ed|ing)?",r"security",r"dark web",r"data breach",r"military",r"license(?:s)?"],
+    "TECHNOLOGY":[r"technology",r"tech",r"device",r"digital",r"internet",r"online"],
+}
+
+def make_tags(a):
+    hay=" ".join([a.get("title",""),a.get("description","")]).lower()
+    tags=[]
+    cat=(a.get("category") or "Other").upper()
+    if cat not in ("OTHER",""): tags.append(cat)
+    for tag,patterns in TAG_RULES.items():
+        if tag in tags: continue
+        if any(re.search(p,hay,re.I) for p in patterns): tags.append(tag)
+    return tags[:7]
+
 feeds=load_feeds(); articles=[]; errors=[]
 for feed in feeds:
     if not feed.get("enabled",True): continue
@@ -138,7 +167,9 @@ for a in sorted(articles,key=lambda x:x.get("published",""),reverse=True):
     key=a["link"] or a["id"]
     if key not in seen: seen.add(key); unique.append(a)
 unique=unique[:MAX_TOTAL]
-for a in unique: a["editorialScore"]=round(score(a,unique))
+for a in unique:
+    a["tags"]=make_tags(a)
+    a["editorialScore"]=round(score(a,unique))
 clusters=[]; unused=set(range(len(unique)))
 while unused:
     i=unused.pop(); group=[i]; ti=tokens(unique[i]["title"])

@@ -50,8 +50,17 @@
       </section>
 
       <section class="screen" id="articles">
-        <div class="section-head"><h1>THIS WEEK</h1><span id="article-count">0 SELECTED · 126 FOUND</span></div>
-        <p class="lead">Selecciona las historias que quieres que el editor utilice para construir la próxima edición.</p>
+        <div class="section-head"><h1>THIS WEEK</h1><span id="article-count">0 STORIES IN POOL</span></div>
+        <p class="lead">Elige los temas que quieres ver esta semana. WEEKLY seleccionará historias al azar dentro de esos tags y construirá la revista.</p>
+        <div class="tag-panel">
+          <div class="tag-panel-head"><strong>CHOOSE YOUR TAGS</strong><span id="tag-count">0 TAGS</span></div>
+          <div class="tag-cloud" id="tag-cloud"></div>
+          <div class="tag-help">Sin tags = todo el feed. Con tags = solo historias que coincidan con al menos uno.</div>
+        </div>
+        <div class="selection-preview">
+          <div><strong id="pool-stat">0 STORIES IN POOL</strong><small id="pool-note">Selecciona tags para acotar la piscina editorial.</small></div>
+          <button id="reshuffle">↻ SHUFFLE</button>
+        </div>
         <div class="article-list" id="article-list"></div>
         <div class="actions"><button class="primary" id="generate">GENERATE MAGAZINE →</button></div>
       </section>
