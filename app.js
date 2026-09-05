@@ -49,7 +49,7 @@ function isUsableArticle(a){return articleBelongsToActiveSource(a)&&!isCommercia
 function candidatePool(){return state.articles.filter(isUsableArticle).filter(matchesTags)}
 function shuffleArray(arr){const out=[...arr];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
 function chooseRandomStories(pool=candidatePool()){const ranked=shuffleArray(pool.slice()).sort((a,b)=>((b.editorialScore||0)-(a.editorialScore||0))*(Math.random()*.55+.45));const out=[],counts={};for(const a of ranked){const cat=a.category||"Other";if((counts[cat]||0)>=8)continue;out.push(a);counts[cat]=(counts[cat]||0)+1;if(out.length>=24)break}return out}
-function sync(){if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories();state.shuffled=false}if(!state.selected.length)state.selected=state.articles.filter(a=>a.selected).slice(0,24);updateCounts()}
+function sync(){if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories();state.shuffled=false}if(!state.selected.length)state.selected=candidatePool().filter(a=>a.selected).slice(0,24);updateCounts()}
 function saveTopics(){localStorage.setItem("weekly.selectedTags",JSON.stringify([...state.selectedTags]));localStorage.setItem("weekly.customTags",JSON.stringify([...state.customTags]))}
 function rerenderTopicSelection(){state.selected=[];state.shuffled=true;saveTopics();renderTags();renderArticles();renderMagazine()}
 function addCustomTopic(raw){const topic=String(raw||"").trim().replace(/\s+/g," ");if(!topic)return false;const key=topic.toUpperCase();if(state.customTags.has(key)||state.selectedTags.has(key))return false;state.customTags.add(key);rerenderTopicSelection();return true}

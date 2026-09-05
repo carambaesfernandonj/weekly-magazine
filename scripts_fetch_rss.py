@@ -79,15 +79,28 @@ class PageParser(HTMLParser):
         return trimmed
 
 def load_feeds():
+    # Supabase is the source of truth for the sources managed by the app.
+    # feeds.json is only a generated mirror / local fallback.
     if SUPABASE_URL and SUPABASE_SECRET_KEY:
         url=SUPABASE_URL+"/rest/v1/sources?select=id,name,url,category,enabled&enabled=eq.true&order=created_at.asc"
-        req=urllib.request.Request(url,headers={"apikey":SUPABASE_SECRET_KEY,"User-Agent":"WEEKLY/0.8.3"})
-        with urllib.request.urlopen(req,timeout=20) as r: rows=json.loads(r.read().decode("utf-8"))
-        if rows:
-            print(f"Loaded {len(rows)} enabled feeds from Supabase")
-            return rows
-        print("Supabase returned no enabled feeds; falling back to data/feeds.json")
-    with open(FEEDS_FILE,encoding="utf-8") as f: return json.load(f)["feeds"]
+        req=urllib.request.Request(url,headers={
+            "apikey":SUPABASE_SECRET_KEY,
+            "Authorization":"Bearer "+SUPABASE_SECRET_KEY,
+            "User-Agent":"WEEKLY/0.8.4"
+        })
+        with urllib.request.urlopen(req,timeout=20) as r:
+            rows=json.loads(r.read().decode("utf-8"))
+        rows=[r for r in rows if r.get("enabled",True) and r.get("url")]
+        print(f"Loaded {len(rows)} enabled feeds from Supabase")
+        os.makedirs(os.path.dirname(FEEDS_FILE),exist_ok=True)
+        with open(FEEDS_FILE,"w",encoding="utf-8") as f:
+            json.dump({"updatedAt":datetime.now(timezone.utc).isoformat(),"feeds":rows},f,ensure_ascii=False,indent=2)
+        return rows
+    if SUPABASE_URL or SUPABASE_SECRET_KEY:
+        raise RuntimeError("Supabase configuration is incomplete. Set both SUPABASE_URL and SUPABASE_SECRET_KEY.")
+    print("WARNING: Supabase credentials are not configured; using data/feeds.json as local fallback.")
+    with open(FEEDS_FILE,encoding="utf-8") as f:
+        return json.load(f)["feeds"]
 
 def clean(s):
     if not s: return ""

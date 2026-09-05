@@ -27,3 +27,7 @@ This Week now supports persistent custom topics in addition to automatically det
 - Stronger editorial typography, running heads and page metadata.
 - More pronounced magazine/spread visual hierarchy.
 - Keeps V0.8.1 custom topics and zero-cost RSS editorial flow.
+
+
+### Source sync
+Supabase is the source of truth for active feeds. Each GitHub Actions build reads the enabled rows from Supabase, fetches those feeds, and rewrites `data/feeds.json` as a mirror of the source list used by that build. The workflow also accepts `SUPABASE_SECRET_KEY`, `SUPABASE_SECRET`, or `SUPABASE_SERVICE_ROLE_KEY` as the configured GitHub secret name. If Supabase credentials are missing entirely, local execution can still fall back to `data/feeds.json`; a partially configured Supabase setup fails loudly instead of silently using an old feed list.
