@@ -89,14 +89,18 @@ function sectionOpener(a,number){
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
 function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{const model=buildReaderPages();state.readerPage=state.readerView==="spread"?Math.floor((model.articleStarts[i]||0)/2)*2:(model.articleStarts[i]||0);renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
-const PAGE_CHAR_TARGET=900;
+// V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
+// Continuation pages intentionally carry much more text than the old 900-char cap.
+const PAGE_CHAR_TARGET_DESKTOP=2500;
+const PAGE_CHAR_TARGET_TABLET=2100;
+const PAGE_CHAR_TARGET_MOBILE=1500;
 const PAGE_CHAR_TARGET_FIRST={
-  "layout-feature":340,
-  "layout-news":390,
-  "layout-image":320,
-  "layout-quote":300,
-  "layout-short":420,
-  "layout-dark":350
+  "layout-feature":820,
+  "layout-news":900,
+  "layout-image":760,
+  "layout-quote":700,
+  "layout-short":980,
+  "layout-dark":820
 };
 function storyBlocks(a){
   const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
@@ -136,17 +140,25 @@ function firstPageBudget(a){
   const type=layoutFor((a?._storyIndex||0));
   return PAGE_CHAR_TARGET_FIRST[type]||340;
 }
+function pageCharTarget(){
+  const width=window.innerWidth||1200;
+  if(state.readerView==="spread") return width<=720?1300:1600;
+  if(width<=720) return PAGE_CHAR_TARGET_MOBILE;
+  if(width<1050) return PAGE_CHAR_TARGET_TABLET;
+  return PAGE_CHAR_TARGET_DESKTOP;
+}
 function articleTextPages(a){
   const blocks=storyBlocks(a);
-  if(!blocks.length)return paginateBlocks(blocks,PAGE_CHAR_TARGET);
-  const firstBudget=firstPageBudget(a);
+  const target=pageCharTarget();
+  if(!blocks.length)return paginateBlocks(blocks,target);
+  const firstBudget=Math.min(firstPageBudget(a), Math.round(target*.48));
   const first=paginateBlocks(blocks,firstBudget);
   if(first.length>1){
-    const firstText=first[0].map(b=>b.text||"").join(" ");
-    const restBlocks=[...first.slice(1).flat(),...blocks.slice(first.reduce((n,p)=>n+p.length,0))];
-    return [first[0],...paginateBlocks(restBlocks,PAGE_CHAR_TARGET)];
+    const used=first.reduce((n,p)=>n+p.length,0);
+    const restBlocks=[...first.slice(1).flat(),...blocks.slice(used)];
+    return [first[0],...paginateBlocks(restBlocks,target)];
   }
-  return paginateBlocks(blocks,PAGE_CHAR_TARGET);
+  return paginateBlocks(blocks,target);
 }
 function headlineClassFor(title){
   const n=(title||"").length;
@@ -156,18 +168,39 @@ function headlineClassFor(title){
   return "";
 }
 function blockHtml(b){if(b.type==="h1"||b.type==="h2"||b.type==="h3"||b.type==="h4")return `<h3 class="source-body-heading">${esc(b.text)}</h3>`;if(b.type==="blockquote")return `<blockquote class="source-quote">${esc(b.text)}</blockquote>`;return `<p>${esc(b.text)}</p>`}
+function articleImages(a){
+  const raw=Array.isArray(a?.images)?a.images:[];
+  const out=[]; const seen=new Set();
+  for(const item of raw){
+    const url=typeof item==="string"?item:item?.url;
+    if(!url)continue;
+    const key=String(url).trim();
+    if(!key||seen.has(key))continue;
+    seen.add(key); out.push(typeof item==="string"?{url:key,caption:""}:{url:key,caption:String(item?.caption||"")});
+  }
+  if(!out.length&&a?.image)out.push({url:a.image,caption:""});
+  return out;
+}
+function inlineArticleImage(a,index){
+  const imgs=articleImages(a);
+  if(index<0||index>=imgs.length)return "";
+  const item=imgs[index];
+  return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>ORIGINAL IMAGE</span></figure>`;
+}
 function articlePageHtml(a,pageIndex,totalPages,globalNumber){
-  const pages=articleTextPages(a); const blocks=pages[pageIndex]||[]; const first=pageIndex===0; const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):""; const h=a.headings||{}; const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE"); const date=esc((a.published||"").slice(0,10));
+  const pages=articleTextPages(a); const blocks=pages[pageIndex]||[]; const first=pageIndex===0; const imgs=articleImages(a); const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):""; const h=a.headings||{}; const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE"); const date=esc((a.published||"").slice(0,10));
   const type=layoutFor((a._storyIndex||0)+pageIndex);
   const headlineClass=headlineClassFor(storyTitle(a));
   const quote=esc(pullQuote(a));
   const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
   const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
-  const imageFirst=first?image:"";
+  // Use additional source images on continuation pages, cycling only when the article exposes them.
+  const continuationImage=(!first && imgs.length>pageIndex)?inlineArticleImage(a,pageIndex):"";
   return `<section class="page article-page source-text-page ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
     <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
-    ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${imageFirst}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
+    ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
     ${firstExtras}
+    ${continuationImage}
     <div class="source-body">${blocks.map(blockHtml).join("")}</div>
     ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
     ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}

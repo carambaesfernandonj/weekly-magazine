@@ -41,3 +41,10 @@ Magazine pages use fixed physical geometry. Article body pagination is intention
 - Removed silent headline/dek clipping.
 - Added headline fitting tiers for long titles.
 - Uses conservative per-layout body budgets so article text continues onto additional fixed-size pages instead of being hidden.
+
+
+## V0.9.6 — Smart Page Composer + Multi-Image Articles
+- Single-page reader remains the primary composition target.
+- Continuation pages use larger, viewport-aware text budgets so the page is actually filled.
+- Article pages can show additional images extracted from the original article (up to 6, with conservative UI/noise filtering).
+- No AI credits are required for the compositor or image extraction.

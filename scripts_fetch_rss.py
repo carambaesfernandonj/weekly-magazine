@@ -20,7 +20,7 @@ class PageParser(HTMLParser):
     SIGNALS=("article","post","entry","content","story","body","main")
     def __init__(self):
         super().__init__()
-        self.h1=[]; self.h2=[]; self.og_image=""
+        self.h1=[]; self.h2=[]; self.og_image=""; self.images=[]
         self.blocks=[]; self._stack=[]; self._tag=None; self._buf=[]; self._score=0
     def handle_starttag(self, tag, attrs):
         tag=tag.lower(); a=dict(attrs)
@@ -28,6 +28,15 @@ class PageParser(HTMLParser):
             key=(a.get("property") or a.get("name") or "").lower()
             if key in ("og:image","twitter:image") and a.get("content") and not self.og_image:
                 self.og_image=a["content"]
+        # Capture article-body images as well as the OpenGraph hero image.
+        if tag=="img":
+            src=(a.get("src") or a.get("data-src") or a.get("data-lazy-src") or a.get("data-original") or "").strip()
+            if not src and a.get("srcset"):
+                src=a.get("srcset").split(",")[0].strip().split(" ")[0]
+            if src:
+                alt=(a.get("alt") or a.get("title") or "").strip()
+                self.images.append({"url":src,"caption":alt})
+
         cls=f"{a.get('id','')} {a.get('class','')}".lower()
         signal=any(x in cls for x in self.SIGNALS)
         delta=0
@@ -214,6 +223,20 @@ def enrich_article(a):
         html=raw.decode("utf-8",errors="replace")
         p=PageParser(); p.feed(html)
         if p.og_image: a["image"]=urljoin(final,p.og_image)
+        # Keep a small, useful gallery: hero image first, then unique body images.
+        image_candidates=[]; seen_images=set()
+        if a.get("image"):
+            image_candidates.append({"url":a["image"],"caption":""}); seen_images.add(a["image"])
+        for item in p.images:
+            u=urljoin(final,item.get("url","")).strip()
+            low=u.lower()
+            if not u or u in seen_images: continue
+            # Conservative noise filter for logos, avatars, trackers and UI assets.
+            if any(x in low for x in ("favicon","avatar","gravatar","sprite","tracking","pixel","placeholder","logo-small","social-icon","share-icon")): continue
+            if re.search(r"(?:1x1|spacer|blank)\.(?:gif|png|jpg|jpeg|webp)(?:$|[?#])",low): continue
+            seen_images.add(u); image_candidates.append({"url":u,"caption":item.get("caption","")})
+            if len(image_candidates)>=6: break
+        a["images"]=image_candidates[:6]
         blocks=p.readable_blocks()
         a["headings"]={"h1":p.h1[:2],"h2":p.h2[:4]}
         a["contentBlocks"]=blocks
