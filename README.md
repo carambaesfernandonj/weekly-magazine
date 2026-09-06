@@ -31,3 +31,7 @@ This Week now supports persistent custom topics in addition to automatically det
 
 ### Source sync
 Supabase is the source of truth for active feeds. Each GitHub Actions build reads the enabled rows from Supabase, fetches those feeds, and rewrites `data/feeds.json` as a mirror of the source list used by that build. The workflow also accepts `SUPABASE_SECRET_KEY`, `SUPABASE_SECRET`, or `SUPABASE_SERVICE_ROLE_KEY` as the configured GitHub secret name. If Supabase credentials are missing entirely, local execution can still fall back to `data/feeds.json`; a partially configured Supabase setup fails loudly instead of silently using an old feed list.
+
+
+## V0.9.3 — Fixed pages / no visual clipping
+Magazine pages use fixed physical geometry. Article body pagination is intentionally conservative so title/dek/image/body content is split into additional pages rather than clipped by CSS. Fullscreen retains internal scrolling as a reading aid.

@@ -89,8 +89,8 @@ function sectionOpener(a,number){
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
 function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=i+1;renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
-const PAGE_CHAR_TARGET=1500;
-const PAGE_CHAR_TARGET_FIRST=1150;
+const PAGE_CHAR_TARGET=1050;
+const PAGE_CHAR_TARGET_FIRST=650;
 function storyBlocks(a){
   const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
   if(blocks.length)return blocks.filter(b=>b&&b.text).map(b=>({type:b.type||"p",text:String(b.text).trim()}));
@@ -133,11 +133,12 @@ function blockHtml(b){if(b.type==="h1"||b.type==="h2"||b.type==="h3"||b.type==="
 function articlePageHtml(a,pageIndex,totalPages,globalNumber){
   const pages=articleTextPages(a); const blocks=pages[pageIndex]||[]; const first=pageIndex===0; const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):""; const h=a.headings||{}; const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE"); const date=esc((a.published||"").slice(0,10));
   const type=layoutFor((a._storyIndex||0)+pageIndex);
+  const headlineClass=(storyTitle(a)||"").length>72?" headline-long":"";
   const quote=esc(pullQuote(a));
   const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
   const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
   const imageFirst=first?image:"";
-  return `<section class="page article-page source-text-page ${first?"source-first":"source-continuation"} ${type}">
+  return `<section class="page article-page source-text-page ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
     <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
     ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${imageFirst}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
     ${firstExtras}

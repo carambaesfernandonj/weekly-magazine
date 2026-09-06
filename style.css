@@ -80,8 +80,8 @@
 .source-text-page .dek{max-width:58ch;margin:0 0 13px;color:#4d4a45;font-size:11px;line-height:1.35}
 .source-text-page .reader-story-image{height:185px;flex:0 0 185px;margin:0 0 14px}
 .source-body{font-family:Georgia,'Times New Roman',serif;font-size:12px;line-height:1.52;columns:1;column-gap:28px;overflow:hidden;flex:1}
-.source-first .source-body{max-height:300px}
-.source-continuation .source-body{max-height:560px}
+.source-first .source-body{max-height:none;overflow:visible}
+.source-continuation .source-body{max-height:none;overflow:visible}
 .source-body p{margin:0 0 9px;break-inside:avoid}
 .source-body-heading{font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.05;text-transform:none;letter-spacing:-.02em;margin:13px 0 6px;break-after:avoid}
 .source-quote{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:15px;line-height:1.15;border-left:4px solid #17191b;padding:2px 0 2px 12px;margin:13px 0;break-inside:avoid}
@@ -96,7 +96,7 @@
 .article-page.source-text-page.feature-dark .continued-kicker,.article-page.source-text-page.feature-dark .source-end{border-color:#eeeae1}
 .article-page.source-text-page.feature-dark .source-body-heading{color:#fff}
 .article-page.source-text-page.feature-dark .source-quote{border-color:#c8ff31}
-@media(min-width:1050px){.source-first .source-body{columns:2;max-height:280px}.source-continuation .source-body{columns:2;max-height:560px}}
+@media(min-width:1050px){.source-first .source-body{columns:2;max-height:none;overflow:visible}.source-continuation .source-body{columns:2;max-height:none;overflow:visible}}
 @media(max-width:720px){.source-text-page{padding:34px 20px 24px}.source-text-page .reader-story-image{height:145px;flex-basis:145px}.source-body{font-size:11px}.source-first .source-body,.source-continuation .source-body{columns:1;max-height:none}.source-text-page{overflow-y:auto;overflow-x:hidden}.source-text-page .source-body{overflow:visible;flex:none}.page-number{bottom:8px}}
 
 /* V0.8.4 — editorial layouts / print rhythm */
@@ -114,25 +114,25 @@
 .source-text-page .source-body{max-width:none}
 .layout-feature .reader-story-image{height:185px;flex-basis:185px;margin-bottom:12px}
 .layout-feature h2{font-size:clamp(30px,3.3vw,50px);max-width:15ch;overflow-wrap:anywhere;text-wrap:balance}
-.layout-feature .source-body{columns:2;column-gap:26px;max-height:185px;overflow:hidden}
-.layout-news .source-body{columns:2;column-gap:24px;max-height:245px;overflow:hidden}
+.layout-feature .source-body{columns:2;column-gap:26px;max-height:none;overflow:visible}
+.layout-news .source-body{columns:2;column-gap:24px;max-height:none;overflow:visible}
 .layout-news h2{font-size:clamp(27px,2.8vw,42px);max-width:18ch;overflow-wrap:anywhere;text-wrap:balance}
 .layout-image{padding:24px 24px 28px}
 .layout-image .reader-story-image{height:205px;flex-basis:205px;margin-bottom:12px}
 .layout-image h2{font-size:clamp(28px,3vw,46px);max-width:16ch;overflow-wrap:anywhere;text-wrap:balance}
-.layout-image .source-body{columns:2;column-gap:24px;max-height:190px;overflow:hidden}
+.layout-image .source-body{columns:2;column-gap:24px;max-height:none;overflow:visible}
 .layout-quote{padding:32px 32px 28px}
 .layout-quote .reader-story-image{height:140px;flex-basis:140px}
 .layout-quote h2{max-width:18ch;font-size:clamp(27px,2.9vw,44px);overflow-wrap:anywhere;text-wrap:balance}
-.layout-quote .source-body{columns:2;column-gap:24px;max-height:200px;overflow:hidden}
+.layout-quote .source-body{columns:2;column-gap:24px;max-height:none;overflow:visible}
 .pull-quote{font:900 clamp(20px,2.4vw,34px)/1.02 Arial,sans-serif;letter-spacing:-.035em;border-top:3px solid #17191b;border-bottom:1px solid #8e8980;padding:12px 0 14px;margin:4px 0 14px;max-width:90%}
 .layout-short{padding:28px 30px 28px}
 .layout-short .reader-story-image{height:150px;flex-basis:150px;width:62%;margin-bottom:12px}
 .layout-short h2{font-size:clamp(27px,2.8vw,42px);max-width:18ch;overflow-wrap:anywhere;text-wrap:balance}
-.layout-short .source-body{columns:2;column-gap:24px;max-height:215px;overflow:hidden}
+.layout-short .source-body{columns:2;column-gap:24px;max-height:none;overflow:visible}
 .layout-dark{background:#17191b;color:#eeeae1}
 .layout-dark .reader-story-image{height:195px;flex-basis:195px;filter:grayscale(.35) contrast(1.08)}
-.layout-dark .source-body{columns:2;column-gap:24px;max-height:205px;overflow:hidden;color:#d4d0c8}
+.layout-dark .source-body{columns:2;column-gap:24px;max-height:none;overflow:visible;color:#d4d0c8}
 .layout-dark .dek{color:#b8b4ac}
 .layout-dark .source-body-heading{color:#fff}
 .layout-dark .story-running{color:#aaa69e;border-color:#555}
@@ -179,3 +179,7 @@
  .reader-fullscreen .page{height:100%;overflow-y:auto}
  .reader-fullscreen .source-text-page .source-body{columns:1!important}
 }
+
+/* V0.9.3 — fixed page geometry + safe headline fitting */
+.article-page.headline-long h2{font-size:clamp(27px,2.65vw,40px);max-width:19ch;line-height:.91}
+@media(max-width:720px){.spread{height:auto;min-height:0}.page{height:620px;min-height:620px;max-height:620px}.article-page.headline-long h2{font-size:32px;max-width:17ch}}
