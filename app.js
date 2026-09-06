@@ -1,4 +1,4 @@
-const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,readerPage:0,shuffled:false};
+const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,readerPage:0,readerView:"single",shuffled:false};
 const titles={dashboard:"Dashboard",sources:"My Sources",articles:"This Week",magazine:"Magazine",reader:"Reader",archive:"Archive"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -88,7 +88,7 @@ function sectionOpener(a,number){
   const lead=storyTitle(a);
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=i+1;renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
+function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{const model=buildReaderPages();state.readerPage=state.readerView==="spread"?Math.floor((model.articleStarts[i]||0)/2)*2:(model.articleStarts[i]||0);renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
 const PAGE_CHAR_TARGET=900;
 const PAGE_CHAR_TARGET_FIRST={
   "layout-feature":340,
@@ -198,16 +198,38 @@ function buildReaderPages(){
   pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ISSUE 036</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
 }
-function totalSpreads(){const {pages}=buildReaderPages();return Math.max(1,Math.ceil(pages.length/2))}
+function totalReaderPages(){const {pages}=buildReaderPages();return Math.max(1,pages.length)}
+function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
 function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">READ ORIGINAL ↗</a>`:""}
 function renderReader(){
   sync(); const model=buildReaderPages(); const pages=model.pages; if(!pages.length)return;
-  const total=Math.ceil(pages.length/2); state.readerPage=Math.max(0,Math.min(state.readerPage,total-1)); const spreadStart=state.readerPage*2;
-  $("#reader-page").textContent=`${String(spreadStart+1).padStart(2,"0")}–${String(Math.min(spreadStart+2,pages.length)).padStart(2,"0")} / ${String(pages.length).padStart(2,"0")}`;
-  $("#reader-status").textContent=`SPREAD ${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-  const right=pages[spreadStart+1]||`<section class="page blank-page"><span>WEEKLY</span></section>`;
-  $("#spread").innerHTML=`${pages[spreadStart]}${right}`;
-  $("#spread").querySelectorAll("[data-reader-target]").forEach(b=>b.onclick=()=>{const idx=Number(b.dataset.readerTarget);state.readerPage=Math.floor(model.articleStarts[idx]/2);renderReader()});
+  const total=pages.length;
+  state.readerPage=Math.max(0,Math.min(state.readerPage,total-1));
+  const spread=document.querySelector("#spread");
+  if(state.readerView==="spread") {
+    const spreadStart=Math.floor(state.readerPage/2)*2;
+    state.readerPage=spreadStart;
+    $("#reader-page").textContent=`${String(spreadStart+1).padStart(2,"0")}–${String(Math.min(spreadStart+2,total)).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
+    $("#reader-status").textContent=`SPREAD ${String(Math.floor(spreadStart/2)+1).padStart(2,"0")} / ${String(Math.ceil(total/2)).padStart(2,"0")}`;
+    const right=pages[spreadStart+1]||`<section class="page blank-page"><span>WEEKLY</span></section>`;
+    spread.classList.remove("single-view"); spread.classList.add("spread-view");
+    spread.innerHTML=`${pages[spreadStart]}${right}`;
+  } else {
+    $("#reader-page").textContent=`${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
+    $("#reader-status").textContent=`PAGE ${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
+    spread.classList.remove("spread-view"); spread.classList.add("single-view");
+    spread.innerHTML=pages[state.readerPage];
+  }
+  $("#spread").querySelectorAll("[data-reader-target]").forEach(b=>b.onclick=()=>{const idx=Number(b.dataset.readerTarget);const target=model.articleStarts[idx]??0;state.readerPage=state.readerView==="spread"?Math.floor(target/2)*2:target;renderReader()});
+  updateReaderViewButtons();
+}
+function updateReaderViewButtons(){
+  document.querySelectorAll("[data-reader-view]").forEach(b=>b.classList.toggle("active",b.dataset.readerView===state.readerView));
+}
+function setReaderView(view){
+  state.readerView=view==="spread"?"spread":"single";
+  if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;
+  renderReader();
 }
 
 async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
@@ -215,7 +237,7 @@ try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]"
 function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} SOURCES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
 async function load(){await Promise.all([loadArticles(),refreshSources()]);renderAll()}
 function renderAll(){renderSources();renderTags();renderArticles();renderMagazine();renderReader();updateDash()}
-document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;renderArticles();renderMagazine();show("magazine")};$("#reshuffle").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;renderArticles();renderMagazine()};$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;renderReader();show("reader")};$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{state.readerPage=(state.readerPage-1+totalSpreads())%totalSpreads();renderReader()};$("#next-page").onclick=()=>{state.readerPage=(state.readerPage+1)%totalSpreads();renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
+document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;renderArticles();renderMagazine();show("magazine")};$("#reshuffle").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;renderArticles();renderMagazine()};$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;renderReader();show("reader")};$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
 const fullscreenBtn=$("#fullscreen-reader");
 async function enterReaderFullscreen(){
   readerEl.classList.add("reader-fullscreen");
