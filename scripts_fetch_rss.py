@@ -1,5 +1,5 @@
 import json, os, re, urllib.request, urllib.parse, xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 from html import unescape
 from urllib.parse import urljoin
@@ -119,6 +119,43 @@ def date_iso(v):
     try: return parsedate_to_datetime(v).astimezone(timezone.utc).isoformat()
     except Exception: return v
 
+def parse_published_datetime(value):
+    """Return a timezone-aware UTC datetime when an article date is usable."""
+    if not value: return None
+    try:
+        dt=datetime.fromisoformat(value.replace("Z","+00:00"))
+        if dt.tzinfo is None: dt=dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(timezone.utc)
+    except Exception:
+        try:
+            dt=parsedate_to_datetime(value)
+            if dt.tzinfo is None: dt=dt.replace(tzinfo=timezone.utc)
+            return dt.astimezone(timezone.utc)
+        except Exception:
+            return None
+
+def current_editorial_window(now=None):
+    """Return the most recently completed Sunday→Saturday editorial week.
+
+    WEEKLY is generated on Sunday (or later) and the new issue covers the
+    previous Sunday at 00:00 through the following Sunday at 00:00.
+    """
+    now=now or datetime.now(timezone.utc)
+    today=now.date()
+    # Python weekday(): Monday=0 ... Sunday=6.
+    days_since_sunday=(today.weekday()+1) % 7
+    week_end=datetime.combine(today, datetime.min.time(), tzinfo=timezone.utc)
+    if days_since_sunday:
+        week_end -= timedelta(days=days_since_sunday)
+    week_start=week_end-timedelta(days=7)
+    return week_start, week_end
+
+def is_in_editorial_window(article, start, end):
+    published=parse_published_datetime(article.get("published",""))
+    if published is None:
+        return False
+    return start <= published < end
+
 def image_from_item(el,base=""):
     for x in el.findall(".//*"):
         tag=x.tag.split("}")[-1].lower()
@@ -219,8 +256,16 @@ for feed in feeds:
     if not feed.get("enabled",True): continue
     try: articles.extend(parse(feed))
     except Exception as e: errors.append({"source":feed["name"],"error":str(e)})
+# Only the most recently completed Sunday→Saturday editorial week is eligible
+# for the magazine. Running the workflow on Sunday therefore closes the
+# previous week and prevents older RSS entries from leaking into the issue.
+issue_start, issue_end=current_editorial_window()
+window_articles=[a for a in articles if is_in_editorial_window(a,issue_start,issue_end)]
+excluded_old=len(articles)-len(window_articles)
+print(f"Editorial window: {issue_start.date()} → {issue_end.date()} (end exclusive); eligible={len(window_articles)}; excluded_outside_window={excluded_old}")
+
 seen=set(); unique=[]
-for a in sorted(articles,key=lambda x:x.get("published",""),reverse=True):
+for a in sorted(window_articles,key=lambda x:x.get("published",""),reverse=True):
     key=a["link"] or a["id"]
     if key not in seen: seen.add(key); unique.append(a)
 unique=unique[:MAX_TOTAL]
@@ -293,8 +338,10 @@ for n,a in enumerate(selected[:ENRICH_LIMIT],1):
     print(f"Enriching article page {n}/{min(ENRICH_LIMIT,len(selected))}: {a['title'][:70]}")
     enrich_article(a)
 
-payload={"updatedAt":datetime.now(timezone.utc).isoformat(),"articles":unique,"selected":selected,"clusters":clusters,"errors":errors,
-         "editor":{"version":"0.8.3-source-text","note":"WEEKLY uses RSS metadata, source images, headings and readable source text. Magazine pages target about 1800 characters. No AI credits are required."}}
+payload={"updatedAt":datetime.now(timezone.utc).isoformat(),
+         "issueWindow":{"start":issue_start.date().isoformat(),"end":issue_end.date().isoformat(),"timezone":"UTC","endExclusive":True},
+         "articles":unique,"selected":selected,"clusters":clusters,"errors":errors,
+         "editor":{"version":"0.9.1-week-window","note":"WEEKLY uses only articles published in the most recently completed Sunday→Saturday editorial window. No AI credits are required for the feed fetch, filtering or clustering."}}
 with open(OUT_FILE,"w",encoding="utf-8") as f: json.dump(payload,f,ensure_ascii=False,indent=2)
 print(f"Fetched {len(unique)} articles; {len(clusters)} clusters; {len(selected)} selected; sources_in_issue={len(set(a.get('source') for a in selected))}; enriched={min(ENRICH_LIMIT,len(selected))}; errors={len(errors)}")
 
