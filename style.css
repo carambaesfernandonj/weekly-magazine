@@ -183,3 +183,23 @@
 /* V0.9.3 — fixed page geometry + safe headline fitting */
 .article-page.headline-long h2{font-size:clamp(27px,2.65vw,40px);max-width:19ch;line-height:.91}
 @media(max-width:720px){.spread{height:auto;min-height:0}.page{height:620px;min-height:620px;max-height:620px}.article-page.headline-long h2{font-size:32px;max-width:17ch}}
+
+/* V0.9.4 — content-safe fixed pages */
+.source-text-page h2{overflow:visible;max-height:none}
+.source-text-page .dek{max-height:none;overflow:visible}
+.source-text-page .source-body{overflow:hidden;min-height:0}
+.article-page.headline-medium h2{font-size:clamp(27px,2.7vw,40px);line-height:.92;max-width:18ch}
+.article-page.headline-long h2{font-size:clamp(24px,2.35vw,35px);line-height:.93;max-width:19ch}
+.article-page.headline-ultra-long h2{font-size:clamp(21px,2vw,31px);line-height:.94;max-width:20ch}
+.section-lead h2{font-size:clamp(24px,3.1vw,42px);line-height:.92;max-width:17ch;overflow:visible}
+@media(max-width:1050px){
+  .article-page.headline-medium h2{font-size:clamp(25px,3.4vw,36px)}
+  .article-page.headline-long h2{font-size:clamp(23px,3.1vw,33px)}
+  .article-page.headline-ultra-long h2{font-size:clamp(21px,2.8vw,30px)}
+}
+@media(max-width:720px){
+  .article-page.headline-medium h2{font-size:29px;line-height:.93;max-width:17ch}
+  .article-page.headline-long h2{font-size:26px;line-height:.94;max-width:18ch}
+  .article-page.headline-ultra-long h2{font-size:23px;line-height:.95;max-width:19ch}
+  .section-lead h2{font-size:clamp(27px,8vw,38px);max-width:17ch}
+}

@@ -89,8 +89,15 @@ function sectionOpener(a,number){
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
 function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=i+1;renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
-const PAGE_CHAR_TARGET=1050;
-const PAGE_CHAR_TARGET_FIRST=650;
+const PAGE_CHAR_TARGET=900;
+const PAGE_CHAR_TARGET_FIRST={
+  "layout-feature":340,
+  "layout-news":390,
+  "layout-image":320,
+  "layout-quote":300,
+  "layout-short":420,
+  "layout-dark":350
+};
 function storyBlocks(a){
   const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
   if(blocks.length)return blocks.filter(b=>b&&b.text).map(b=>({type:b.type||"p",text:String(b.text).trim()}));
@@ -99,41 +106,60 @@ function storyBlocks(a){
   if(a?.description) fallback.push({type:"p",text:a.description});
   return fallback;
 }
-function paginateBlocks(blocks,target=PAGE_CHAR_TARGET){
+function splitLongBlock(b,target){
+  const out=[]; let rest=String(b.text||"").trim();
+  while(rest.length>target){
+    let cut=rest.lastIndexOf(" ",target);
+    if(cut<Math.floor(target*.55))cut=target;
+    out.push({type:b.type,text:rest.slice(0,cut).trim()});
+    rest=rest.slice(cut).trim();
+  }
+  if(rest)out.push({type:b.type,text:rest});
+  return out;
+}
+function paginateBlocks(blocks,target){
   const pages=[]; let page=[]; let chars=0;
   const pushPage=()=>{if(page.length){pages.push(page);page=[];chars=0}};
-  for(const b of blocks){
-    const text=b.text||""; if(!text)continue;
-    if(text.length<=target-chars || chars===0){
-      if(text.length<=target-chars || chars===0){
-        if(chars===0 && text.length>target){
-          let rest=text; while(rest.length>target){const cut=rest.lastIndexOf(" ",target);const n=cut>500?cut:target;pages.push([{type:b.type,text:rest.slice(0,n).trim()}]);rest=rest.slice(n).trim()} if(rest) {page=[{type:b.type,text:rest}];chars=rest.length;} continue;
-        }
-        page.push(b); chars+=text.length+2; continue;
-      }
+  for(const original of blocks){
+    if(!original?.text)continue;
+    const chunks=original.text.length>target?splitLongBlock(original,target):[original];
+    for(const b of chunks){
+      const cost=b.text.length+2;
+      if(page.length && chars+cost>target)pushPage();
+      page.push(b); chars+=cost;
     }
-    pushPage();
-    if(text.length>target){let rest=text;while(rest.length>target){const cut=rest.lastIndexOf(" ",target);const n=cut>500?cut:target;pages.push([{type:b.type,text:rest.slice(0,n).trim()}]);rest=rest.slice(n).trim()}if(rest){page=[{type:b.type,text:rest}];chars=rest.length}}
-    else {page=[b];chars=text.length+2}
   }
-  pushPage(); return pages.length?pages:[[{type:"p",text:"The source did not expose article text. Read the original article for the complete story."}]];
+  pushPage();
+  return pages.length?pages:[[{type:"p",text:"The source did not expose article text. Read the original article for the complete story."}]];
+}
+function firstPageBudget(a){
+  const type=layoutFor((a?._storyIndex||0));
+  return PAGE_CHAR_TARGET_FIRST[type]||340;
 }
 function articleTextPages(a){
   const blocks=storyBlocks(a);
-  const pages=paginateBlocks(blocks,PAGE_CHAR_TARGET);
-  if(!pages.length)return pages;
-  // First pages have title/dek/image overhead, so keep their body budget smaller.
-  const firstBlocks=pages[0]||[];
-  const firstText=firstBlocks.map(b=>b.text||"").join(" ");
-  if(firstText.length<=PAGE_CHAR_TARGET_FIRST)return pages;
-  const first=paginateBlocks(firstBlocks,PAGE_CHAR_TARGET_FIRST);
-  return first.concat(pages.slice(1));
+  if(!blocks.length)return paginateBlocks(blocks,PAGE_CHAR_TARGET);
+  const firstBudget=firstPageBudget(a);
+  const first=paginateBlocks(blocks,firstBudget);
+  if(first.length>1){
+    const firstText=first[0].map(b=>b.text||"").join(" ");
+    const restBlocks=[...first.slice(1).flat(),...blocks.slice(first.reduce((n,p)=>n+p.length,0))];
+    return [first[0],...paginateBlocks(restBlocks,PAGE_CHAR_TARGET)];
+  }
+  return paginateBlocks(blocks,PAGE_CHAR_TARGET);
+}
+function headlineClassFor(title){
+  const n=(title||"").length;
+  if(n>110)return " headline-ultra-long";
+  if(n>82)return " headline-long";
+  if(n>62)return " headline-medium";
+  return "";
 }
 function blockHtml(b){if(b.type==="h1"||b.type==="h2"||b.type==="h3"||b.type==="h4")return `<h3 class="source-body-heading">${esc(b.text)}</h3>`;if(b.type==="blockquote")return `<blockquote class="source-quote">${esc(b.text)}</blockquote>`;return `<p>${esc(b.text)}</p>`}
 function articlePageHtml(a,pageIndex,totalPages,globalNumber){
   const pages=articleTextPages(a); const blocks=pages[pageIndex]||[]; const first=pageIndex===0; const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):""; const h=a.headings||{}; const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE"); const date=esc((a.published||"").slice(0,10));
   const type=layoutFor((a._storyIndex||0)+pageIndex);
-  const headlineClass=(storyTitle(a)||"").length>72?" headline-long":"";
+  const headlineClass=headlineClassFor(storyTitle(a));
   const quote=esc(pullQuote(a));
   const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
   const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";

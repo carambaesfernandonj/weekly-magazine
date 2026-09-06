@@ -35,3 +35,9 @@ Supabase is the source of truth for active feeds. Each GitHub Actions build read
 
 ## V0.9.3 — Fixed pages / no visual clipping
 Magazine pages use fixed physical geometry. Article body pagination is intentionally conservative so title/dek/image/body content is split into additional pages rather than clipped by CSS. Fullscreen retains internal scrolling as a reading aid.
+
+## V0.9.4 — content-safe fixed pages
+- Fixed physical page geometry remains locked.
+- Removed silent headline/dek clipping.
+- Added headline fitting tiers for long titles.
+- Uses conservative per-layout body budgets so article text continues onto additional fixed-size pages instead of being hidden.
