@@ -1,27 +1,39 @@
 {
+  "updatedAt": "2026-09-06T13:26:29.758845+00:00",
   "feeds": [
     {
-      "name": "The Verge",
-      "url": "https://www.theverge.com/rss/index.xml",
-      "category": "Technology",
-      "enabled": true
-    },
-    {
-      "name": "IGN Games",
-      "url": "https://www.ign.com/rss/articles/feed?tags=games",
+      "id": 13,
+      "name": "Polygon",
+      "url": "https://www.polygon.com/rss/index.xml",
       "category": "Gaming",
       "enabled": true
     },
     {
-      "name": "Ars Technica",
-      "url": "https://feeds.arstechnica.com/arstechnica/index",
-      "category": "Technology",
+      "id": 14,
+      "name": "IGN",
+      "url": "https://www.ign.com/rss/v2/articles/feed",
+      "category": "Culture",
       "enabled": true
     },
     {
-      "name": "Wired",
-      "url": "https://www.wired.com/feed/rss",
-      "category": "Technology",
+      "id": 15,
+      "name": "Nintenderos",
+      "url": "https://www.nintenderos.com/feed/",
+      "category": "Nintendo",
+      "enabled": true
+    },
+    {
+      "id": 16,
+      "name": "Vida Extra",
+      "url": "http://feeds.weblogssl.com/vidaextra",
+      "category": "Gaming",
+      "enabled": true
+    },
+    {
+      "id": 17,
+      "name": "Retro Dodo",
+      "url": "https://retrododo.com/feed/",
+      "category": "REtroGaming",
       "enabled": true
     }
   ]

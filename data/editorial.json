@@ -2,93 +2,35 @@
   "cover_story": 0,
   "selected_ids": [
     0,
+    1,
     2,
+    3,
     4,
     5,
+    6,
     7,
+    8,
     9,
     10,
-    12,
-    13,
-    14,
-    19,
-    20,
-    21,
-    22,
-    66,
-    71
+    11,
+    15,
+    16,
+    27,
+    29,
+    54,
+    60,
+    61,
+    62
   ],
   "stories": [
     {
       "article_id": 0,
-      "headline": "Insomniac Clears the Air After Marvel's Wolverine Fans Confuse Lady Deathstrike for Psylocke",
-      "dek": "Insomniac Games has cleared the air after a new trailer for Marvel's Wolverine had fans confusing Lady Deathstrike for Psylocke.",
-      "summary": "Insomniac Games has cleared the air after a new trailer for Marvel's Wolverine had fans confusing Lady Deathstrike for Psylocke.",
+      "headline": "De Civilization a Magic: cómo Sid Meier demostró dar una lección de diseño de videojuegos y marcó el camino para Pokémon",
+      "dek": "El difícil reto de desarrollar una adaptación a videojuego es, por lo general, un trabajo lo suficientemente complejo para no querer volver a ello -sé de lo que hablo, que trabajé en una adaptación de cine-. Pero ya no es lo bien o mal que sepas transformar personajes, aventuras o ideas en un videojuego con cara y ojos, sino todo lo que viene en el mismo pack. Tienes los problemas derivados de trabajar con la licencia de otro y todas las líneas que no puedes cruzar, una horda de fans esperando comerte vivo y, por descontado, también el reto de saber trasladar con éxito lo que unos y otros consideran impecable. Visto así, no me extraña que Magic: The Gathering fuese el último trabajo del legendario Sid Meier en Microprose. De Civilization a Magic Al César lo que es del César. A Wizards of the Coast hay que reconocerles que dieron bastante libertad al genio que venía de petarlo con Pira...",
+      "summary": "El difícil reto de desarrollar una adaptación a videojuego es, por lo general, un trabajo lo suficientemente complejo para no querer volver a ello -sé de lo que hablo, que trabajé en una adaptación de cine-. Pero ya no es lo bien o mal que sepas transformar personajes, aventuras o ideas en un videojuego con cara y ojos, sino todo lo que viene en el mismo pack. Tienes los problemas derivados de trabajar con la licencia de otro y todas las líneas que no puedes cruzar, una horda de fans esperando comerte vivo y, por descontado, también el reto de saber trasladar con éxito lo que unos y otros consideran impecable. Visto así, no me extraña que Magic: The Gathering fuese el último trabajo del legendario Sid Meier en Microprose. De Civilization a Magic Al César lo que es del César. A Wizards of the Coast hay que reconocerles que dieron bastante libertad al genio que venía de petarlo con Pira...",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Insomniac Clears the Air After Marvel's Wolverine Fans Confuse Lady Deathstrike for Psylocke",
-        "H2: Nailed it."
-      ],
-      "headings": {
-        "h1": [
-          "Insomniac Clears the Air After Marvel's Wolverine Fans Confuse Lady Deathstrike for Psylocke"
-        ],
-        "h2": [
-          "Nailed it."
-        ]
-      }
-    },
-    {
-      "article_id": 2,
-      "headline": "The Blood of Dawnwalker Passes 1 Million Copies Sold in Just 2 Days",
-      "dek": "Single-player RPG and new IP The Blood of Dawnwalker has sold 1 million copies just two days after its launch, publisher Bandai Namco and developer Rebel Wolves have announced.",
-      "summary": "Single-player RPG and new IP The Blood of Dawnwalker has sold 1 million copies just two days after its launch, publisher Bandai Namco and developer Rebel Wolves have announced.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: The Blood of Dawnwalker Passes 1 Million Copies Sold in Just 2 Days",
-        "H2: New blood."
-      ],
-      "headings": {
-        "h1": [
-          "The Blood of Dawnwalker Passes 1 Million Copies Sold in Just 2 Days"
-        ],
-        "h2": [
-          "New blood."
-        ]
-      }
-    },
-    {
-      "article_id": 4,
-      "headline": "The Best Deals Today: Nintendo Switch 2 Consoles, Granblue Fantasy: Relink, Fire Emblem: Fortune's Weave, and More",
-      "dek": "Historia publicada por la fuente original.",
-      "summary": "Consulta la fuente original para leer la historia completa.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: The Best Deals Today: Nintendo Switch 2 Consoles, Granblue Fantasy: Relink, Fire Emblem: Fortune's Weave, and More",
-        "H2: Save $50 off a Switch 2 console.",
-        "H2: Save 14% Off Granblue Fantasy: Relink - Endless Ragnarok",
-        "H2: Nintendo Switch 2 for $449.99"
-      ],
-      "headings": {
-        "h1": [
-          "The Best Deals Today: Nintendo Switch 2 Consoles, Granblue Fantasy: Relink, Fire Emblem: Fortune's Weave, and More"
-        ],
-        "h2": [
-          "Save $50 off a Switch 2 console.",
-          "Save 14% Off Granblue Fantasy: Relink - Endless Ragnarok",
-          "Nintendo Switch 2 for $449.99",
-          "Dragon Quest I & II HD-2D Remake for $39.99"
-        ]
-      }
-    },
-    {
-      "article_id": 5,
-      "headline": "Tesla’s Cybercab has been deployed, and it’s already under investigation",
-      "dek": "The US government is investigating whether the Cybercab meets vehicle safety standards.",
-      "summary": "The US government is investigating whether the Cybercab meets vehicle safety standards.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Ars Technica"
+        "Fuente: Vida Extra"
       ],
       "headings": {
         "h1": [],
@@ -96,247 +38,307 @@
       }
     },
     {
-      "article_id": 7,
-      "headline": "4 Best Alexa Speakers I’ve Tested (2026)",
-      "dek": "I’ve rounded up the best smart speakers that let you talk to Alexa, from the popular Echo Dot to the newest Echo Studio.",
-      "summary": "I’ve rounded up the best smart speakers that let you talk to Alexa, from the popular Echo Dot to the newest Echo Studio.",
+      "article_id": 1,
+      "headline": "Ys Origin por 1,99€ y más ofertas por apenas 1-2€ que arrasan ahora mismo en la eShop de Nintendo Switch 2 y Nintendo Switch",
+      "dek": "Nos llegan más ofertas realmente tentadoras en la eShop de Nintendo Switch. Recordad que Nintendo actualizó recientemente la forma en la que se elaboraba este top, dando más importancia a los juegos que generaban más ingresos en los últimos días. Ofertas a precios casi regalados en la eShop de Nintendo Switch 2 y Nintendo Switch Esta vez os traemos […]",
+      "summary": "Nos llegan más ofertas realmente tentadoras en la eShop de Nintendo Switch. Recordad que Nintendo actualizó recientemente la forma en la que se elaboraba este top, dando más importancia a los juegos que generaban más ingresos en los últimos días. Ofertas a precios casi regalados en la eShop de Nintendo Switch 2 y Nintendo Switch Esta vez os traemos […]",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: Featured in this article",
-        "H2: Best Overall Alexa Speaker",
-        "H2: Best Affordable Alexa Speaker"
+        "H2: Buscar en Nintenderos"
       ],
       "headings": {
         "h1": [],
         "h2": [
-          "Featured in this article",
-          "Best Overall Alexa Speaker",
-          "Best Affordable Alexa Speaker",
-          "Best Alexa Smart Display"
+          "Buscar en Nintenderos"
         ]
+      }
+    },
+    {
+      "article_id": 2,
+      "headline": "\"Se mira pero no se toca, Majestad\": por qué la reina de Inglaterra no se sentó en el Trono de Hierro de Juego de Tronos",
+      "dek": "Dado que Juego de Tronos tiene el nombre que tiene, es entendible que el Trono de Hierro se convirtiese en el mayor objeto de deseo de todos los personajes de la serie. Conseguir sentar las posaderas en semejante lugar equivalía a gobernar a miles y sentirse por encima de las numerosas casas que pueblan el universo de George R.R. Martin . Sin embargo, hay personas en la vida real que no han tenido por qué disfrutar de ese placer. Y es que, en el 2015, la mismísima reina Isabel de Inglaterra realizó una visita al rodaje de la serie de HBO en Belfast, Irlanda del Norte, dado que la producción de los showrunners David Benioff y D.B. Weiss había creado muchísimos puestos de trabajo en la zona. La monarca también se reunió con Lena Headey, Kit Harington, Maisie Williams y Sophie Turner, lo que derivó en una invitación particular. En Vida Extra Aun con sus fugas de agua, Star Wars Zero Comp...",
+      "summary": "Dado que Juego de Tronos tiene el nombre que tiene, es entendible que el Trono de Hierro se convirtiese en el mayor objeto de deseo de todos los personajes de la serie. Conseguir sentar las posaderas en semejante lugar equivalía a gobernar a miles y sentirse por encima de las numerosas casas que pueblan el universo de George R.R. Martin . Sin embargo, hay personas en la vida real que no han tenido por qué disfrutar de ese placer. Y es que, en el 2015, la mismísima reina Isabel de Inglaterra realizó una visita al rodaje de la serie de HBO en Belfast, Irlanda del Norte, dado que la producción de los showrunners David Benioff y D.B. Weiss había creado muchísimos puestos de trabajo en la zona. La monarca también se reunió con Lena Headey, Kit Harington, Maisie Williams y Sophie Turner, lo que derivó en una invitación particular. En Vida Extra Aun con sus fugas de agua, Star Wars Zero Comp...",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Vida Extra"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 3,
+      "headline": "BG3's Best Evil Playthrough Replacement Is Waiting to Be Rediscovered on Steam",
+      "dek": "Tyranny casts you as an enforcer for a god-emperor who already won the war. If Baldur's Gate 3's evil playthroughs left you wanting more, play this",
+      "summary": "Tyranny casts you as an enforcer for a god-emperor who already won the war. If Baldur's Gate 3's evil playthroughs left you wanting more, play this",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Polygon"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 4,
+      "headline": "Riot Co-Founder Calls League of Legends MMO the 'Grail' Quest, 5 Years After It Was Announced",
+      "dek": "League of Legends developer Riot Games is still bashing away on its MMO, which co-founder Mark Merrill recently described as the studio’s \"grail quest.\"",
+      "summary": "League of Legends developer Riot Games is still bashing away on its MMO, which co-founder Mark Merrill recently described as the studio’s \"grail quest.\"",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Riot Co-Founder Calls League of Legends MMO the 'Grail' Quest, 5 Years After It Was Announced",
+        "H2: \"The future's incredibly bright.\""
+      ],
+      "headings": {
+        "h1": [
+          "Riot Co-Founder Calls League of Legends MMO the 'Grail' Quest, 5 Years After It Was Announced"
+        ],
+        "h2": [
+          "\"The future's incredibly bright.\""
+        ]
+      }
+    },
+    {
+      "article_id": 5,
+      "headline": "GOTY 2026 is the Weakest Field in Years",
+      "dek": "In the shadow of GTA 6, other 2026 GOTY contenders like The Blood of Dawnwalker keep missing the mark.",
+      "summary": "In the shadow of GTA 6, other 2026 GOTY contenders like The Blood of Dawnwalker keep missing the mark.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Polygon"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 6,
+      "headline": "Skytech Gaming Blaze 5 Review",
+      "dek": "The Skytech Gaming Blaze 5 is packed with strong mid-tier components in a sleek glassy tower, but there are a few issues that’ll impact your quality of life.",
+      "summary": "The Skytech Gaming Blaze 5 is packed with strong mid-tier components in a sleek glassy tower, but there are a few issues that’ll impact your quality of life.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Skytech Gaming Blaze 5 Review",
+        "H2: Solid performance paired with quality of life issues.",
+        "H2: Skytech Gaming Blaze 5 – Case Design and Build Layout",
+        "H2: Skytech Gaming Blaze 5 – Software"
+      ],
+      "headings": {
+        "h1": [
+          "Skytech Gaming Blaze 5 Review"
+        ],
+        "h2": [
+          "Solid performance paired with quality of life issues.",
+          "Skytech Gaming Blaze 5 – Case Design and Build Layout",
+          "Skytech Gaming Blaze 5 – Software",
+          "Skytech Gaming Blaze 5 – Performance"
+        ]
+      }
+    },
+    {
+      "article_id": 7,
+      "headline": "Nintendo tiene previstas estas tareas de mantenimiento en la Nintendo Store y eShop (6/9/26)",
+      "dek": "Una semana más, aquí os traemos este recopilatorio con tareas de mantenimiento. Ya se han actualizado los horarios de las próximas rondas de tareas de mantenimiento de Nintendo para los servicios online de sus diferentes plataformas. Aquí os traemos un nuevo recopilatorio de los mismos. Mantenimiento de Nintendo Al igual que en anteriores ocasiones, el juego en línea, el online y […]",
+      "summary": "Una semana más, aquí os traemos este recopilatorio con tareas de mantenimiento. Ya se han actualizado los horarios de las próximas rondas de tareas de mantenimiento de Nintendo para los servicios online de sus diferentes plataformas. Aquí os traemos un nuevo recopilatorio de los mismos. Mantenimiento de Nintendo Al igual que en anteriores ocasiones, el juego en línea, el online y […]",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H2: Buscar en Nintenderos"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": [
+          "Buscar en Nintenderos"
+        ]
+      }
+    },
+    {
+      "article_id": 8,
+      "headline": "Mientras pides Destiny 3, Bungie sigue en caída libre: ha puesto en alquiler su sede de 19.602 metros cuadrados tras los despidos",
+      "dek": "Si has visto las últimas publicaciones de PlayStation en redes sociales o los recientes State of Play , seguro que te has percatado de los muchos comentarios que piden un Destiny 3 . La compra de Bungie por parte de Sony y el reciente cierre del desarrollo de Destiny 2 han alimentado los deseos de los fans, a quienes ni los despidos masivos logran disuadir. Pero eso va a cambiar. Las cosas no han mejorado para Bungie. Continúan en caída libre. Ahora sabemos que el estudio busca subarrendar su sede u oficinas centrales, situadas en Bellevue, Washington, y que tienen una extensión de unos 19.600 m² (210.984 pies cuadrados). El contrato tiene vigencia hasta 2035. Poco después, un portavoz de Bungie confirmó a The Game Post que el estudio está explorando opciones para subarrendar las oficinas debido a un modelo de trabajo \"digital-first\" con poca presencia en la sede. En Vida Extra Game G...",
+      "summary": "Si has visto las últimas publicaciones de PlayStation en redes sociales o los recientes State of Play , seguro que te has percatado de los muchos comentarios que piden un Destiny 3 . La compra de Bungie por parte de Sony y el reciente cierre del desarrollo de Destiny 2 han alimentado los deseos de los fans, a quienes ni los despidos masivos logran disuadir. Pero eso va a cambiar. Las cosas no han mejorado para Bungie. Continúan en caída libre. Ahora sabemos que el estudio busca subarrendar su sede u oficinas centrales, situadas en Bellevue, Washington, y que tienen una extensión de unos 19.600 m² (210.984 pies cuadrados). El contrato tiene vigencia hasta 2035. Poco después, un portavoz de Bungie confirmó a The Game Post que el estudio está explorando opciones para subarrendar las oficinas debido a un modelo de trabajo \"digital-first\" con poca presencia en la sede. En Vida Extra Game G...",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Vida Extra"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
       }
     },
     {
       "article_id": 9,
-      "headline": "There May Not Be an iPhone 18 This Year",
-      "dek": "Apple is expected to announce several products at its September event next week—including a folding phone—but the iPhone 18 might not be among them. It would be a first for the company.",
-      "summary": "Apple is expected to announce several products at its September event next week—including a folding phone—but the iPhone 18 might not be among them. It would be a first for the company.",
+      "headline": "5 Most Shocking Anime Deaths Of The 21st Century",
+      "dek": "These anime deaths completely changed the trajectory of these stories.",
+      "summary": "These anime deaths completely changed the trajectory of these stories.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: Comments",
-        "H2: You Might Also Like",
-        "H2: Wired Coupons"
+        "Fuente: Polygon"
       ],
       "headings": {
         "h1": [],
-        "h2": [
-          "Comments",
-          "You Might Also Like",
-          "Wired Coupons"
-        ]
+        "h2": []
       }
     },
     {
       "article_id": 10,
-      "headline": "OpenAI Agents Hacked Another Website",
-      "dek": "Plus: Tens of millions of US and Canadian drivers’ licenses go up for sale on the dark web, the US military finally tries to tackle the risk online ad data poses to troops, and more.",
-      "summary": "Plus: Tens of millions of US and Canadian drivers’ licenses go up for sale on the dark web, the US military finally tries to tackle the risk online ad data poses to troops, and more.",
+      "headline": "Tales of Eternia Remastered confirma FPS, resolución y más detalles en Nintendo Switch 2 y Nintendo Switch",
+      "dek": "Bandai Namco tiene más planes para Nintendo Switch 2 tras Tales of Arise – Beyond the Dawn Edition, ahora sabemos que Tales of Eternia Remastered se lanzará a nivel mundial el 16 de octubre de 2026 para Nintendo Switch 2, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series X/S y PC a través de Steam, con gráficos mejorados y mejoras de calidad […]",
+      "summary": "Bandai Namco tiene más planes para Nintendo Switch 2 tras Tales of Arise – Beyond the Dawn Edition, ahora sabemos que Tales of Eternia Remastered se lanzará a nivel mundial el 16 de octubre de 2026 para Nintendo Switch 2, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series X/S y PC a través de Steam, con gráficos mejorados y mejoras de calidad […]",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: Before Hugging Face, OpenAI Agents Took Over a German Website to Create a Message Board",
-        "H2: More Than 153 Million US and Canadian Driver’s Licenses for Sale Online",
-        "H2: US Military Disables Ad Trackers After Years of Warnings"
+        "H2: Buscar en Nintenderos"
       ],
       "headings": {
         "h1": [],
         "h2": [
-          "Before Hugging Face, OpenAI Agents Took Over a German Website to Create a Message Board",
-          "More Than 153 Million US and Canadian Driver’s Licenses for Sale Online",
-          "US Military Disables Ad Trackers After Years of Warnings",
-          "Spyware Notifications Make Up “Largest Documented Wave” of Surveillance in Serbia"
+          "Buscar en Nintenderos"
         ]
       }
     },
     {
-      "article_id": 12,
-      "headline": "Tomb Raider: Legacy of Atlantis Could Be Great, But There's Some Things We Can't Ignore...",
-      "dek": "Tomb Raider: Legacy of Atlantis shows massive potential, but controversial changes like skill trees and modern hand-holding threaten to frustrate fans. And some of that food looks very suspicious.",
-      "summary": "Tomb Raider: Legacy of Atlantis shows massive potential, but controversial changes like skill trees and modern hand-holding threaten to frustrate fans. And some of that food looks very suspicious.",
+      "article_id": 11,
+      "headline": "Rumor: Un anuncio del The Legend of Zelda 40th Anniversary Direct también se habría filtrado",
+      "dek": "Parece que tenemos reportes de The Legend of Zelda: se trata de información relacionada con la película de la franquicia que tenemos en camino. Hace poco conocimos algunas respuestas a los fans sobre la cinta y ahora os traemos más detalles. Ahora, según un nuevo rumor, el insider DanielRPK habría dejado entrever que el tráiler de la película de The […]",
+      "summary": "Parece que tenemos reportes de The Legend of Zelda: se trata de información relacionada con la película de la franquicia que tenemos en camino. Hace poco conocimos algunas respuestas a los fans sobre la cinta y ahora os traemos más detalles. Ahora, según un nuevo rumor, el insider DanielRPK habría dejado entrever que el tráiler de la película de The […]",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Tomb Raider: Legacy of Atlantis Could Be Great, But There's Some Things We Can't Ignore...",
-        "H2: Addressing the T-Rex in the room."
-      ],
-      "headings": {
-        "h1": [
-          "Tomb Raider: Legacy of Atlantis Could Be Great, But There's Some Things We Can't Ignore..."
-        ],
-        "h2": [
-          "Addressing the T-Rex in the room."
-        ]
-      }
-    },
-    {
-      "article_id": 13,
-      "headline": "Scientists Put Caterpillars in an Ultraquiet Chamber to Learn How They Hear Without Ears",
-      "dek": "The research could do more than help unlock the mystery of caterpillar hearing. It could also help make microphones better.",
-      "summary": "The research could do more than help unlock the mystery of caterpillar hearing. It could also help make microphones better.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H2: What Happens in the Anechoic Chamber",
-        "H2: Finding the Caterpillars’ “Ears”",
-        "H2: Comments"
+        "H2: Buscar en Nintenderos"
       ],
       "headings": {
         "h1": [],
         "h2": [
-          "What Happens in the Anechoic Chamber",
-          "Finding the Caterpillars’ “Ears”",
-          "Comments",
-          "You Might Also Like"
+          "Buscar en Nintenderos"
         ]
       }
     },
     {
-      "article_id": 14,
-      "headline": "The Watch World Went Crazy This Week. Here Are the 10 You Need to See",
-      "dek": "The main action took place at Geneva Watch Days, but others dialed in remotely to make sure it wasn't just a Swiss party.",
-      "summary": "The main action took place at Geneva Watch Days, but others dialed in remotely to make sure it wasn't just a Swiss party.",
+      "article_id": 15,
+      "headline": "A Harry Potter y el Cáliz de Fuego no le importa exponer a adolescentes a la muerte, pero a los dragones no les toca ni una escama",
+      "dek": "El universo de Harry Potter es muy peculiar y no solo porque sea un mundo mágico que coexiste de forma invisible en el mismo plano que la realidad, o lo que se conoce como mundo muggle. Las reglas establecidas por J. K. Rowling y ampliadas por Warner Bros. en películas, series y videojuegos son de lo más curiosas. Por ejemplo, pueden teletransportarte y viajar distancias enormes en segundos, pero todavía utilizan correo por lechuza. Puede parecer una tontería, pero son cuestiones que fans y no tan fans debaten en lugares como Reddit. En este sentido, una de las cuestiones más peculiares tiene que ver con la seguridad: se incide en varias ocasiones en que Hogwarts es uno de los lugares más seguros del mundo, pero cada curso la vida de los alumnos se pone en riesgo. En Vida Extra ¿Qué pasa en The Blood of Dawnwalker cuando se acaba el tiempo y por qué te recomiendo probarlo al menos una...",
+      "summary": "El universo de Harry Potter es muy peculiar y no solo porque sea un mundo mágico que coexiste de forma invisible en el mismo plano que la realidad, o lo que se conoce como mundo muggle. Las reglas establecidas por J. K. Rowling y ampliadas por Warner Bros. en películas, series y videojuegos son de lo más curiosas. Por ejemplo, pueden teletransportarte y viajar distancias enormes en segundos, pero todavía utilizan correo por lechuza. Puede parecer una tontería, pero son cuestiones que fans y no tan fans debaten en lugares como Reddit. En este sentido, una de las cuestiones más peculiares tiene que ver con la seguridad: se incide en varias ocasiones en que Hogwarts es uno de los lugares más seguros del mundo, pero cada curso la vida de los alumnos se pone en riesgo. En Vida Extra ¿Qué pasa en The Blood of Dawnwalker cuando se acaba el tiempo y por qué te recomiendo probarlo al menos una...",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: Comments",
-        "H2: You Might Also Like",
-        "H2: Wired Coupons"
+        "Fuente: Vida Extra"
       ],
       "headings": {
         "h1": [],
-        "h2": [
-          "Comments",
-          "You Might Also Like",
-          "Wired Coupons"
-        ]
+        "h2": []
       }
     },
     {
-      "article_id": 19,
-      "headline": "14 Predictions for the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
-      "dek": "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
-      "summary": "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
+      "article_id": 16,
+      "headline": "3 Games Where Your Choices Truly Matter",
+      "dek": "Games where choices matter often narrow what matters to character death or branching endings. These narrative-driven games do it differently",
+      "summary": "Games where choices matter often narrow what matters to character death or branching endings. These narrative-driven games do it differently",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: 14 Predictions for the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
-        "H2: IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
-        "H2: Zelda 40th Anniversary Direct Predictions",
-        "H2: General Nintendo Direct Predictions"
-      ],
-      "headings": {
-        "h1": [
-          "14 Predictions for the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct"
-        ],
-        "h2": [
-          "IGN's Logan Plant shares 14 predictions for the pair of Nintendo Directs airing in the coming days.",
-          "Zelda 40th Anniversary Direct Predictions",
-          "General Nintendo Direct Predictions"
-        ]
-      }
-    },
-    {
-      "article_id": 20,
-      "headline": "'No One Puts Double Fine Out of Business Except for Me' — Tim Schafer Explains How He Kept Double Fine Afloat After Leaving Xbox",
-      "dek": "Tim Schafer, game designer and founder of Psychonauts developer Double Fine, gave a strong response after Xbox divested the studio as part of its massive restructuring efforts this summer.",
-      "summary": "Tim Schafer, game designer and founder of Psychonauts developer Double Fine, gave a strong response after Xbox divested the studio as part of its massive restructuring efforts this summer.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: 'No One Puts Double Fine Out of Business Except for Me' — Tim Schafer Explains How He Kept Double Fine Afloat After Leaving Xbox",
-        "H2: \"This is the good fight.\""
-      ],
-      "headings": {
-        "h1": [
-          "'No One Puts Double Fine Out of Business Except for Me' — Tim Schafer Explains How He Kept Double Fine Afloat After Leaving Xbox"
-        ],
-        "h2": [
-          "\"This is the good fight.\""
-        ]
-      }
-    },
-    {
-      "article_id": 21,
-      "headline": "gamescom Apologizes for Its Initial Response to Thefts, Promises Improved Security Measures",
-      "dek": "gamescom has provided a second response regarding the theft of developers’ equipment during its event, offering an apology for its initial reaction to the ordeal.",
-      "summary": "gamescom has provided a second response regarding the theft of developers’ equipment during its event, offering an apology for its initial reaction to the ordeal.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: gamescom Apologizes for Its Initial Response to Thefts, Promises Improved Security Measures",
-        "H2: \"We understand what this has cost you, and we should have said so from the very first moment.\""
-      ],
-      "headings": {
-        "h1": [
-          "gamescom Apologizes for Its Initial Response to Thefts, Promises Improved Security Measures"
-        ],
-        "h2": [
-          "\"We understand what this has cost you, and we should have said so from the very first moment.\""
-        ]
-      }
-    },
-    {
-      "article_id": 22,
-      "headline": "Halloween: The Game Review So Far",
-      "dek": "So far this asymmetrical horror game is more trick than treat.",
-      "summary": "So far this asymmetrical horror game is more trick than treat.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Halloween: The Game Review So Far",
-        "H2: So far this asymmetrical horror game is more trick than treat."
-      ],
-      "headings": {
-        "h1": [
-          "Halloween: The Game Review So Far"
-        ],
-        "h2": [
-          "So far this asymmetrical horror game is more trick than treat."
-        ]
-      }
-    },
-    {
-      "article_id": 66,
-      "headline": "Foreo Discount Codes and Deals: Up to 50% Off",
-      "dek": "Save on Foreo favorites, including LUNA cleansing brushes, BEAR microcurrent devices, and masks and accessories to level up your daily skincare routine at home.",
-      "summary": "Save on Foreo favorites, including LUNA cleansing brushes, BEAR microcurrent devices, and masks and accessories to level up your daily skincare routine at home.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H2: 30% Off Foreo LUNA 3 Plus: Heated Cleansing and Microcurrent in one Device",
-        "H2: Foreo BEAR: Get 25% Off the Full Facial Workout Device",
-        "H2: Foreo UFO 2 Deal: 29% Off 5-in-1 Spa Facials"
+        "Fuente: Polygon"
       ],
       "headings": {
         "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 27,
+      "headline": "How to Watch the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
+      "dek": "Nintendo is going big this September with two Nintendo Direct showcases airing on back-to-back days. Here's everything you need to know.",
+      "summary": "Nintendo is going big this September with two Nintendo Direct showcases airing on back-to-back days. Here's everything you need to know.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: How to Watch the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
+        "H2: It's a big week for Nintendo fans.",
+        "H2: When Does the Zelda 40th Anniversary Nintendo Direct Start?",
+        "H2: When Does the September 2026 Nintendo Direct Start?"
+      ],
+      "headings": {
+        "h1": [
+          "How to Watch the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct"
+        ],
         "h2": [
-          "30% Off Foreo LUNA 3 Plus: Heated Cleansing and Microcurrent in one Device",
-          "Foreo BEAR: Get 25% Off the Full Facial Workout Device",
-          "Foreo UFO 2 Deal: 29% Off 5-in-1 Spa Facials",
-          "Wired Coupons"
+          "It's a big week for Nintendo fans.",
+          "When Does the Zelda 40th Anniversary Nintendo Direct Start?",
+          "When Does the September 2026 Nintendo Direct Start?",
+          "How to Watch the September 2026 Nintendo Directs"
         ]
       }
     },
     {
-      "article_id": 71,
-      "headline": "Tuft & Needle Promo Codes: 30% Off | September 2026",
-      "dek": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
-      "summary": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
+      "article_id": 29,
+      "headline": "Left 4 Dead 2 Dev Admits Valve Intentionally Leaked Its Own Trailer After the ESRB Blocked It from Release",
+      "dek": "Former Valve writer Chet Faliszek has a confession to make: Valve intentionally leaked its own Left 4 Dead 2 trailer.",
+      "summary": "Former Valve writer Chet Faliszek has a confession to make: Valve intentionally leaked its own Left 4 Dead 2 trailer.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: Best Tuft & Needle Promo Codes and Coupons",
-        "H2: Top Tuft & Needle Pillow Discounts for Better Sleep",
-        "H2: Upgrade Your Sleep With Tuft & Needle Sleep Technology"
+        "H1: Left 4 Dead 2 Dev Admits Valve Intentionally Leaked Its Own Trailer After the ESRB Blocked It from Release",
+        "H2: Reanimated."
+      ],
+      "headings": {
+        "h1": [
+          "Left 4 Dead 2 Dev Admits Valve Intentionally Leaked Its Own Trailer After the ESRB Blocked It from Release"
+        ],
+        "h2": [
+          "Reanimated."
+        ]
+      }
+    },
+    {
+      "article_id": 54,
+      "headline": "An Emulation Mod Kit For The LEGO PlayStation Is In The Works",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
       ],
       "headings": {
         "h1": [],
-        "h2": [
-          "Best Tuft & Needle Promo Codes and Coupons",
-          "Top Tuft & Needle Pillow Discounts for Better Sleep",
-          "Upgrade Your Sleep With Tuft & Needle Sleep Technology",
-          "Deals on Our Favorite Tuft & Needle Mattresses"
-        ]
+        "h2": []
+      }
+    },
+    {
+      "article_id": 60,
+      "headline": "Retro YouTuber Announces A Cool New Emulation Frontend Called Jump",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 61,
+      "headline": "Hyperkin Bring Modern Power To Retro Consoles With New USB-C Charging System Range",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 62,
+      "headline": "PlayCase Is A New Retro iPhone Controller With Real Triggers",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
       }
     }
   ],
@@ -345,26 +347,30 @@
       "name": "WEEKLY PICKS",
       "ids": [
         0,
+        1,
         2,
+        3,
         4,
         5,
+        6,
         7,
+        8,
         9,
         10,
-        12,
-        13,
-        14,
-        19,
-        20,
-        21,
-        22,
-        66,
-        71
+        11,
+        15,
+        16,
+        27,
+        29,
+        54,
+        60,
+        61,
+        62
       ]
     }
   ],
   "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
-  "generatedAt": "2026-09-05T23:20:42.164905+00:00",
+  "generatedAt": "2026-09-06T13:26:42.666146+00:00",
   "model": "zero-cost",
   "status": "rss",
   "editorial_profile": {
