@@ -296,4 +296,11 @@ for n,a in enumerate(selected[:ENRICH_LIMIT],1):
 payload={"updatedAt":datetime.now(timezone.utc).isoformat(),"articles":unique,"selected":selected,"clusters":clusters,"errors":errors,
          "editor":{"version":"0.8.3-source-text","note":"WEEKLY uses RSS metadata, source images, headings and readable source text. Magazine pages target about 1800 characters. No AI credits are required."}}
 with open(OUT_FILE,"w",encoding="utf-8") as f: json.dump(payload,f,ensure_ascii=False,indent=2)
-print(f"Fetched {len(unique)} articles; {len(clusters)} clusters; {len(selected)} selected; sources_in_issue={len(set(a.get("source") for a in selected))}; enriched={min(ENRICH_LIMIT,len(selected))}; errors={len(errors)}")
+print(f"Fetched {len(unique)} articles; {len(clusters)} clusters; {len(selected)} selected; sources_in_issue={len(set(a.get('source') for a in selected))}; enriched={min(ENRICH_LIMIT,len(selected))}; errors={len(errors)}")
+
+if errors:
+    print("")
+    print("===== RSS FETCH ERRORS =====")
+    for err in errors:
+        print(f"[{err['source']}] {err['error']}")
+    print("============================")
