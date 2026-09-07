@@ -234,10 +234,11 @@ function measureArticleCandidate(a,pageIndex,blocks,imageIndex,forceTotal=99){
   if(!page){host.remove();return {fits:false,scroll:999999,height:dims.height};}
   page.style.width=dims.width+"px"; page.style.height=dims.height+"px"; page.style.maxHeight=dims.height+"px";
   document.body.appendChild(host);
-  const scroll=page.scrollHeight;
-  const fits=scroll<=dims.height+1;
+  const verticalOverflow=page.scrollHeight>page.clientHeight+1;
+  const horizontalOverflow=page.scrollWidth>page.clientWidth+1;
+  const fits=!verticalOverflow && !horizontalOverflow;
   host.remove();
-  return {fits,scroll,height:dims.height};
+  return {fits,scroll:Math.max(page.scrollHeight,page.scrollWidth),height:dims.height,verticalOverflow,horizontalOverflow};
 }
 function expandPaginationBlocks(blocks){
   const out=[];

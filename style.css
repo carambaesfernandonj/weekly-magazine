@@ -239,3 +239,39 @@
 .single-view .source-text-page .source-body{overflow:visible!important;min-height:0;}
 .source-text-page .reader-inline-image img{object-fit:contain;background:#d7d2c8;}
 .source-text-page .reader-inline-image{break-inside:avoid;page-break-inside:avoid;}
+
+
+/* V0.9.8 — hard maximum of two text columns per page.
+   If content would create a third CSS multicolumn fragment, the measured
+   paginator detects horizontal overflow and moves the content to a new page. */
+.source-text-page .source-body,
+.layout-feature .source-body,
+.layout-news .source-body,
+.layout-image .source-body,
+.layout-quote .source-body,
+.layout-short .source-body,
+.layout-dark .source-body{
+  column-count:2!important;
+  columns:2!important;
+  column-gap:24px;
+  column-fill:auto;
+  max-width:100%;
+}
+@media(max-width:1049px){
+  .source-text-page .source-body,
+  .layout-feature .source-body,
+  .layout-news .source-body,
+  .layout-image .source-body,
+  .layout-quote .source-body,
+  .layout-short .source-body,
+  .layout-dark .source-body{column-count:1!important;columns:1!important;}
+}
+@media(max-width:720px){
+  .source-text-page .source-body,
+  .layout-feature .source-body,
+  .layout-news .source-body,
+  .layout-image .source-body,
+  .layout-quote .source-body,
+  .layout-short .source-body,
+  .layout-dark .source-body{column-count:1!important;columns:1!important;}
+}
