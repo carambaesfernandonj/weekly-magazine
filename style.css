@@ -275,3 +275,55 @@
   .layout-short .source-body,
   .layout-dark .source-body{column-count:1!important;columns:1!important;}
 }
+
+/* V0.9.9 — explicit page composer: real columns, no CSS multicolumn fragmentation */
+.source-text-page .source-body.source-body-grid,
+.article-page .source-body.source-body-grid{
+  display:grid!important;
+  grid-template-columns:1fr!important;
+  gap:24px;
+  width:100%;
+  max-width:none!important;
+  min-width:0;
+  min-height:0;
+  flex:1 1 auto;
+  overflow:hidden!important;
+  columns:auto!important;
+  column-count:auto!important;
+  column-fill:auto!important;
+}
+.source-text-page.source-cols-2 .source-body.source-body-grid{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+}
+.source-text-page.source-cols-1 .source-body.source-body-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+}
+.source-column{
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
+}
+.source-column > :first-child{margin-top:0}
+.source-column > :last-child{margin-bottom:0}
+@media(max-width:1049px){
+  .source-text-page .source-body.source-body-grid,
+  .source-text-page.source-cols-2 .source-body.source-body-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}
+@media(max-width:720px){
+  .source-text-page .source-body.source-body-grid{gap:0}
+}
+.reader-fullscreen .source-text-page .source-body.source-body-grid{
+  columns:auto!important;
+  column-count:auto!important;
+  overflow:hidden!important;
+}
+.reader-fullscreen .source-text-page.source-cols-2 .source-body.source-body-grid{
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+}
+@media(max-width:1049px){
+  .reader-fullscreen .source-text-page.source-cols-2 .source-body.source-body-grid{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+}

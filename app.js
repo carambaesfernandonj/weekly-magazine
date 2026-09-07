@@ -187,7 +187,19 @@ function inlineArticleImage(a,index){
   const item=imgs[index];
   return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>ORIGINAL IMAGE</span></figure>`;
 }
-function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,blocks,imageIndex=-1){
+function readerColumnCount(width){
+  const viewport=window.innerWidth||1200;
+  return (viewport>=1050 && width>=620 && state.readerView!=="spread") ? 2 : 1;
+}
+function normalizeColumns(columns){
+  if(Array.isArray(columns) && columns.length && Array.isArray(columns[0])) return columns;
+  if(Array.isArray(columns)) return [columns];
+  return [[]];
+}
+function columnHtml(blocks){
+  return `<div class="source-column">${(blocks||[]).map(blockHtml).join("")}</div>`;
+}
+function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,imageIndex=-1){
   const first=pageIndex===0; const imgs=articleImages(a); const h=a.headings||{};
   const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):"";
   const type=layoutFor((a._storyIndex||0)+pageIndex);
@@ -198,19 +210,21 @@ function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,blocks,ima
   const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
   const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
   const continuationImage=(!first && imageIndex>=0 && imageIndex<imgs.length)?inlineArticleImage(a,imageIndex):"";
-  return `<section class="page article-page source-text-page ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
+  const cols=normalizeColumns(columns);
+  const colCount=cols.length;
+  return `<section class="page article-page source-text-page source-cols-${colCount} ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
     <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
     ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
     ${firstExtras}
     ${continuationImage}
-    <div class="source-body">${blocks.map(blockHtml).join("")}</div>
+    <div class="source-body source-body-grid">${cols.map(columnHtml).join("")}</div>
     ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
     ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
     <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
   </section>`;
 }
 function articlePageHtml(a,pageIndex,totalPages,globalNumber){
-  const pages=articleTextPages(a); return articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,pages[pageIndex]||[],(!pageIndex&&-1)||(-1));
+  const pages=articleTextPages(a); return articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,[pages[pageIndex]||[]],-1);
 }
 function measurementDimensions(){
   const spread=document.querySelector("#spread");
@@ -224,28 +238,31 @@ function measurementDimensions(){
   if(document.fullscreenElement || document.querySelector("#reader.reader-fullscreen")) height=Math.max(420,window.innerHeight-105);
   return {width:Math.max(260,Math.round(width)),height:Math.max(420,Math.round(height))};
 }
-function measureArticleCandidate(a,pageIndex,blocks,imageIndex,forceTotal=99){
+function measureArticleCandidate(a,pageIndex,columns,imageIndex,forceTotal=99){
   const dims=measurementDimensions();
   const host=document.createElement("div");
   host.className="spread single-view weekly-measure-host";
   host.style.cssText=`position:fixed!important;left:-100000px!important;top:0!important;width:${dims.width}px!important;height:${dims.height}px!important;display:block!important;visibility:hidden!important;pointer-events:none!important;overflow:hidden!important;`;
-  host.innerHTML=articlePageHtmlFromParts(a,pageIndex,forceTotal,1,blocks,imageIndex);
+  host.innerHTML=articlePageHtmlFromParts(a,pageIndex,forceTotal,1,columns,imageIndex);
   const page=host.firstElementChild;
   if(!page){host.remove();return {fits:false,scroll:999999,height:dims.height};}
   page.style.width=dims.width+"px"; page.style.height=dims.height+"px"; page.style.maxHeight=dims.height+"px";
   document.body.appendChild(host);
-  const verticalOverflow=page.scrollHeight>page.clientHeight+1;
+  const columnEls=[...page.querySelectorAll(".source-column")];
+  const verticalOverflow=columnEls.some(col=>col.scrollHeight>col.clientHeight+1);
   const horizontalOverflow=page.scrollWidth>page.clientWidth+1;
+  const pageOverflow=false;
   const fits=!verticalOverflow && !horizontalOverflow;
+  const scroll=Math.max(page.scrollHeight,page.scrollWidth,...columnEls.map(col=>col.scrollHeight));
   host.remove();
-  return {fits,scroll:Math.max(page.scrollHeight,page.scrollWidth),height:dims.height,verticalOverflow,horizontalOverflow};
+  return {fits,scroll,height:dims.height,verticalOverflow,horizontalOverflow,pageOverflow};
 }
 function expandPaginationBlocks(blocks){
   const out=[];
   for(const b of blocks){
     if(!b?.text)continue;
     const text=String(b.text).trim();
-    const max=1100;
+    const max=900;
     if(text.length<=max){out.push({...b,text});continue;}
     let rest=text;
     while(rest.length>max){
@@ -258,53 +275,87 @@ function expandPaginationBlocks(blocks){
   }
   return out;
 }
+function blockFits(a,pageIndex,columns,imageIndex){
+  return measureArticleCandidate(a,pageIndex,columns,imageIndex).fits;
+}
+function fitBlockIntoColumn(a,pageIndex,columns,colIndex,block,imageIndex){
+  const target=Array.isArray(columns[colIndex])?columns[colIndex]:[];
+  let candidate=[...target,block];
+  const test=columns.map((c,i)=>i===colIndex?candidate:c);
+  if(blockFits(a,pageIndex,test,imageIndex)) return {ok:true,block,columns:test};
+  let text=String(block.text||"");
+  if(text.length<120) return {ok:false,columns};
+  let lo=60, hi=Math.max(60,text.length-1), best=null;
+  while(lo<=hi){
+    const mid=Math.floor((lo+hi)/2);
+    let cut=text.lastIndexOf(" ",mid);
+    if(cut<Math.floor(mid*.55))cut=mid;
+    const piece={...block,text:text.slice(0,cut).trim()};
+    const probe=columns.map((c,i)=>i===colIndex?[...target,piece]:c);
+    if(piece.text && blockFits(a,pageIndex,probe,imageIndex)){best={piece,columns:probe};lo=cut+1;}else hi=cut-1;
+  }
+  return best?{ok:true,block:best.piece,columns:best.columns,remaining:{...block,text:text.slice(best.piece.text.length).trim()}}:{ok:false,columns};
+}
 function paginateArticleMeasured(a){
-  const blocks=expandPaginationBlocks(storyBlocks(a));
-  if(!blocks.length)return paginateBlocks(blocks,pageCharTarget());
+  let blocks=expandPaginationBlocks(storyBlocks(a));
+  if(!blocks.length)return [{columns:[[]],imageIndex:-1}];
   const pages=[]; let cursor=0; let pageIndex=0; let imageCursor=1;
-  const safety=blocks.length+articleImages(a).length+8;
+  const safety=blocks.length*2+articleImages(a).length+12;
   while(cursor<blocks.length && pageIndex<safety){
-    const first=pageIndex===0;
-    let current=[];
+    const dims=measurementDimensions();
+    const colCount=readerColumnCount(dims.width);
+    let columns=Array.from({length:colCount},()=>[]);
     let imgIndex=-1;
-    if(!first && imageCursor<articleImages(a).length){
-      const withImage=measureArticleCandidate(a,pageIndex,[],imageCursor);
-      if(withImage.fits) { imgIndex=imageCursor; imageCursor++; }
+    if(pageIndex>0 && imageCursor<articleImages(a).length){
+      if(blockFits(a,pageIndex,columns,imageCursor)){imgIndex=imageCursor;imageCursor++;}
     }
-    for(let i=cursor;i<blocks.length;i++){
-      const candidate=[...current,blocks[i]];
-      const m=measureArticleCandidate(a,pageIndex,candidate,imgIndex);
-      if(m.fits){ current=candidate; cursor=i+1; continue; }
-      if(!current.length){
-        if(imgIndex>=0){
-          const withoutImage=measureArticleCandidate(a,pageIndex,[blocks[i]],-1);
-          if(withoutImage.fits){ imgIndex=-1; current=[blocks[i]]; cursor=i+1; continue; }
+    let progressed=false;
+    while(cursor<blocks.length){
+      let placed=false;
+      for(let ci=0;ci<columns.length;ci++){
+        const result=fitBlockIntoColumn(a,pageIndex,columns,ci,blocks[cursor],imgIndex);
+        if(result.ok){
+          columns=result.columns;
+          if(result.remaining){blocks[cursor]=result.remaining;}else{cursor++;}
+          progressed=true; placed=true; break;
         }
-        const tiny=String(blocks[i].text||"");
-        const chunks=splitLongBlock(blocks[i],Math.max(240,Math.floor(tiny.length*.55)));
-        if(chunks.length>1){ blocks.splice(i,1,...chunks); i--; continue; }
-        // Last-resort: keep the block; the expanded blocks are deliberately small enough to wrap.
-        current.push(blocks[i]); cursor=i+1;
       }
-      break;
+      if(!placed)break;
     }
-    if(current.length || imgIndex>=0){pages.push({blocks:current,imageIndex:imgIndex});pageIndex++;}
-    else break;
+    if(!progressed){
+      // A block can still be too large for an empty column because of a heading,
+      // an unusually long unbreakable token, or a layout element. Split it more
+      // aggressively instead of ever allowing overflow to hide content.
+      const b=blocks[cursor];
+      const parts=splitLongBlock(b,Math.max(90,Math.floor(String(b.text||"").length*.35)));
+      if(parts.length>1){blocks.splice(cursor,1,...parts);continue;}
+      // Last-resort single short paragraph: keep it visible on a fresh page.
+      columns[0].push(b); cursor++; progressed=true;
+    }
+    pages.push({columns,imageIndex:imgIndex});
+    pageIndex++;
   }
   if(cursor<blocks.length){
-    pages.push({blocks:blocks.slice(cursor),imageIndex:-1});
+    const dims=measurementDimensions();
+    const colCount=readerColumnCount(dims.width);
+    pages.push({columns:Array.from({length:colCount},()=>[]),imageIndex:-1});
+    for(const b of blocks.slice(cursor)) pages[pages.length-1].columns[0].push(b);
   }
-  // The final page also carries the END OF STORY/link footer. Rebalance it so that
-  // the footer itself never causes the last paragraph/image to be clipped.
+  // Verify the final page including the footer. If it does not fit, move its
+  // last content unit to the previous page and re-check; never clip text.
   while(pages.length>1){
-    const lastIndex=pages.length-1; const last=pages[lastIndex];
-    const test=measureArticleCandidate(a,lastIndex,last.blocks,last.imageIndex,99);
-    if(test.fits)break;
-    if(!last.blocks.length)break;
-    const moved=last.blocks.shift();
-    pages[lastIndex-1].blocks.push(moved);
+    const lastIndex=pages.length-1;
+    const last=pages[lastIndex];
+    if(measureArticleCandidate(a,lastIndex,last.columns,last.imageIndex).fits)break;
+    let moved=null;
+    for(let ci=last.columns.length-1;ci>=0&&!moved;ci--){
+      if(last.columns[ci].length)moved=last.columns[ci].pop();
+    }
+    if(!moved)break;
+    const prev=pages[lastIndex-1];
+    prev.columns[prev.columns.length-1].push(moved);
   }
-  return pages.length?pages:[{blocks:[{type:"p",text:"The source did not expose article text. Read the original article for the complete story."}],imageIndex:-1}];
+  return pages.length?pages:[{columns:[[]],imageIndex:-1}];
 }
 function buildReaderPages(){
   const stories=state.selected.length?state.selected:state.articles; const pages=[]; const articleStarts={};
@@ -326,7 +377,7 @@ function buildReaderPages(){
     articleStarts[i]=physical;
     const parts=paginateArticleMeasured(a);
     const total=parts.length;
-    parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.blocks,part.imageIndex));physical++});
+    parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.columns,part.imageIndex));physical++});
   });
   pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ISSUE 036</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
