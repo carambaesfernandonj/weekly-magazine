@@ -7,149 +7,107 @@
     3,
     4,
     5,
+    6,
+    7,
+    8,
+    9,
     10,
     11,
-    12,
-    13,
+    15,
     16,
-    17,
-    18,
-    19,
-    20,
-    23,
-    24,
+    27,
     29,
-    34,
-    35
+    54,
+    60,
+    61,
+    62
   ],
   "stories": [
     {
       "article_id": 0,
-      "headline": "Former Old School RuneScape Developer Sentenced For Stealing In-Game Gold From Players",
-      "dek": "Under investigation since 2019, Andrew ‘Mod Jed’ Lakeman could face three years in prison after crypto laundering half a million worth of in-game loot",
-      "summary": "Under investigation since 2019, Andrew ‘Mod Jed’ Lakeman could face three years in prison after crypto laundering half a million worth of in-game loot",
+      "headline": "De Civilization a Magic: cómo Sid Meier demostró dar una lección de diseño de videojuegos y marcó el camino para Pokémon",
+      "dek": "El difícil reto de desarrollar una adaptación a videojuego es, por lo general, un trabajo lo suficientemente complejo para no querer volver a ello -sé de lo que hablo, que trabajé en una adaptación de cine-. Pero ya no es lo bien o mal que sepas transformar personajes, aventuras o ideas en un videojuego con cara y ojos, sino todo lo que viene en el mismo pack. Tienes los problemas derivados de trabajar con la licencia de otro y todas las líneas que no puedes cruzar, una horda de fans esperando comerte vivo y, por descontado, también el reto de saber trasladar con éxito lo que unos y otros consideran impecable. Visto así, no me extraña que Magic: The Gathering fuese el último trabajo del legendario Sid Meier en Microprose. De Civilization a Magic Al César lo que es del César. A Wizards of the Coast hay que reconocerles que dieron bastante libertad al genio que venía de petarlo con Pira...",
+      "summary": "El difícil reto de desarrollar una adaptación a videojuego es, por lo general, un trabajo lo suficientemente complejo para no querer volver a ello -sé de lo que hablo, que trabajé en una adaptación de cine-. Pero ya no es lo bien o mal que sepas transformar personajes, aventuras o ideas en un videojuego con cara y ojos, sino todo lo que viene en el mismo pack. Tienes los problemas derivados de trabajar con la licencia de otro y todas las líneas que no puedes cruzar, una horda de fans esperando comerte vivo y, por descontado, también el reto de saber trasladar con éxito lo que unos y otros consideran impecable. Visto así, no me extraña que Magic: The Gathering fuese el último trabajo del legendario Sid Meier en Microprose. De Civilization a Magic Al César lo que es del César. A Wizards of the Coast hay que reconocerles que dieron bastante libertad al genio que venía de petarlo con Pira...",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: 🕹️ Level up your inbox",
-        "H2: You May Also Like",
-        "H2: Thieves Discover A Completely Unique Way To Steal High-End GPUs"
+        "Fuente: Vida Extra"
       ],
       "headings": {
         "h1": [],
-        "h2": [
-          "🕹️ Level up your inbox",
-          "You May Also Like",
-          "Thieves Discover A Completely Unique Way To Steal High-End GPUs",
-          "Someone Just Maxed Out Their Fishing In Old School RuneScape Using Only The Starter Net: ‘Nothing Matters’"
-        ]
+        "h2": []
       }
     },
     {
       "article_id": 1,
-      "headline": "Epic Games CEO Tim Sweeney Says The Industry Is Crashing And AI Is Making It Worse",
-      "dek": "Usually playing the cheerleader for artificial intelligence, the Epic CEO seems to have cooled on the trend and regrets humoring NFTs",
-      "summary": "Usually playing the cheerleader for artificial intelligence, the Epic CEO seems to have cooled on the trend and regrets humoring NFTs",
+      "headline": "Ys Origin por 1,99€ y más ofertas por apenas 1-2€ que arrasan ahora mismo en la eShop de Nintendo Switch 2 y Nintendo Switch",
+      "dek": "Nos llegan más ofertas realmente tentadoras en la eShop de Nintendo Switch. Recordad que Nintendo actualizó recientemente la forma en la que se elaboraba este top, dando más importancia a los juegos que generaban más ingresos en los últimos días. Ofertas a precios casi regalados en la eShop de Nintendo Switch 2 y Nintendo Switch Esta vez os traemos […]",
+      "summary": "Nos llegan más ofertas realmente tentadoras en la eShop de Nintendo Switch. Recordad que Nintendo actualizó recientemente la forma en la que se elaboraba este top, dando más importancia a los juegos que generaban más ingresos en los últimos días. Ofertas a precios casi regalados en la eShop de Nintendo Switch 2 y Nintendo Switch Esta vez os traemos […]",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: 🕹️ Level up your inbox",
-        "H2: You May Also Like",
-        "H2: Fortnite ‘s Long Sonic Haunts My Nightmares"
+        "H2: Buscar en Nintenderos"
       ],
       "headings": {
         "h1": [],
         "h2": [
-          "🕹️ Level up your inbox",
-          "You May Also Like",
-          "Fortnite ‘s Long Sonic Haunts My Nightmares",
-          "Now Sonic Is Getting A Gun In Fortnite As ‘Gaming Legends’ From Mega Man , Spyro , Persona And More Arrive"
+          "Buscar en Nintenderos"
         ]
       }
     },
     {
       "article_id": 2,
-      "headline": "Following Pokémon, Stern Lets Fallout Pinball Machine Out Of The Vault",
-      "dek": "The largest pinball company delves further into the video game themes, albeit with one largely taking inspiration from its TV adaptation",
-      "summary": "The largest pinball company delves further into the video game themes, albeit with one largely taking inspiration from its TV adaptation",
+      "headline": "\"Se mira pero no se toca, Majestad\": por qué la reina de Inglaterra no se sentó en el Trono de Hierro de Juego de Tronos",
+      "dek": "Dado que Juego de Tronos tiene el nombre que tiene, es entendible que el Trono de Hierro se convirtiese en el mayor objeto de deseo de todos los personajes de la serie. Conseguir sentar las posaderas en semejante lugar equivalía a gobernar a miles y sentirse por encima de las numerosas casas que pueblan el universo de George R.R. Martin . Sin embargo, hay personas en la vida real que no han tenido por qué disfrutar de ese placer. Y es que, en el 2015, la mismísima reina Isabel de Inglaterra realizó una visita al rodaje de la serie de HBO en Belfast, Irlanda del Norte, dado que la producción de los showrunners David Benioff y D.B. Weiss había creado muchísimos puestos de trabajo en la zona. La monarca también se reunió con Lena Headey, Kit Harington, Maisie Williams y Sophie Turner, lo que derivó en una invitación particular. En Vida Extra Aun con sus fugas de agua, Star Wars Zero Comp...",
+      "summary": "Dado que Juego de Tronos tiene el nombre que tiene, es entendible que el Trono de Hierro se convirtiese en el mayor objeto de deseo de todos los personajes de la serie. Conseguir sentar las posaderas en semejante lugar equivalía a gobernar a miles y sentirse por encima de las numerosas casas que pueblan el universo de George R.R. Martin . Sin embargo, hay personas en la vida real que no han tenido por qué disfrutar de ese placer. Y es que, en el 2015, la mismísima reina Isabel de Inglaterra realizó una visita al rodaje de la serie de HBO en Belfast, Irlanda del Norte, dado que la producción de los showrunners David Benioff y D.B. Weiss había creado muchísimos puestos de trabajo en la zona. La monarca también se reunió con Lena Headey, Kit Harington, Maisie Williams y Sophie Turner, lo que derivó en una invitación particular. En Vida Extra Aun con sus fugas de agua, Star Wars Zero Comp...",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H2: 🕹️ Level up your inbox",
-        "H2: You May Also Like",
-        "H2: Fallout Season 3 Set Leak Might Hint At The Show Visiting Fallout 3′ s Capital Wasteland"
+        "Fuente: Vida Extra"
       ],
       "headings": {
         "h1": [],
-        "h2": [
-          "🕹️ Level up your inbox",
-          "You May Also Like",
-          "Fallout Season 3 Set Leak Might Hint At The Show Visiting Fallout 3′ s Capital Wasteland",
-          "Reported Director Of Obsidian’s Upcoming Fallout Game Says RPGS Are ‘At Their Best…When You Can’t Control Everything’"
-        ]
+        "h2": []
       }
     },
     {
       "article_id": 3,
-      "headline": "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
-      "dek": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
-      "summary": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
+      "headline": "BG3's Best Evil Playthrough Replacement Is Waiting to Be Rediscovered on Steam",
+      "dek": "Tyranny casts you as an enforcer for a god-emperor who already won the war. If Baldur's Gate 3's evil playthroughs left you wanting more, play this",
+      "summary": "Tyranny casts you as an enforcer for a god-emperor who already won the war. If Baldur's Gate 3's evil playthroughs left you wanting more, play this",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
-        "H2: Arcade Archives 2 Features"
+        "Fuente: Polygon"
       ],
       "headings": {
-        "h1": [
-          "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S"
-        ],
-        "h2": [
-          "Arcade Archives 2 Features"
-        ]
+        "h1": [],
+        "h2": []
       }
     },
     {
       "article_id": 4,
-      "headline": "Atari and Vice Beer Introduce New Beer Collection",
-      "dek": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
-      "summary": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
+      "headline": "Riot Co-Founder Calls League of Legends MMO the 'Grail' Quest, 5 Years After It Was Announced",
+      "dek": "League of Legends developer Riot Games is still bashing away on its MMO, which co-founder Mark Merrill recently described as the studio’s \"grail quest.\"",
+      "summary": "League of Legends developer Riot Games is still bashing away on its MMO, which co-founder Mark Merrill recently described as the studio’s \"grail quest.\"",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Atari and Vice Beer Introduce New Beer Collection"
+        "H1: Riot Co-Founder Calls League of Legends MMO the 'Grail' Quest, 5 Years After It Was Announced",
+        "H2: \"The future's incredibly bright.\""
       ],
       "headings": {
         "h1": [
-          "Atari and Vice Beer Introduce New Beer Collection"
+          "Riot Co-Founder Calls League of Legends MMO the 'Grail' Quest, 5 Years After It Was Announced"
         ],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 5,
-      "headline": "Granblue Fantasy Relink Company Announces New Publishing Label Aimed At Releasing Smaller Games Faster",
-      "dek": "Their first game, Where the Seeds Fall , will release in November",
-      "summary": "Their first game, Where the Seeds Fall , will release in November",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H2: 🕹️ Level up your inbox",
-        "H2: You May Also Like",
-        "H2: The Most Underrated RPG Of The Last 5 Years Now Has A Great Expansion"
-      ],
-      "headings": {
-        "h1": [],
         "h2": [
-          "🕹️ Level up your inbox",
-          "You May Also Like",
-          "The Most Underrated RPG Of The Last 5 Years Now Has A Great Expansion",
-          "Studio Behind Umamusume: Pretty Derby And Other Beloved Anime Is Reportedly In A $3.5 Million Hole"
+          "\"The future's incredibly bright.\""
         ]
       }
     },
     {
-      "article_id": 10,
-      "headline": "Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños",
-      "dek": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
-      "summary": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "article_id": 5,
+      "headline": "GOTY 2026 is the Weakest Field in Years",
+      "dek": "In the shadow of GTA 6, other 2026 GOTY contenders like The Blood of Dawnwalker keep missing the mark.",
+      "summary": "In the shadow of GTA 6, other 2026 GOTY contenders like The Blood of Dawnwalker keep missing the mark.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: HobbyConsolas"
+        "Fuente: Polygon"
       ],
       "headings": {
         "h1": [],
@@ -157,23 +115,178 @@
       }
     },
     {
-      "article_id": 11,
-      "headline": "Streets of Rage Micro Player Pro Licensed By SEGA",
-      "dek": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
-      "summary": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "article_id": 6,
+      "headline": "Skytech Gaming Blaze 5 Review",
+      "dek": "The Skytech Gaming Blaze 5 is packed with strong mid-tier components in a sleek glassy tower, but there are a few issues that’ll impact your quality of life.",
+      "summary": "The Skytech Gaming Blaze 5 is packed with strong mid-tier components in a sleek glassy tower, but there are a few issues that’ll impact your quality of life.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "H1: Streets of Rage Micro Player Pro Licensed By SEGA"
+        "H1: Skytech Gaming Blaze 5 Review",
+        "H2: Solid performance paired with quality of life issues.",
+        "H2: Skytech Gaming Blaze 5 – Case Design and Build Layout",
+        "H2: Skytech Gaming Blaze 5 – Software"
       ],
       "headings": {
         "h1": [
-          "Streets of Rage Micro Player Pro Licensed By SEGA"
+          "Skytech Gaming Blaze 5 Review"
         ],
+        "h2": [
+          "Solid performance paired with quality of life issues.",
+          "Skytech Gaming Blaze 5 – Case Design and Build Layout",
+          "Skytech Gaming Blaze 5 – Software",
+          "Skytech Gaming Blaze 5 – Performance"
+        ]
+      }
+    },
+    {
+      "article_id": 7,
+      "headline": "Nintendo tiene previstas estas tareas de mantenimiento en la Nintendo Store y eShop (6/9/26)",
+      "dek": "Una semana más, aquí os traemos este recopilatorio con tareas de mantenimiento. Ya se han actualizado los horarios de las próximas rondas de tareas de mantenimiento de Nintendo para los servicios online de sus diferentes plataformas. Aquí os traemos un nuevo recopilatorio de los mismos. Mantenimiento de Nintendo Al igual que en anteriores ocasiones, el juego en línea, el online y […]",
+      "summary": "Una semana más, aquí os traemos este recopilatorio con tareas de mantenimiento. Ya se han actualizado los horarios de las próximas rondas de tareas de mantenimiento de Nintendo para los servicios online de sus diferentes plataformas. Aquí os traemos un nuevo recopilatorio de los mismos. Mantenimiento de Nintendo Al igual que en anteriores ocasiones, el juego en línea, el online y […]",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H2: Buscar en Nintenderos"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": [
+          "Buscar en Nintenderos"
+        ]
+      }
+    },
+    {
+      "article_id": 8,
+      "headline": "Mientras pides Destiny 3, Bungie sigue en caída libre: ha puesto en alquiler su sede de 19.602 metros cuadrados tras los despidos",
+      "dek": "Si has visto las últimas publicaciones de PlayStation en redes sociales o los recientes State of Play , seguro que te has percatado de los muchos comentarios que piden un Destiny 3 . La compra de Bungie por parte de Sony y el reciente cierre del desarrollo de Destiny 2 han alimentado los deseos de los fans, a quienes ni los despidos masivos logran disuadir. Pero eso va a cambiar. Las cosas no han mejorado para Bungie. Continúan en caída libre. Ahora sabemos que el estudio busca subarrendar su sede u oficinas centrales, situadas en Bellevue, Washington, y que tienen una extensión de unos 19.600 m² (210.984 pies cuadrados). El contrato tiene vigencia hasta 2035. Poco después, un portavoz de Bungie confirmó a The Game Post que el estudio está explorando opciones para subarrendar las oficinas debido a un modelo de trabajo \"digital-first\" con poca presencia en la sede. En Vida Extra Game G...",
+      "summary": "Si has visto las últimas publicaciones de PlayStation en redes sociales o los recientes State of Play , seguro que te has percatado de los muchos comentarios que piden un Destiny 3 . La compra de Bungie por parte de Sony y el reciente cierre del desarrollo de Destiny 2 han alimentado los deseos de los fans, a quienes ni los despidos masivos logran disuadir. Pero eso va a cambiar. Las cosas no han mejorado para Bungie. Continúan en caída libre. Ahora sabemos que el estudio busca subarrendar su sede u oficinas centrales, situadas en Bellevue, Washington, y que tienen una extensión de unos 19.600 m² (210.984 pies cuadrados). El contrato tiene vigencia hasta 2035. Poco después, un portavoz de Bungie confirmó a The Game Post que el estudio está explorando opciones para subarrendar las oficinas debido a un modelo de trabajo \"digital-first\" con poca presencia en la sede. En Vida Extra Game G...",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Vida Extra"
+      ],
+      "headings": {
+        "h1": [],
         "h2": []
       }
     },
     {
-      "article_id": 12,
+      "article_id": 9,
+      "headline": "5 Most Shocking Anime Deaths Of The 21st Century",
+      "dek": "These anime deaths completely changed the trajectory of these stories.",
+      "summary": "These anime deaths completely changed the trajectory of these stories.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Polygon"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 10,
+      "headline": "Tales of Eternia Remastered confirma FPS, resolución y más detalles en Nintendo Switch 2 y Nintendo Switch",
+      "dek": "Bandai Namco tiene más planes para Nintendo Switch 2 tras Tales of Arise – Beyond the Dawn Edition, ahora sabemos que Tales of Eternia Remastered se lanzará a nivel mundial el 16 de octubre de 2026 para Nintendo Switch 2, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series X/S y PC a través de Steam, con gráficos mejorados y mejoras de calidad […]",
+      "summary": "Bandai Namco tiene más planes para Nintendo Switch 2 tras Tales of Arise – Beyond the Dawn Edition, ahora sabemos que Tales of Eternia Remastered se lanzará a nivel mundial el 16 de octubre de 2026 para Nintendo Switch 2, Nintendo Switch, PlayStation 5, PlayStation 4, Xbox Series X/S y PC a través de Steam, con gráficos mejorados y mejoras de calidad […]",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H2: Buscar en Nintenderos"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": [
+          "Buscar en Nintenderos"
+        ]
+      }
+    },
+    {
+      "article_id": 11,
+      "headline": "Rumor: Un anuncio del The Legend of Zelda 40th Anniversary Direct también se habría filtrado",
+      "dek": "Parece que tenemos reportes de The Legend of Zelda: se trata de información relacionada con la película de la franquicia que tenemos en camino. Hace poco conocimos algunas respuestas a los fans sobre la cinta y ahora os traemos más detalles. Ahora, según un nuevo rumor, el insider DanielRPK habría dejado entrever que el tráiler de la película de The […]",
+      "summary": "Parece que tenemos reportes de The Legend of Zelda: se trata de información relacionada con la película de la franquicia que tenemos en camino. Hace poco conocimos algunas respuestas a los fans sobre la cinta y ahora os traemos más detalles. Ahora, según un nuevo rumor, el insider DanielRPK habría dejado entrever que el tráiler de la película de The […]",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H2: Buscar en Nintenderos"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": [
+          "Buscar en Nintenderos"
+        ]
+      }
+    },
+    {
+      "article_id": 15,
+      "headline": "A Harry Potter y el Cáliz de Fuego no le importa exponer a adolescentes a la muerte, pero a los dragones no les toca ni una escama",
+      "dek": "El universo de Harry Potter es muy peculiar y no solo porque sea un mundo mágico que coexiste de forma invisible en el mismo plano que la realidad, o lo que se conoce como mundo muggle. Las reglas establecidas por J. K. Rowling y ampliadas por Warner Bros. en películas, series y videojuegos son de lo más curiosas. Por ejemplo, pueden teletransportarte y viajar distancias enormes en segundos, pero todavía utilizan correo por lechuza. Puede parecer una tontería, pero son cuestiones que fans y no tan fans debaten en lugares como Reddit. En este sentido, una de las cuestiones más peculiares tiene que ver con la seguridad: se incide en varias ocasiones en que Hogwarts es uno de los lugares más seguros del mundo, pero cada curso la vida de los alumnos se pone en riesgo. En Vida Extra ¿Qué pasa en The Blood of Dawnwalker cuando se acaba el tiempo y por qué te recomiendo probarlo al menos una...",
+      "summary": "El universo de Harry Potter es muy peculiar y no solo porque sea un mundo mágico que coexiste de forma invisible en el mismo plano que la realidad, o lo que se conoce como mundo muggle. Las reglas establecidas por J. K. Rowling y ampliadas por Warner Bros. en películas, series y videojuegos son de lo más curiosas. Por ejemplo, pueden teletransportarte y viajar distancias enormes en segundos, pero todavía utilizan correo por lechuza. Puede parecer una tontería, pero son cuestiones que fans y no tan fans debaten en lugares como Reddit. En este sentido, una de las cuestiones más peculiares tiene que ver con la seguridad: se incide en varias ocasiones en que Hogwarts es uno de los lugares más seguros del mundo, pero cada curso la vida de los alumnos se pone en riesgo. En Vida Extra ¿Qué pasa en The Blood of Dawnwalker cuando se acaba el tiempo y por qué te recomiendo probarlo al menos una...",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Vida Extra"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 16,
+      "headline": "3 Games Where Your Choices Truly Matter",
+      "dek": "Games where choices matter often narrow what matters to character death or branching endings. These narrative-driven games do it differently",
+      "summary": "Games where choices matter often narrow what matters to character death or branching endings. These narrative-driven games do it differently",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Polygon"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 27,
+      "headline": "How to Watch the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
+      "dek": "Nintendo is going big this September with two Nintendo Direct showcases airing on back-to-back days. Here's everything you need to know.",
+      "summary": "Nintendo is going big this September with two Nintendo Direct showcases airing on back-to-back days. Here's everything you need to know.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: How to Watch the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct",
+        "H2: It's a big week for Nintendo fans.",
+        "H2: When Does the Zelda 40th Anniversary Nintendo Direct Start?",
+        "H2: When Does the September 2026 Nintendo Direct Start?"
+      ],
+      "headings": {
+        "h1": [
+          "How to Watch the September 2026 Nintendo Direct and Zelda 40th Anniversary Direct"
+        ],
+        "h2": [
+          "It's a big week for Nintendo fans.",
+          "When Does the Zelda 40th Anniversary Nintendo Direct Start?",
+          "When Does the September 2026 Nintendo Direct Start?",
+          "How to Watch the September 2026 Nintendo Directs"
+        ]
+      }
+    },
+    {
+      "article_id": 29,
+      "headline": "Left 4 Dead 2 Dev Admits Valve Intentionally Leaked Its Own Trailer After the ESRB Blocked It from Release",
+      "dek": "Former Valve writer Chet Faliszek has a confession to make: Valve intentionally leaked its own Left 4 Dead 2 trailer.",
+      "summary": "Former Valve writer Chet Faliszek has a confession to make: Valve intentionally leaked its own Left 4 Dead 2 trailer.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Left 4 Dead 2 Dev Admits Valve Intentionally Leaked Its Own Trailer After the ESRB Blocked It from Release",
+        "H2: Reanimated."
+      ],
+      "headings": {
+        "h1": [
+          "Left 4 Dead 2 Dev Admits Valve Intentionally Leaked Its Own Trailer After the ESRB Blocked It from Release"
+        ],
+        "h2": [
+          "Reanimated."
+        ]
+      }
+    },
+    {
+      "article_id": 54,
       "headline": "An Emulation Mod Kit For The LEGO PlayStation Is In The Works",
       "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
       "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
@@ -187,31 +300,7 @@
       }
     },
     {
-      "article_id": 13,
-      "headline": "Pac-Man, Space Invaders, Tetris, and other classic games",
-      "dek": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
-      "summary": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Pac-Man, Space Invaders, Tetris, and other classic games",
-        "H2: The arcade rulebook was tiny",
-        "H2: Why cabinets made people brave",
-        "H2: Home ports changed the argument"
-      ],
-      "headings": {
-        "h1": [
-          "Pac-Man, Space Invaders, Tetris, and other classic games"
-        ],
-        "h2": [
-          "The arcade rulebook was tiny",
-          "Why cabinets made people brave",
-          "Home ports changed the argument",
-          "Patterns, panic, and score chasing"
-        ]
-      }
-    },
-    {
-      "article_id": 16,
+      "article_id": 60,
       "headline": "Retro YouTuber Announces A Cool New Emulation Frontend Called Jump",
       "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
       "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
@@ -225,7 +314,7 @@
       }
     },
     {
-      "article_id": 17,
+      "article_id": 61,
       "headline": "Hyperkin Bring Modern Power To Retro Consoles With New USB-C Charging System Range",
       "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
       "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
@@ -239,113 +328,13 @@
       }
     },
     {
-      "article_id": 18,
-      "headline": "The Interface Details That Made Computer Solitaire Feel Timeless",
-      "dek": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
-      "summary": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H2: The Interface Details That Made Computer Solitaire Feel Timeless"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": [
-          "The Interface Details That Made Computer Solitaire Feel Timeless"
-        ]
-      }
-    },
-    {
-      "article_id": 19,
-      "headline": "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena",
-      "dek": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
-      "summary": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 20,
+      "article_id": 62,
       "headline": "PlayCase Is A New Retro iPhone Controller With Real Triggers",
       "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
       "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
         "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 23,
-      "headline": "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox",
-      "dek": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
-      "summary": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 24,
-      "headline": "Retro Re-release Roundup, week of September 3, 2026",
-      "dek": "Ufouria, plus four more.",
-      "summary": "Ufouria, plus four more.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: RETRONAUTS"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 29,
-      "headline": "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix",
-      "dek": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
-      "summary": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 34,
-      "headline": "Kickstarter Kompilation: September 2026 edition",
-      "dek": "Featuring books and shelves but no bookshelves",
-      "summary": "Featuring books and shelves but no bookshelves",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: RETRONAUTS"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 35,
-      "headline": "The Master System Directory (An-Ar)",
-      "dek": "What would I give if I could live out of these waters",
-      "summary": "What would I give if I could live out of these waters",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: RETRONAUTS"
       ],
       "headings": {
         "h1": [],
@@ -363,25 +352,25 @@
         3,
         4,
         5,
+        6,
+        7,
+        8,
+        9,
         10,
         11,
-        12,
-        13,
+        15,
         16,
-        17,
-        18,
-        19,
-        20,
-        23,
-        24,
+        27,
         29,
-        34,
-        35
+        54,
+        60,
+        61,
+        62
       ]
     }
   ],
   "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
-  "generatedAt": "2026-09-07T15:26:40.642773+00:00",
+  "generatedAt": "2026-09-06T13:26:42.666146+00:00",
   "model": "zero-cost",
   "status": "rss",
   "editorial_profile": {
