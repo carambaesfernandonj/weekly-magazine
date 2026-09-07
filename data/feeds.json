@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-06T13:26:29.758845+00:00",
+  "updatedAt": "2026-09-07T15:26:27.412248+00:00",
   "feeds": [
     {
       "id": 13,
@@ -34,6 +34,55 @@
       "name": "Retro Dodo",
       "url": "https://retrododo.com/feed/",
       "category": "REtroGaming",
+      "enabled": true
+    },
+    {
+      "id": 18,
+      "name": "Kotaku",
+      "url": "https://kotaku.com/rss",
+      "category": "Cultura",
+      "enabled": true
+    },
+    {
+      "id": 19,
+      "name": "Gamasutra",
+      "url": "https://www.gamedeveloper.com/rss",
+      "category": "Gaming",
+      "enabled": true
+    },
+    {
+      "id": 20,
+      "name": "BLEEDING COOL",
+      "url": "https://bleedingcool.com/feed",
+      "category": "Culture",
+      "enabled": true
+    },
+    {
+      "id": 21,
+      "name": "HobbyConsolas",
+      "url": "https://www.hobbyconsolas.com/rss/",
+      "category": "Gaming",
+      "enabled": true
+    },
+    {
+      "id": 22,
+      "name": "RETRONAUTS",
+      "url": "https://retronauts.com/feed",
+      "category": "Retrogaming",
+      "enabled": true
+    },
+    {
+      "id": 23,
+      "name": "Old School gAmer Magazine",
+      "url": "https://oldschoolgamermagazine.com/feed",
+      "category": "Retrogaming",
+      "enabled": true
+    },
+    {
+      "id": 24,
+      "name": "RETROMASH",
+      "url": "https://retromash.com/blog/feed",
+      "category": "Retrogaming",
       "enabled": true
     }
   ]
