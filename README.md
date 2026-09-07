@@ -1,50 +1,18 @@
-# WEEKLY V0.8.1 — Zero-Cost Editorial
+# WEEKLY v0.9.7 — Measured Smart Composer
 
-Personal RSS/Atom magazine reader. V0.8 does not require OpenAI credits.
+This build continues v0.9.6 and keeps the weekly RSS window, Supabase source sync, single-page reader and multi-image enrichment.
 
-## This Week
-Instead of manually selecting individual stories, choose editorial tags. WEEKLY builds a candidate pool from matching stories and randomly selects up to 24 with category diversity. Use SHUFFLE to regenerate the selection.
+## What changed
 
-Tags are generated from feed category plus article title/description and the extractor's keyword taxonomy. The article list is now a preview of the pool, not a manual checklist.
+- Replaces character-only pagination with browser-measured pagination for article pages.
+- Measures each candidate page against the actual fixed page geometry before accepting another content block.
+- Long blocks are split into smaller chunks when necessary.
+- Continuation images are included in the same measurement budget, so an image cannot push text below the page.
+- If an image plus the next block does not fit, the composer can defer the image rather than clipping content.
+- The final page is rebalanced to leave room for the END OF STORY / READ ORIGINAL footer.
+- Inline article images use `object-fit: contain` so the source photo itself is not intentionally cropped.
+- The existing Single / Spread reader remains available; Single remains the recommended validation mode.
 
-## Setup
-1. Keep your existing `config.js` with the Supabase publishable key.
-2. Run GitHub Actions → **Build WEEKLY issue**.
-3. Open the site and go to **This Week**.
-4. Pick tags, shuffle if desired, then generate the magazine.
+## Important
 
-The pipeline remains RSS/Atom → dedupe → scoring → tag enrichment → bounded page enrichment (image/H1/H2) → magazine. No AI call is made.
-
-
-## V0.8 — Real Magazine
-WEEKLY now uses several magazine page layouts (feature, news, image-led, shorts), a table of contents, clickable cover stories, page numbering, source imagery/headings and original-source links. The editorial layer remains zero-cost and source-first.
-
-## V0.8.1 — Custom Topics
-This Week now supports persistent custom topics in addition to automatically detected tags. Custom topics search titles, descriptions, H1/H2, source names and existing tags. Common shortcuts include ANIME, MARVEL, DC, RETRO GAMING, POKEMON and STAR WARS. No OpenAI credits are required.
-
-## V0.8.4.2 — Magazine rhythm
-- Print-inspired cover treatment and issue header.
-- Stronger editorial typography, running heads and page metadata.
-- More pronounced magazine/spread visual hierarchy.
-- Keeps V0.8.1 custom topics and zero-cost RSS editorial flow.
-
-
-### Source sync
-Supabase is the source of truth for active feeds. Each GitHub Actions build reads the enabled rows from Supabase, fetches those feeds, and rewrites `data/feeds.json` as a mirror of the source list used by that build. The workflow also accepts `SUPABASE_SECRET_KEY`, `SUPABASE_SECRET`, or `SUPABASE_SERVICE_ROLE_KEY` as the configured GitHub secret name. If Supabase credentials are missing entirely, local execution can still fall back to `data/feeds.json`; a partially configured Supabase setup fails loudly instead of silently using an old feed list.
-
-
-## V0.9.3 — Fixed pages / no visual clipping
-Magazine pages use fixed physical geometry. Article body pagination is intentionally conservative so title/dek/image/body content is split into additional pages rather than clipped by CSS. Fullscreen retains internal scrolling as a reading aid.
-
-## V0.9.4 — content-safe fixed pages
-- Fixed physical page geometry remains locked.
-- Removed silent headline/dek clipping.
-- Added headline fitting tiers for long titles.
-- Uses conservative per-layout body budgets so article text continues onto additional fixed-size pages instead of being hidden.
-
-
-## V0.9.6 — Smart Page Composer + Multi-Image Articles
-- Single-page reader remains the primary composition target.
-- Continuation pages use larger, viewport-aware text budgets so the page is actually filled.
-- Article pages can show additional images extracted from the original article (up to 6, with conservative UI/noise filtering).
-- No AI credits are required for the compositor or image extraction.
+The compositor is still zero-AI / zero-credit. It uses the browser's actual layout engine to decide what fits.

@@ -233,3 +233,9 @@
 .single-view .source-continuation .source-body,.single-view .source-first .source-body{min-height:0}
 @media(min-width:1050px){.reader-inline-image img{height:145px}}
 @media(max-width:720px){.reader-inline-image img{height:150px}.reader-inline-image{margin-bottom:10px}.reader-inline-image figcaption{font-size:9px}}
+
+/* V0.9.7 — measured pagination safety */
+.weekly-measure-host{z-index:-1!important;}
+.single-view .source-text-page .source-body{overflow:visible!important;min-height:0;}
+.source-text-page .reader-inline-image img{object-fit:contain;background:#d7d2c8;}
+.source-text-page .reader-inline-image{break-inside:avoid;page-break-inside:avoid;}

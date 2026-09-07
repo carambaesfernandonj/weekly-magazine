@@ -1,4 +1,4 @@
-const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,readerPage:0,readerView:"single",shuffled:false};
+const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,readerPage:0,readerView:"single",shuffled:false,readerModel:null};
 const titles={dashboard:"Dashboard",sources:"My Sources",articles:"This Week",magazine:"Magazine",reader:"Reader",archive:"Archive"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -51,7 +51,7 @@ function shuffleArray(arr){const out=[...arr];for(let i=out.length-1;i>0;i--){co
 function chooseRandomStories(pool=candidatePool()){const ranked=shuffleArray(pool.slice()).sort((a,b)=>((b.editorialScore||0)-(a.editorialScore||0))*(Math.random()*.55+.45));const out=[],counts={};for(const a of ranked){const cat=a.category||"Other";if((counts[cat]||0)>=8)continue;out.push(a);counts[cat]=(counts[cat]||0)+1;if(out.length>=24)break}return out}
 function sync(){if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories();state.shuffled=false}if(!state.selected.length)state.selected=candidatePool().filter(a=>a.selected).slice(0,24);updateCounts()}
 function saveTopics(){localStorage.setItem("weekly.selectedTags",JSON.stringify([...state.selectedTags]));localStorage.setItem("weekly.customTags",JSON.stringify([...state.customTags]))}
-function rerenderTopicSelection(){state.selected=[];state.shuffled=true;saveTopics();renderTags();renderArticles();renderMagazine()}
+function rerenderTopicSelection(){state.selected=[];state.readerModel=null;state.shuffled=true;saveTopics();renderTags();renderArticles();renderMagazine()}
 function addCustomTopic(raw){const topic=String(raw||"").trim().replace(/\s+/g," ");if(!topic)return false;const key=topic.toUpperCase();if(state.customTags.has(key)||state.selectedTags.has(key))return false;state.customTags.add(key);rerenderTopicSelection();return true}
 function removeCustomTopic(topic){state.customTags.delete(String(topic).toUpperCase());rerenderTopicSelection()}
 function renderTags(){const box=$("#tag-cloud");if(!box)return;box.innerHTML="";const custom=[...state.customTags];if(custom.length){const head=document.createElement("div");head.className="custom-topic-list";head.innerHTML=custom.map(t=>`<button class="tag-chip custom-chip active" data-custom-topic="${esc(t)}"><span>${esc(t)}</span><small>×</small></button>`).join("");box.appendChild(head);head.querySelectorAll("[data-custom-topic]").forEach(b=>b.onclick=()=>removeCustomTopic(b.dataset.customTopic))}
@@ -88,7 +88,7 @@ function sectionOpener(a,number){
   const lead=storyTitle(a);
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{const model=buildReaderPages();state.readerPage=state.readerView==="spread"?Math.floor((model.articleStarts[i]||0)/2)*2:(model.articleStarts[i]||0);renderReader();show("reader")};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
+function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");renderReader()};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
 // V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
 // Continuation pages intentionally carry much more text than the old 900-char cap.
 const PAGE_CHAR_TARGET_DESKTOP=2500;
@@ -187,15 +187,17 @@ function inlineArticleImage(a,index){
   const item=imgs[index];
   return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>ORIGINAL IMAGE</span></figure>`;
 }
-function articlePageHtml(a,pageIndex,totalPages,globalNumber){
-  const pages=articleTextPages(a); const blocks=pages[pageIndex]||[]; const first=pageIndex===0; const imgs=articleImages(a); const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):""; const h=a.headings||{}; const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE"); const date=esc((a.published||"").slice(0,10));
+function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,blocks,imageIndex=-1){
+  const first=pageIndex===0; const imgs=articleImages(a); const h=a.headings||{};
+  const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):"";
   const type=layoutFor((a._storyIndex||0)+pageIndex);
   const headlineClass=headlineClassFor(storyTitle(a));
   const quote=esc(pullQuote(a));
+  const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE");
+  const date=esc((a.published||"").slice(0,10));
   const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
   const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
-  // Use additional source images on continuation pages, cycling only when the article exposes them.
-  const continuationImage=(!first && imgs.length>pageIndex)?inlineArticleImage(a,pageIndex):"";
+  const continuationImage=(!first && imageIndex>=0 && imageIndex<imgs.length)?inlineArticleImage(a,imageIndex):"";
   return `<section class="page article-page source-text-page ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
     <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
     ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
@@ -206,6 +208,102 @@ function articlePageHtml(a,pageIndex,totalPages,globalNumber){
     ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
     <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
   </section>`;
+}
+function articlePageHtml(a,pageIndex,totalPages,globalNumber){
+  const pages=articleTextPages(a); return articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,pages[pageIndex]||[],(!pageIndex&&-1)||(-1));
+}
+function measurementDimensions(){
+  const spread=document.querySelector("#spread");
+  let width=0,height=0;
+  if(spread && spread.clientWidth){
+    width=Math.min(spread.clientWidth, state.readerView==="spread"?Math.floor(spread.clientWidth/2):spread.clientWidth);
+    const page=spread.querySelector(".page"); if(page){width=page.clientWidth||width;height=page.clientHeight||0;}
+  }
+  if(!width) width=Math.min(window.innerWidth>720?760:Math.max(300,window.innerWidth-32),760);
+  if(!height) height=state.readerView==="spread"?Math.max(560,Math.min(760,window.innerHeight-250)):Math.round(width*4/3);
+  if(document.fullscreenElement || document.querySelector("#reader.reader-fullscreen")) height=Math.max(420,window.innerHeight-105);
+  return {width:Math.max(260,Math.round(width)),height:Math.max(420,Math.round(height))};
+}
+function measureArticleCandidate(a,pageIndex,blocks,imageIndex,forceTotal=99){
+  const dims=measurementDimensions();
+  const host=document.createElement("div");
+  host.className="spread single-view weekly-measure-host";
+  host.style.cssText=`position:fixed!important;left:-100000px!important;top:0!important;width:${dims.width}px!important;height:${dims.height}px!important;display:block!important;visibility:hidden!important;pointer-events:none!important;overflow:hidden!important;`;
+  host.innerHTML=articlePageHtmlFromParts(a,pageIndex,forceTotal,1,blocks,imageIndex);
+  const page=host.firstElementChild;
+  if(!page){host.remove();return {fits:false,scroll:999999,height:dims.height};}
+  page.style.width=dims.width+"px"; page.style.height=dims.height+"px"; page.style.maxHeight=dims.height+"px";
+  document.body.appendChild(host);
+  const scroll=page.scrollHeight;
+  const fits=scroll<=dims.height+1;
+  host.remove();
+  return {fits,scroll,height:dims.height};
+}
+function expandPaginationBlocks(blocks){
+  const out=[];
+  for(const b of blocks){
+    if(!b?.text)continue;
+    const text=String(b.text).trim();
+    const max=1100;
+    if(text.length<=max){out.push({...b,text});continue;}
+    let rest=text;
+    while(rest.length>max){
+      let cut=rest.lastIndexOf(" ",max);
+      if(cut<Math.floor(max*.55))cut=max;
+      out.push({...b,text:rest.slice(0,cut).trim()});
+      rest=rest.slice(cut).trim();
+    }
+    if(rest)out.push({...b,text:rest});
+  }
+  return out;
+}
+function paginateArticleMeasured(a){
+  const blocks=expandPaginationBlocks(storyBlocks(a));
+  if(!blocks.length)return paginateBlocks(blocks,pageCharTarget());
+  const pages=[]; let cursor=0; let pageIndex=0; let imageCursor=1;
+  const safety=blocks.length+articleImages(a).length+8;
+  while(cursor<blocks.length && pageIndex<safety){
+    const first=pageIndex===0;
+    let current=[];
+    let imgIndex=-1;
+    if(!first && imageCursor<articleImages(a).length){
+      const withImage=measureArticleCandidate(a,pageIndex,[],imageCursor);
+      if(withImage.fits) { imgIndex=imageCursor; imageCursor++; }
+    }
+    for(let i=cursor;i<blocks.length;i++){
+      const candidate=[...current,blocks[i]];
+      const m=measureArticleCandidate(a,pageIndex,candidate,imgIndex);
+      if(m.fits){ current=candidate; cursor=i+1; continue; }
+      if(!current.length){
+        if(imgIndex>=0){
+          const withoutImage=measureArticleCandidate(a,pageIndex,[blocks[i]],-1);
+          if(withoutImage.fits){ imgIndex=-1; current=[blocks[i]]; cursor=i+1; continue; }
+        }
+        const tiny=String(blocks[i].text||"");
+        const chunks=splitLongBlock(blocks[i],Math.max(240,Math.floor(tiny.length*.55)));
+        if(chunks.length>1){ blocks.splice(i,1,...chunks); i--; continue; }
+        // Last-resort: keep the block; the expanded blocks are deliberately small enough to wrap.
+        current.push(blocks[i]); cursor=i+1;
+      }
+      break;
+    }
+    if(current.length || imgIndex>=0){pages.push({blocks:current,imageIndex:imgIndex});pageIndex++;}
+    else break;
+  }
+  if(cursor<blocks.length){
+    pages.push({blocks:blocks.slice(cursor),imageIndex:-1});
+  }
+  // The final page also carries the END OF STORY/link footer. Rebalance it so that
+  // the footer itself never causes the last paragraph/image to be clipped.
+  while(pages.length>1){
+    const lastIndex=pages.length-1; const last=pages[lastIndex];
+    const test=measureArticleCandidate(a,lastIndex,last.blocks,last.imageIndex,99);
+    if(test.fits)break;
+    if(!last.blocks.length)break;
+    const moved=last.blocks.shift();
+    pages[lastIndex-1].blocks.push(moved);
+  }
+  return pages.length?pages:[{blocks:[{type:"p",text:"The source did not expose article text. Read the original article for the complete story."}],imageIndex:-1}];
 }
 function buildReaderPages(){
   const stories=state.selected.length?state.selected:state.articles; const pages=[]; const articleStarts={};
@@ -225,17 +323,18 @@ function buildReaderPages(){
       lastSection=section;
     }
     articleStarts[i]=physical;
-    const parts=articleTextPages(a);
-    parts.forEach((_,pi)=>{pages.push(articlePageHtml(a,pi,parts.length,physical+1));physical++});
+    const parts=paginateArticleMeasured(a);
+    const total=parts.length;
+    parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.blocks,part.imageIndex));physical++});
   });
   pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ISSUE 036</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
 }
-function totalReaderPages(){const {pages}=buildReaderPages();return Math.max(1,pages.length)}
+function totalReaderPages(){const model=state.readerModel||buildReaderPages();return Math.max(1,model.pages.length)}
 function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
 function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">READ ORIGINAL ↗</a>`:""}
 function renderReader(){
-  sync(); const model=buildReaderPages(); const pages=model.pages; if(!pages.length)return;
+  sync(); const model=buildReaderPages(); state.readerModel=model; if(Number.isInteger(state._readerTargetStory)){ const t=model.articleStarts[state._readerTargetStory]; if(typeof t==="number"){ state.readerPage=state.readerView==="spread"?Math.floor(t/2)*2:t; } delete state._readerTargetStory; } const pages=model.pages; if(!pages.length)return;
   const total=pages.length;
   state.readerPage=Math.max(0,Math.min(state.readerPage,total-1));
   const spread=document.querySelector("#spread");
@@ -260,17 +359,17 @@ function updateReaderViewButtons(){
   document.querySelectorAll("[data-reader-view]").forEach(b=>b.classList.toggle("active",b.dataset.readerView===state.readerView));
 }
 function setReaderView(view){
-  state.readerView=view==="spread"?"spread":"single";
+  state.readerView=view==="spread"?"spread":"single"; state.readerModel=null;
   if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;
   renderReader();
 }
 
-async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
+async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
 try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}}
 function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} SOURCES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
 async function load(){await Promise.all([loadArticles(),refreshSources()]);renderAll()}
 function renderAll(){renderSources();renderTags();renderArticles();renderMagazine();renderReader();updateDash()}
-document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;renderArticles();renderMagazine();show("magazine")};$("#reshuffle").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;renderArticles();renderMagazine()};$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;renderReader();show("reader")};$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
+document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;state.readerModel=null;renderArticles();renderMagazine();show("magazine")};$("#reshuffle").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;state.readerModel=null;renderArticles();renderMagazine()};$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;renderReader();show("reader")};$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
 const fullscreenBtn=$("#fullscreen-reader");
 async function enterReaderFullscreen(){
   readerEl.classList.add("reader-fullscreen");
