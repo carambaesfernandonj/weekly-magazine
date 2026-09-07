@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T15:33:06.302413+00:00",
+  "updatedAt": "2026-09-07T22:28:18.919504+00:00",
   "issueWindow": {
     "start": "2026-08-30",
     "end": "2026-09-06",
@@ -193,7 +193,7 @@
         "GAMING",
         "SECURITY"
       ],
-      "editorialScore": 69,
+      "editorialScore": 68,
       "selected": true,
       "images": [
         {
@@ -306,7 +306,7 @@
         "GAMING",
         "SPACE"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "images": [
         {
@@ -371,7 +371,7 @@
         "GAMING",
         "HARDWARE"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": false
     },
     {
@@ -388,7 +388,7 @@
         "GAMING",
         "BUSINESS"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": false
     },
     {
@@ -404,7 +404,7 @@
         "RETROGAMING",
         "SPACE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -452,7 +452,7 @@
         "RETROGAMING",
         "HARDWARE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -503,7 +503,7 @@
         "APPLE",
         "TECHNOLOGY"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "images": [
         {
@@ -633,7 +633,7 @@
       "tags": [
         "GAMING"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -682,7 +682,7 @@
         "HARDWARE",
         "APPLE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -731,7 +731,7 @@
         "GAMING",
         "HARDWARE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": false
     },
     {
@@ -748,7 +748,7 @@
         "GAMING",
         "NINTENDO"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": false
     },
     {
@@ -766,7 +766,7 @@
         "XBOX",
         "PLAYSTATION"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -835,7 +835,7 @@
         "GAMING",
         "PLAYSTATION"
       ],
-      "editorialScore": 61,
+      "editorialScore": 60,
       "selected": false
     },
     {
@@ -851,7 +851,7 @@
         "RETROGAMING",
         "GAMING"
       ],
-      "editorialScore": 66,
+      "editorialScore": 65,
       "selected": false
     },
     {
@@ -868,7 +868,7 @@
         "GAMING",
         "PLAYSTATION"
       ],
-      "editorialScore": 66,
+      "editorialScore": 65,
       "selected": false
     },
     {
@@ -885,7 +885,7 @@
         "GAMING",
         "PLAYSTATION"
       ],
-      "editorialScore": 66,
+      "editorialScore": 65,
       "selected": false
     },
     {
@@ -965,7 +965,7 @@
         "GAMING",
         "HARDWARE"
       ],
-      "editorialScore": 60,
+      "editorialScore": 59,
       "selected": false
     },
     {
@@ -982,7 +982,7 @@
         "GAMING",
         "SECURITY"
       ],
-      "editorialScore": 65,
+      "editorialScore": 64,
       "selected": false
     },
     {
@@ -997,7 +997,7 @@
       "tags": [
         "GAMING"
       ],
-      "editorialScore": 64,
+      "editorialScore": 63,
       "selected": false
     },
     {
@@ -1012,7 +1012,7 @@
       "tags": [
         "RETROGAMING"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "headings": {
         "h1": [],
@@ -1032,7 +1032,7 @@
       "tags": [
         "RETROGAMING"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "headings": {
         "h1": [],
@@ -1052,7 +1052,7 @@
       "tags": [
         "GAMING"
       ],
-      "editorialScore": 62,
+      "editorialScore": 61,
       "selected": false
     },
     {
@@ -1099,7 +1099,7 @@
       "tags": [
         "RETROGAMING"
       ],
-      "editorialScore": 61,
+      "editorialScore": 60,
       "selected": false
     },
     {
@@ -1116,22 +1116,6 @@
         "NINTENDO",
         "XBOX",
         "PLAYSTATION"
-      ],
-      "editorialScore": 60,
-      "selected": false
-    },
-    {
-      "id": "https://www.hobbyconsolas.com/videojuegos/analisis-the-blood-of-dawnwalker-un-rpg-con-unas-bases-tremendas-pero-que-se-ha-visto-superado-por-su-propia-ambicion_7030761_0.html",
-      "title": "Análisis de The Blood of Dawnwalker, un RPG con unas bases tremendas, pero que se ha visto superado por su propia ambición (Actualizado)",
-      "link": "https://www.hobbyconsolas.com/videojuegos/analisis-the-blood-of-dawnwalker-un-rpg-con-unas-bases-tremendas-pero-que-se-ha-visto-superado-por-su-propia-ambicion_7030761_0.html",
-      "description": "Análisis y opinión de The Blood of Dawnwalker, el RPG del director de The Witcher 3 que plantea un universo tan fascinante como lleno de problemas.",
-      "published": "2026-08-31T15:00:00+00:00",
-      "source": "HobbyConsolas",
-      "category": "Gaming",
-      "image": "https://imagenes.hobbyconsolas.com/files/image_1920_1080/uploads/imagenes/2026/08/30/6a9445a10d0c56-97556143.jpeg",
-      "tags": [
-        "GAMING",
-        "HORROR"
       ],
       "editorialScore": 60,
       "selected": false
@@ -1229,7 +1213,7 @@
         "GAMING",
         "SECURITY"
       ],
-      "editorialScore": 69,
+      "editorialScore": 68,
       "selected": true,
       "images": [
         {
@@ -1364,7 +1348,7 @@
         "APPLE",
         "TECHNOLOGY"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "images": [
         {
@@ -1494,7 +1478,7 @@
       "tags": [
         "GAMING"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -1609,7 +1593,7 @@
         "RETROGAMING",
         "SPACE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -1656,7 +1640,7 @@
       "tags": [
         "RETROGAMING"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "headings": {
         "h1": [],
@@ -1679,7 +1663,7 @@
         "XBOX",
         "PLAYSTATION"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -1785,7 +1769,7 @@
         "RETROGAMING",
         "HARDWARE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -1832,7 +1816,7 @@
       "tags": [
         "RETROGAMING"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "headings": {
         "h1": [],
@@ -1901,7 +1885,7 @@
         "GAMING",
         "SPACE"
       ],
-      "editorialScore": 63,
+      "editorialScore": 62,
       "selected": true,
       "images": [
         {
@@ -1966,7 +1950,7 @@
         "HARDWARE",
         "APPLE"
       ],
-      "editorialScore": 68,
+      "editorialScore": 67,
       "selected": true,
       "images": [
         {
@@ -2207,18 +2191,12 @@
       "articleIds": [
         34
       ]
-    },
-    {
-      "lead": 35,
-      "articleIds": [
-        35
-      ]
     }
   ],
   "errors": [
     {
       "source": "Gamasutra",
-      "error": "not well-formed (invalid token): line 1, column 1218"
+      "error": "not well-formed (invalid token): line 1, column 1212"
     },
     {
       "source": "BLEEDING COOL",
