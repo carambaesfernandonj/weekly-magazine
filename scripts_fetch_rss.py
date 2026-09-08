@@ -95,7 +95,7 @@ def load_feeds():
         req=urllib.request.Request(url,headers={
             "apikey":SUPABASE_SECRET_KEY,
             "Authorization":"Bearer "+SUPABASE_SECRET_KEY,
-            "User-Agent":"WEEKLY/0.8.4"
+            "User-Agent":"WEEKLY/0.9.11"
         })
         with urllib.request.urlopen(req,timeout=20) as r:
             rows=json.loads(r.read().decode("utf-8"))
@@ -214,6 +214,98 @@ def score(a,all_articles):
     except Exception: pass
     return min(100,55+min(25,related*5)+min(15,rec*2)+(5 if a.get("image") else 0))
 
+def blocks_from_article_body(body):
+    """Turn JSON-LD/articleBody text into readable magazine blocks."""
+    if not body:
+        return []
+    text=unescape(str(body)).replace("\r\n","\n").replace("\r","\n")
+    # Common escaped paragraph separators and HTML fragments.
+    text=re.sub(r"<br\s*/?>", "\n", text, flags=re.I)
+    text=re.sub(r"</p\s*>", "\n\n", text, flags=re.I)
+    text=re.sub(r"<[^>]+>", " ", text)
+    text=clean(text)
+    chunks=[]
+    for part in re.split(r"\n\s*\n+", text):
+        part=clean(part)
+        if len(part)>=25:
+            chunks.append({"type":"p","text":part})
+    if len(chunks)<2:
+        # Some publishers serialize articleBody as one long line.
+        sentences=re.split(r"(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡])", text)
+        chunks=[]; buf=[]
+        for sent in sentences:
+            sent=clean(sent)
+            if not sent: continue
+            buf.append(sent)
+            if sum(len(x) for x in buf)>=260:
+                chunks.append({"type":"p","text":" ".join(buf)}); buf=[]
+        if buf:
+            chunks.append({"type":"p","text":" ".join(buf)})
+    return chunks[:200]
+
+def jsonld_article_body(html):
+    """Extract articleBody from JSON-LD without requiring third-party packages."""
+    scripts=re.findall(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', html, flags=re.I|re.S)
+    for raw in scripts:
+        raw=raw.strip()
+        if not raw: continue
+        candidates=[]
+        try:
+            candidates=[json.loads(raw)]
+        except Exception:
+            # Multiple JSON objects / permissive script contents: find articleBody directly.
+            m=re.search(r'"articleBody"\s*:\s*"((?:\\.|[^"\\])*)"', raw, flags=re.S)
+            if m:
+                try:
+                    return json.loads('"'+m.group(1)+'"')
+                except Exception:
+                    return bytes(m.group(1), 'utf-8').decode('unicode_escape', errors='ignore')
+        stack=list(candidates)
+        while stack:
+            obj=stack.pop()
+            if isinstance(obj, dict):
+                if obj.get("articleBody"):
+                    return obj["articleBody"]
+                stack.extend(obj.values())
+            elif isinstance(obj, list):
+                stack.extend(obj)
+    return ""
+
+def loose_page_blocks(html):
+    """Fallback parser: collect visible p/headings/quotes when the site body is not scored normally."""
+    class LooseParser(HTMLParser):
+        SKIP={"script","style","nav","header","footer","aside","form","noscript","svg"}
+        def __init__(self):
+            super().__init__(); self.blocks=[]; self.skip=0; self.tag=None; self.buf=[]
+        def handle_starttag(self, tag, attrs):
+            tag=tag.lower()
+            if tag in self.SKIP: self.skip+=1; return
+            if self.skip: return
+            if tag in ("p","h2","h3","blockquote") and self.tag is None:
+                self.tag=tag; self.buf=[]
+        def handle_data(self, data):
+            if self.skip==0 and self.tag and data.strip(): self.buf.append(data)
+        def handle_endtag(self, tag):
+            tag=tag.lower()
+            if tag in self.SKIP:
+                if self.skip: self.skip-=1
+                return
+            if self.skip==0 and tag==self.tag:
+                t=clean(" ".join(self.buf))
+                if len(t)>=25: self.blocks.append({"type":"p" if tag=="p" else tag,"text":t})
+                self.tag=None; self.buf=[]
+    q=LooseParser()
+    try: q.feed(html)
+    except Exception: return []
+    # Drop obvious UI/navigation leftovers and keep the longest useful run.
+    bad=("iniciar sesión","configuración de cookies","política de privacidad","añádenos en google","copiar url","mostrar comentarios")
+    out=[]; seen=set()
+    for b in q.blocks:
+        t=b["text"]; low=t.lower()
+        if low in seen or any(x in low for x in bad): continue
+        seen.add(low); out.append(b)
+    return out
+
 def enrich_article(a):
     """Fetch the article page once to capture the main image and H1/H2s. Failure is non-fatal."""
     try:
@@ -232,13 +324,27 @@ def enrich_article(a):
             low=u.lower()
             if not u or u in seen_images: continue
             # Conservative noise filter for logos, avatars, trackers and UI assets.
-            if any(x in low for x in ("favicon","avatar","gravatar","sprite","tracking","pixel","placeholder","logo-small","social-icon","share-icon")): continue
-            if re.search(r"(?:1x1|spacer|blank)\.(?:gif|png|jpg|jpeg|webp)(?:$|[?#])",low): continue
+            if any(x in low for x in ("favicon","avatar","gravatar","sprite","tracking","scorecardresearch","pixel","placeholder","logo-small","social-icon","share-icon")): continue
+            if re.search(r"(?:1x1|spacer|blank)\.(?:gif|png|jpg|jpeg|webp|svg)(?:$|[?#])",low): continue
             seen_images.add(u); image_candidates.append({"url":u,"caption":item.get("caption","")})
             if len(image_candidates)>=6: break
         a["images"]=image_candidates[:6]
         blocks=p.readable_blocks()
-        a["headings"]={"h1":p.h1[:2],"h2":p.h2[:4]}
+        # Some modern publishers render the article body client-side or expose it
+        # only through JSON-LD. Prefer the scored parser, but never accept an
+        # empty/one-line result when a fuller body is available.
+        if sum(len(b.get("text","")) for b in blocks) < 500:
+            body=jsonld_article_body(html)
+            json_blocks=blocks_from_article_body(body)
+            if len(json_blocks) > len(blocks) or sum(len(b.get("text","")) for b in json_blocks) > sum(len(b.get("text","")) for b in blocks):
+                blocks=json_blocks
+        if sum(len(b.get("text","")) for b in blocks) < 500:
+            loose=loose_page_blocks(html)
+            if sum(len(b.get("text","")) for b in loose) > sum(len(b.get("text","")) for b in blocks):
+                blocks=loose
+        a["headings"]={"h1":p.h1[:2] or [a.get("title","")],"h2":p.h2[:4]}
+        if not blocks and a.get("description"):
+            blocks=[{"type":"p","text":str(a["description"]).strip()}]
         a["contentBlocks"]=blocks
         a["contentText"]="\n\n".join(b["text"] for b in blocks if b["type"] in ("p","blockquote"))
     except Exception as e:
