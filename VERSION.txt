@@ -1,1 +1,1 @@
-WEEKLY v0.9.9 — explicit page composer
+WEEKLY v0.9.10 — stable app boot + lazy reader composer
