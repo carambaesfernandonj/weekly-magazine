@@ -88,7 +88,7 @@ function sectionOpener(a,number){
   const lead=storyTitle(a);
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent="036";const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
+function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent=String(state.editorial?.issueNumber||"036");const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
 // V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
 // Continuation pages intentionally carry much more text than the old 900-char cap.
 const PAGE_CHAR_TARGET_DESKTOP=2500;
@@ -105,6 +105,11 @@ const PAGE_CHAR_TARGET_FIRST={
 function storyBlocks(a){
   const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
   if(blocks.length)return blocks.filter(b=>b&&b.text).map(b=>({type:b.type||"p",text:String(b.text).trim()}));
+  // Some generated article feeds have contentText but no structured blocks.
+  // Recover that body before falling back to the one-line RSS description.
+  if(typeof a?.contentText==="string" && a.contentText.trim()){
+    return a.contentText.split(/\n{2,}|(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])/u).map(t=>t.trim()).filter(t=>t.length>=25).map(text=>({type:"p",text}));
+  }
   const fallback=[];
   if(a?.headings?.h1?.length) fallback.push({type:"h1",text:a.headings.h1[0]});
   if(a?.description) fallback.push({type:"p",text:a.description});
@@ -296,72 +301,88 @@ function fitBlockIntoColumn(a,pageIndex,columns,colIndex,block,imageIndex){
   }
   return best?{ok:true,block:best.piece,columns:best.columns,remaining:{...block,text:text.slice(best.piece.text.length).trim()}}:{ok:false,columns};
 }
-function paginateArticleMeasured(a){
-  let blocks=expandPaginationBlocks(storyBlocks(a));
+function paginateArticleFast(a){
+  const blocks=expandPaginationBlocks(storyBlocks(a));
   if(!blocks.length)return [{columns:[[]],imageIndex:-1}];
-  const pages=[]; let cursor=0; let pageIndex=0; let imageCursor=1;
-  const safety=blocks.length*2+articleImages(a).length+12;
-  while(cursor<blocks.length && pageIndex<safety){
-    const dims=measurementDimensions();
-    const colCount=readerColumnCount(dims.width);
-    let columns=Array.from({length:colCount},()=>[]);
-    let imgIndex=-1;
-    if(pageIndex>0 && imageCursor<articleImages(a).length){
-      if(blockFits(a,pageIndex,columns,imageCursor)){imgIndex=imageCursor;imageCursor++;}
+
+  const width=window.innerWidth||1200;
+  const cols=(width>=1050 && state.readerView!=='spread')?2:1;
+  // Character budgets are deliberately conservative. They are not a visual
+  // measurement; they are a deterministic packing rule whose only job is to
+  // guarantee that every source block is consumed exactly once.
+  const colTarget=cols===2 ? (width>=1300?1550:1400) : (width<=720?1250:1750);
+  const firstColTarget=cols===2 ? 1150 : 1350;
+  const pages=[];
+  let queue=blocks.map(b=>({...b,text:String(b.text||'').trim()})).filter(b=>b.text);
+  let pageIndex=0;
+  let imageCursor=1;
+  const images=articleImages(a);
+
+  while(queue.length){
+    const columns=Array.from({length:cols},()=>[]);
+    let imageIndex=-1;
+
+    // Continuation images are page-level units. They never replace article text.
+    if(pageIndex>0 && imageCursor<images.length){
+      imageIndex=imageCursor++;
     }
-    let progressed=false;
-    while(cursor<blocks.length){
-      let placed=false;
-      for(let ci=0;ci<columns.length;ci++){
-        const result=fitBlockIntoColumn(a,pageIndex,columns,ci,blocks[cursor],imgIndex);
-        if(result.ok){
-          columns=result.columns;
-          if(result.remaining){blocks[cursor]=result.remaining;}else{cursor++;}
-          progressed=true; placed=true; break;
+
+    for(let ci=0;ci<cols && queue.length;ci++){
+      let budget=(pageIndex===0 && ci===0)?firstColTarget:colTarget;
+      while(queue.length && budget>0){
+        const b=queue[0];
+        const text=String(b.text||'').trim();
+        if(!text){queue.shift();continue;}
+        const cost=text.length+20;
+        if(cost<=budget || !columns[ci].length){
+          if(cost<=budget){
+            columns[ci].push(queue.shift());
+            budget-=cost;
+          }else{
+            // The block is larger than an empty column. Split it by words and
+            // keep the remainder at the head of the queue for the next column.
+            const take=Math.max(180,budget-20);
+            let cut=text.lastIndexOf(' ',Math.min(take,text.length-1));
+            if(cut<120)cut=Math.min(text.length,Math.max(180,take));
+            const piece=text.slice(0,cut).trim();
+            const rest=text.slice(cut).trim();
+            if(!piece){
+              columns[ci].push(queue.shift());
+              budget=0;
+            }else{
+              columns[ci].push({...b,text:piece});
+              if(rest)queue[0]={...b,text:rest}; else queue.shift();
+              budget=0;
+            }
+          }
+        }else{
+          break;
         }
       }
-      if(!placed)break;
     }
-    if(!progressed){
-      // A block can still be too large for an empty column because of a heading,
-      // an unusually long unbreakable token, or a layout element. Split it more
-      // aggressively instead of ever allowing overflow to hide content.
-      const b=blocks[cursor];
-      const parts=splitLongBlock(b,Math.max(90,Math.floor(String(b.text||"").length*.35)));
-      if(parts.length>1){blocks.splice(cursor,1,...parts);continue;}
-      // Last-resort single short paragraph: keep it visible on a fresh page.
-      columns[0].push(b); cursor++; progressed=true;
+
+    // Absolute safety: if a pathological block survived, consume it in a
+    // fresh page rather than dropping it or freezing in a retry loop.
+    if(columns.every(c=>!c.length) && queue.length){
+      const b=queue.shift();
+      const text=String(b.text||'');
+      const cut=Math.max(1,Math.min(text.length,Math.max(180,colTarget-20)));
+      columns[0].push({...b,text:text.slice(0,cut).trim()});
+      const rest=text.slice(cut).trim();
+      if(rest)queue.unshift({...b,text:rest});
     }
-    pages.push({columns,imageIndex:imgIndex});
+
+    pages.push({columns,imageIndex});
     pageIndex++;
-  }
-  if(cursor<blocks.length){
-    const dims=measurementDimensions();
-    const colCount=readerColumnCount(dims.width);
-    pages.push({columns:Array.from({length:colCount},()=>[]),imageIndex:-1});
-    for(const b of blocks.slice(cursor)) pages[pages.length-1].columns[0].push(b);
-  }
-  // Verify the final page including the footer. If it does not fit, move its
-  // last content unit to the previous page and re-check; never clip text.
-  while(pages.length>1){
-    const lastIndex=pages.length-1;
-    const last=pages[lastIndex];
-    if(measureArticleCandidate(a,lastIndex,last.columns,last.imageIndex).fits)break;
-    let moved=null;
-    for(let ci=last.columns.length-1;ci>=0&&!moved;ci--){
-      if(last.columns[ci].length)moved=last.columns[ci].pop();
-    }
-    if(!moved)break;
-    const prev=pages[lastIndex-1];
-    prev.columns[prev.columns.length-1].push(moved);
   }
   return pages.length?pages:[{columns:[[]],imageIndex:-1}];
 }
+
 function buildReaderPages(){
   const stories=state.selected.length?state.selected:state.articles; const pages=[]; const articleStarts={};
   if(!stories.length)return {pages,articleStarts};
   const cover=stories[0]; const tags=articleTags(cover);
-  pages.push(`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ISSUE 036</strong></p></section>`);
+  pages.push(`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ${state.editorial?.issueNumber||"036"}</strong></p></section>`);
   const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("");
   pages.push(`<section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${stories.length} stories · selected from ${candidatePool().length} editorial articles.</p><div class="toc">${tocItems}</div></section>`);
   let physical=2; let lastSection=""; let sectionNumber=0;
@@ -375,11 +396,11 @@ function buildReaderPages(){
       lastSection=section;
     }
     articleStarts[i]=physical;
-    const parts=paginateArticleMeasured(a);
+    const parts=paginateArticleFast(a);
     const total=parts.length;
     parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.columns,part.imageIndex));physical++});
   });
-  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ISSUE 036</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
+  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ${state.editorial?.issueNumber||"036"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
 }
 function totalReaderPages(){const model=state.readerModel||buildReaderPages();return Math.max(1,model.pages.length)}

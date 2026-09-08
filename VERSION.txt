@@ -1,1 +1,1 @@
-WEEKLY v0.9.12 — full article extraction + version label fix
+WEEKLY v0.9.13 — full article extraction + version label fix
