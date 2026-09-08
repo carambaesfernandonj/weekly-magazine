@@ -1,4 +1,4 @@
-const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,clusters:[],editorialPlan:null,readerPage:0,readerView:"single",shuffled:false,readerModel:null};
+const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,clusters:[],readerPage:0,readerView:"single",shuffled:false,readerModel:null};
 const titles={dashboard:"Dashboard",sources:"My Sources",articles:"This Week",magazine:"Magazine",reader:"Reader",archive:"Archive"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -61,43 +61,7 @@ function candidatePool(){
   return leadIds.size?base.filter(a=>leadIds.has(a.id||a.link)):base;
 }
 function shuffleArray(arr){const out=[...arr];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
-function editorialType(a){
-  const raw=String(a?.editorialType||"").toUpperCase();
-  if(["REPORT","REVIEW","NEWS"].includes(raw))return raw;
-  const text=`${a?.title||""} ${a?.description||""}`;
-  if(/\b(review|reseña|análisis|analisis|veredicto|impresiones|hands[- ]?on|reviewed|tested)\b/i.test(text))return "REVIEW";
-  if(/\b(report|reportaje|feature|deep dive|investigación|investigacion|entrevista|retrospectiva|explicado|por qué|por que|cómo funciona|como funciona|analysis)\b/i.test(text))return "REPORT";
-  return "NEWS";
-}
-function chooseEditorialStories(pool=candidatePool()){
-  const plan=state.editorialPlan||{REPORT:5,REVIEW:10,NEWS:10};
-  const targetTypes=["REPORT","REVIEW","NEWS"];
-  const buckets={REPORT:[],REVIEW:[],NEWS:[]};
-  pool.forEach(a=>buckets[editorialType(a)].push(a));
-  Object.values(buckets).forEach(b=>b.sort((a,b)=>(b.editorialScore||0)-(a.editorialScore||0)||String(a.title||"").localeCompare(String(b.title||""))));
-  const totalTarget=targetTypes.reduce((n,t)=>n+Number(plan[t]||0),0);
-  const selected=[];const used=new Set();const sourceCounts={};
-  for(const type of targetTypes){
-    const target=Number(plan[type]||0);let count=0;
-    for(const a of buckets[type]){
-      if(count>=target||selected.length>=totalTarget)break;
-      const key=a.link||a.id, source=String(a.source||"Unknown");
-      if(used.has(key)||sourceCounts[source]>=4)continue;
-      selected.push(a);used.add(key);sourceCounts[source]=(sourceCounts[source]||0)+1;count++;
-    }
-  }
-  if(selected.length<totalTarget){
-    const remaining=[...pool].filter(a=>!used.has(a.link||a.id)).sort((a,b)=>(b.editorialScore||0)-(a.editorialScore||0));
-    for(const a of remaining){
-      const key=a.link||a.id,source=String(a.source||"Unknown");
-      if(used.has(key)||sourceCounts[source]>=4)continue;
-      selected.push(a);used.add(key);sourceCounts[source]=(sourceCounts[source]||0)+1;
-      if(selected.length>=totalTarget)break;
-    }
-  }
-  return selected;
-}
-function chooseRandomStories(pool=candidatePool()){return chooseEditorialStories(pool)}
+function chooseRandomStories(pool=candidatePool()){const ranked=shuffleArray(pool.slice()).sort((a,b)=>((b.editorialScore||0)-(a.editorialScore||0))*(Math.random()*.55+.45));const out=[],counts={};for(const a of ranked){const cat=a.category||"Other";if((counts[cat]||0)>=8)continue;out.push(a);counts[cat]=(counts[cat]||0)+1;if(out.length>=24)break}return out}
 function sync(){if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories();state.shuffled=false}if(!state.selected.length)state.selected=candidatePool().filter(a=>a.selected).slice(0,24);updateCounts()}
 function saveTopics(){localStorage.setItem("weekly.selectedTags",JSON.stringify([...state.selectedTags]));localStorage.setItem("weekly.customTags",JSON.stringify([...state.customTags]))}
 function rerenderTopicSelection(){state.selected=[];state.readerModel=null;state.shuffled=true;saveTopics();renderTags();renderArticles();renderMagazine()}
@@ -105,7 +69,7 @@ function addCustomTopic(raw){const topic=String(raw||"").trim().replace(/\s+/g,"
 function removeCustomTopic(topic){state.customTags.delete(String(topic).toUpperCase());rerenderTopicSelection()}
 function renderTags(){const box=$("#tag-cloud");if(!box)return;box.innerHTML="";const custom=[...state.customTags];if(custom.length){const head=document.createElement("div");head.className="custom-topic-list";head.innerHTML=custom.map(t=>`<button class="tag-chip custom-chip active" data-custom-topic="${esc(t)}"><span>${esc(t)}</span><small>×</small></button>`).join("");box.appendChild(head);head.querySelectorAll("[data-custom-topic]").forEach(b=>b.onclick=()=>removeCustomTopic(b.dataset.customTopic))}
 const tags=allTags();const cloud=document.createElement("div");cloud.className="auto-tag-list";tags.forEach(([tag,count])=>{const b=document.createElement("button");b.className="tag-chip"+(state.selectedTags.has(tag)?" active":"");b.innerHTML=`<span>${esc(tag)}</span><small>${count}</small>`;b.onclick=()=>{if(state.selectedTags.has(tag))state.selectedTags.delete(tag);else state.selectedTags.add(tag);rerenderTopicSelection()};cloud.appendChild(b)});box.appendChild(cloud);$("#tag-count").textContent=`${state.selectedTags.size+state.customTags.size} SELECTED`}
-function renderArticles(){const box=$("#article-list");if(!box)return;const pool=candidatePool();if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories(pool);state.shuffled=false}$("#pool-stat").textContent=`${pool.length} STORIES IN POOL`;const activeTopics=[...state.selectedTags,...state.customTags];$("#pool-note").textContent=activeTopics.length?`Temas: ${activeTopics.join(" · ")}`:"Todo el feed está disponible. WEEKLY seguirá una pauta editorial de reportajes, reviews y noticias.";box.innerHTML="";shuffleArray(pool).slice(0,12).forEach(a=>{const l=document.createElement("div");l.className="article preview-article";const tags=(a.tags?.length?a.tags:deriveTags(a)).slice(0,4);l.innerHTML=`<div class="article-thumb">${a.image?`<img src="${esc(a.image)}" alt="">`:""}</div><div><span class="cat">${esc((a.category||"OTHER").toUpperCase())}</span><h3>${esc(a.title)}</h3><p>${esc(a.source)} · ${esc((a.published||"").slice(0,10))}</p><div class="mini-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div><span class="score">${a.editorialScore||"-"}</span>`;box.appendChild(l)});updateCounts()}
+function renderArticles(){const box=$("#article-list");if(!box)return;const pool=candidatePool();if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories(pool);state.shuffled=false}$("#pool-stat").textContent=`${pool.length} STORIES IN POOL`;const activeTopics=[...state.selectedTags,...state.customTags];$("#pool-note").textContent=activeTopics.length?`Temas: ${activeTopics.join(" · ")}`:"Todo el feed está disponible. WEEKLY elegirá una combinación al azar.";box.innerHTML="";shuffleArray(pool).slice(0,12).forEach(a=>{const l=document.createElement("div");l.className="article preview-article";const tags=(a.tags?.length?a.tags:deriveTags(a)).slice(0,4);l.innerHTML=`<div class="article-thumb">${a.image?`<img src="${esc(a.image)}" alt="">`:""}</div><div><span class="cat">${esc((a.category||"OTHER").toUpperCase())}</span><h3>${esc(a.title)}</h3><p>${esc(a.source)} · ${esc((a.published||"").slice(0,10))}</p><div class="mini-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div><span class="score">${a.editorialScore||"-"}</span>`;box.appendChild(l)});updateCounts()}
 function updateCounts(){const pool=candidatePool();$("#article-count").textContent=`${state.selected.length} SELECTED · ${pool.length} IN POOL`;$("#selected-stat").textContent=`${state.selected.length} SELECTED`}
 function storyFor(a){return(state.editorial?.stories||[]).find(s=>s.article_id===state.articles.indexOf(a))||null}
 function articleTags(a){return(a?.tags?.length?a.tags:deriveTags(a)).slice(0,5)}
@@ -137,7 +101,7 @@ function sectionOpener(a,number){
   const lead=storyTitle(a);
   return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];const typeCounts=s.reduce((m,a)=>(m[editorialType(a)]=(m[editorialType(a)]||0)+1,m),{});$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${typeCounts.REPORT||0} reports · ${typeCounts.REVIEW||0} reviews · ${typeCounts.NEWS||0} news`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent=String(state.editorial?.issueNumber||"036");const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
+function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent=String(state.editorial?.issueNumber||"036");const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
 // V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
 // Continuation pages intentionally carry much more text than the old 900-char cap.
 const PAGE_CHAR_TARGET_DESKTOP=2500;
@@ -241,57 +205,189 @@ function inlineArticleImage(a,index){
   const item=imgs[index];
   return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>ORIGINAL IMAGE</span></figure>`;
 }
-function storyBlocks(a){
-  const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
-  if(blocks.length)return blocks.filter(b=>b&&String(b.text||"").trim()).map(b=>({type:b.type||"p",text:String(b.text).trim()}));
-  if(typeof a?.contentText==="string"&&a.contentText.trim())return a.contentText.split(/\n{2,}/).map(t=>t.trim()).filter(t=>t.length>=25).map(text=>({type:"p",text}));
-  const fallback=[];if(a?.headings?.h1?.length)fallback.push({type:"h1",text:a.headings.h1[0]});if(a?.description)fallback.push({type:"p",text:a.description});return fallback;
+function readerColumnCount(width){
+  const viewport=window.innerWidth||1200;
+  return (viewport>=1050 && width>=620 && state.readerView!=="spread") ? 2 : 1;
 }
-function splitOversizedParagraph(b,max=1800){
-  const text=String(b.text||"").trim();if(text.length<=max)return [b];
-  const sentences=text.match(/[^.!?]+[.!?]+(?:\s|$)/g)||[text];const out=[];let buf="";
-  for(const sentence of sentences){const next=(buf?buf+" ":"")+sentence.trim();if(buf&&next.length>max){out.push({...b,text:buf.trim()});buf=sentence.trim();}else buf=next;}
-  if(buf)out.push({...b,text:buf.trim()});
-  if(out.length===1&&out[0].text.length>max){const chunks=[];let rest=out[0].text;while(rest.length>max){let cut=rest.lastIndexOf(" ",max);if(cut<Math.floor(max*.6))cut=max;chunks.push({...b,text:rest.slice(0,cut).trim()});rest=rest.slice(cut).trim();}if(rest)chunks.push({...b,text:rest});return chunks;}
+function normalizeColumns(columns){
+  if(Array.isArray(columns) && columns.length && Array.isArray(columns[0])) return columns;
+  if(Array.isArray(columns)) return [columns];
+  return [[]];
+}
+function columnHtml(blocks){
+  return `<div class="source-column">${(blocks||[]).map(blockHtml).join("")}</div>`;
+}
+function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,imageIndex=-1){
+  const first=pageIndex===0; const imgs=articleImages(a); const h=a.headings||{};
+  const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):"";
+  const type=layoutFor((a._storyIndex||0)+pageIndex);
+  const headlineClass=headlineClassFor(storyTitle(a));
+  const quote=esc(pullQuote(a));
+  const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE");
+  const date=esc((a.published||"").slice(0,10));
+  const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
+  const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
+  const continuationImage=(!first && imageIndex>=0 && imageIndex<imgs.length)?inlineArticleImage(a,imageIndex):"";
+  const cols=normalizeColumns(columns);
+  const colCount=cols.length;
+  return `<section class="page article-page source-text-page source-cols-${colCount} ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
+    <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
+    ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
+    ${firstExtras}
+    ${continuationImage}
+    <div class="source-body source-body-grid">${cols.map(columnHtml).join("")}</div>
+    ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
+    ${first?otherSourcesHtml(a):""}
+    ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
+    <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
+  </section>`;
+}
+function articlePageHtml(a,pageIndex,totalPages,globalNumber){
+  const pages=articleTextPages(a); return articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,[pages[pageIndex]||[]],-1);
+}
+function measurementDimensions(){
+  const spread=document.querySelector("#spread");
+  let width=0,height=0;
+  if(spread && spread.clientWidth){
+    width=Math.min(spread.clientWidth, state.readerView==="spread"?Math.floor(spread.clientWidth/2):spread.clientWidth);
+    const page=spread.querySelector(".page"); if(page){width=page.clientWidth||width;height=page.clientHeight||0;}
+  }
+  if(!width) width=Math.min(window.innerWidth>720?760:Math.max(300,window.innerWidth-32),760);
+  if(!height) height=state.readerView==="spread"?Math.max(560,Math.min(760,window.innerHeight-250)):Math.round(width*4/3);
+  if(document.fullscreenElement || document.querySelector("#reader.reader-fullscreen")) height=Math.max(420,window.innerHeight-105);
+  return {width:Math.max(260,Math.round(width)),height:Math.max(420,Math.round(height))};
+}
+function measureArticleCandidate(a,pageIndex,columns,imageIndex,forceTotal=99){
+  const dims=measurementDimensions();
+  const host=document.createElement("div");
+  host.className="spread single-view weekly-measure-host";
+  host.style.cssText=`position:fixed!important;left:-100000px!important;top:0!important;width:${dims.width}px!important;height:${dims.height}px!important;display:block!important;visibility:hidden!important;pointer-events:none!important;overflow:hidden!important;`;
+  host.innerHTML=articlePageHtmlFromParts(a,pageIndex,forceTotal,1,columns,imageIndex);
+  const page=host.firstElementChild;
+  if(!page){host.remove();return {fits:false,scroll:999999,height:dims.height};}
+  page.style.width=dims.width+"px"; page.style.height=dims.height+"px"; page.style.maxHeight=dims.height+"px";
+  document.body.appendChild(host);
+  const columnEls=[...page.querySelectorAll(".source-column")];
+  const verticalOverflow=columnEls.some(col=>col.scrollHeight>col.clientHeight+1);
+  const horizontalOverflow=page.scrollWidth>page.clientWidth+1;
+  const pageOverflow=false;
+  const fits=!verticalOverflow && !horizontalOverflow;
+  const scroll=Math.max(page.scrollHeight,page.scrollWidth,...columnEls.map(col=>col.scrollHeight));
+  host.remove();
+  return {fits,scroll,height:dims.height,verticalOverflow,horizontalOverflow,pageOverflow};
+}
+function expandPaginationBlocks(blocks){
+  const out=[];
+  for(const b of blocks){
+    if(!b?.text)continue;
+    const text=String(b.text).trim();
+    const max=900;
+    if(text.length<=max){out.push({...b,text});continue;}
+    let rest=text;
+    while(rest.length>max){
+      let cut=rest.lastIndexOf(" ",max);
+      if(cut<Math.floor(max*.55))cut=max;
+      out.push({...b,text:rest.slice(0,cut).trim()});
+      rest=rest.slice(cut).trim();
+    }
+    if(rest)out.push({...b,text:rest});
+  }
   return out;
 }
+function blockFits(a,pageIndex,columns,imageIndex){
+  return measureArticleCandidate(a,pageIndex,columns,imageIndex).fits;
+}
+function fitBlockIntoColumn(a,pageIndex,columns,colIndex,block,imageIndex){
+  const target=Array.isArray(columns[colIndex])?columns[colIndex]:[];
+  let candidate=[...target,block];
+  const test=columns.map((c,i)=>i===colIndex?candidate:c);
+  if(blockFits(a,pageIndex,test,imageIndex)) return {ok:true,block,columns:test};
+  let text=String(block.text||"");
+  if(text.length<120) return {ok:false,columns};
+  let lo=60, hi=Math.max(60,text.length-1), best=null;
+  while(lo<=hi){
+    const mid=Math.floor((lo+hi)/2);
+    let cut=text.lastIndexOf(" ",mid);
+    if(cut<Math.floor(mid*.55))cut=mid;
+    const piece={...block,text:text.slice(0,cut).trim()};
+    const probe=columns.map((c,i)=>i===colIndex?[...target,piece]:c);
+    if(piece.text && blockFits(a,pageIndex,probe,imageIndex)){best={piece,columns:probe};lo=cut+1;}else hi=cut-1;
+  }
+  return best?{ok:true,block:best.piece,columns:best.columns,remaining:{...block,text:text.slice(best.piece.text.length).trim()}}:{ok:false,columns};
+}
 function paginateArticleFast(a){
-  const blocks=storyBlocks(a).flatMap(b=>splitOversizedParagraph(b));if(!blocks.length)return [{blocks:[],imageIndex:-1}];
-  const target=window.innerWidth<=720?1550:2350,firstTarget=window.innerWidth<=720?900:1250;const pages=[];let page=[];let chars=0;let pageIndex=0;
-  for(const b of blocks){const cost=String(b.text||"").length+80;const limit=pageIndex===0?firstTarget:target;if(page.length&&chars+cost>limit){pages.push({blocks:page,imageIndex:-1});page=[];chars=0;pageIndex++;}page.push(b);chars+=cost;}
-  if(page.length)pages.push({blocks:page,imageIndex:-1});return pages.length?pages:[{blocks:[],imageIndex:-1}];
+  // V0.9.17: deliberately simple magazine flow — one column, complete paragraphs.
+  // We use a conservative character budget only to decide page breaks; we never
+  // discard content and we avoid DOM measurements entirely.
+  const blocks=storyBlocks(a).filter(b=>b&&b.text).map(b=>({...b,text:String(b.text).trim()}));
+  if(!blocks.length)return [{columns:[[]],imageIndex:-1}];
+  const width=window.innerWidth||1200;
+  const target=width<=720?1050:(width<1050?1350:1650);
+  const firstTarget=Math.round(target*.62);
+  const pages=[]; let queue=blocks.slice(); let pageIndex=0; let imageCursor=1; const images=articleImages(a);
+  while(queue.length){
+    const page=[]; let budget=pageIndex===0?firstTarget:target; let imageIndex=-1;
+    if(pageIndex>0 && imageCursor<images.length){ imageIndex=imageCursor++; budget-=260; }
+    while(queue.length){
+      const b=queue[0]; const cost=b.text.length+34;
+      if(!page.length){
+        if(cost<=budget){ page.push(queue.shift()); budget-=cost; continue; }
+        // Keep paragraphs intact whenever possible. Only split a pathological
+        // single block if it cannot fit even on an otherwise empty page.
+        if(b.text.length>Math.max(300,budget-34)){
+          const max=Math.max(320,budget-34);
+          let cut=b.text.lastIndexOf(' ',Math.min(max,b.text.length-1));
+          if(cut<180)cut=Math.min(b.text.length,Math.max(180,max));
+          const piece=b.text.slice(0,cut).trim(); const rest=b.text.slice(cut).trim();
+          page.push({...b,text:piece});
+          queue[0]={...b,text:rest};
+          budget=0; break;
+        }
+        page.push(queue.shift()); budget=0; break;
+      }
+      if(cost<=budget){ page.push(queue.shift()); budget-=cost; }
+      else break;
+    }
+    if(!page.length && queue.length){ page.push(queue.shift()); }
+    pages.push({columns:[page],imageIndex}); pageIndex++;
+  }
+  return pages;
 }
-function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,blocks,imageIndex=-1){
-  const first=pageIndex===0;const h=a.headings||{};const type=layoutFor((a._storyIndex||0)+pageIndex);const headlineClass=headlineClassFor(storyTitle(a));const tags=articleTags(a);const sourceLabel=esc(a.source||"ORIGINAL SOURCE");const date=esc((a.published||"").slice(0,10));const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");const body=Array.isArray(blocks)?blocks:[];
-  return `<section class="page article-page source-text-page source-single-column ${first?"source-first":"source-continuation"} ${type}${headlineClass}"><div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${coverImage(a,"reader-story-image","ORIGINAL IMAGE")}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}<div class="source-body source-body-single">${body.map(blockHtml).join("")}</div>${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}${first?otherSourcesHtml(a):""}${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}<div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div></section>`;
-}
-function articlePageHtml(a,pageIndex,totalPages,globalNumber){const pages=paginateArticleFast(a);return articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,pages[pageIndex]?.blocks||[],-1);}
 
 function buildReaderPages(){
-  const stories=state.selected.length?state.selected:state.articles; const pages=[]; const articleStarts={};
+  const stories=state.selected.length?state.selected:state.articles;
+  const pages=[]; const articleStarts={};
   if(!stories.length)return {pages,articleStarts};
-  const cover=stories[0]; const tags=articleTags(cover);
+  const fullStories=stories.filter(a=>a.contentStatus!=='short');
+  const shortStories=stories.filter(a=>a.contentStatus==='short');
+  const cover=fullStories[0]||stories[0];
+  const tags=articleTags(cover);
   pages.push(`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ${state.editorial?.issueNumber||"036"}</strong></p></section>`);
-  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("");
-  pages.push(`<section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${stories.length} stories · selected from ${candidatePool().length} editorial articles.</p><div class="toc">${tocItems}</div></section>`);
+  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${a.contentStatus==='short'?'SHORT NEWS':esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("");
+  pages.push(`<section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${fullStories.length} full stories · ${shortStories.length} short news.</p><div class="toc">${tocItems}</div></section>`);
   let physical=2; let lastSection=""; let sectionNumber=0;
-  stories.forEach((a,i)=>{
-    a._storyIndex=i;
+  fullStories.forEach(a=>{
+    const i=stories.indexOf(a); a._storyIndex=i;
     const section=sectionName(a);
-    if(section!==lastSection){
-      sectionNumber++;
-      pages.push(sectionOpener(a,physical+1));
-      physical++;
-      lastSection=section;
-    }
+    if(section!==lastSection){ sectionNumber++; pages.push(sectionOpener(a,physical+1)); physical++; lastSection=section; }
     articleStarts[i]=physical;
-    const parts=paginateArticleFast(a);
-    const total=parts.length;
-    parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.blocks,part.imageIndex));physical++});
+    const parts=paginateArticleFast(a); const total=parts.length;
+    parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.columns,part.imageIndex));physical++});
   });
+  if(shortStories.length){
+    pages.push(`<section class="page section-opener short-news-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(sectionNumber+1).padStart(2,"0")}</div><div class="section-name">SHORT NEWS</div><div class="section-rule"></div><div class="section-lead"><span>QUICK READS</span><h2>THE REST OF THE WEEK.</h2><p>Stories where the available source only provides a short lead. Read the original for the complete article.</p></div><div class="section-giant">S</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
+    const perPage=5;
+    for(let off=0;off<shortStories.length;off+=perPage){
+      const batch=shortStories.slice(off,off+perPage); const shortPage=physical;
+      batch.forEach(a=>{articleStarts[stories.indexOf(a)]=shortPage});
+      const cards=batch.map((a,n)=>`<article class="short-news-card"><div class="short-news-meta"><span>${esc((a.source||"SOURCE").toUpperCase())}</span><span>${esc((a.published||"").slice(0,10))}</span></div><h3>${esc(storyTitle(a))}</h3><p>${esc(a.description||storyWords(a).slice(0,420))}</p><div class="short-news-foot">${linkButton(a)}</div></article>`).join("");
+      pages.push(`<section class="page short-news-page"><div class="story-running"><span>WEEKLY · SHORT NEWS</span><span>${String(off+1).padStart(2,"0")}–${String(Math.min(off+batch.length,shortStories.length)).padStart(2,"0")}</span></div><div class="short-news-header"><span>SHORT NEWS</span><h2>QUICK READS</h2></div><div class="short-news-list">${cards}</div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
+    }
+  }
   pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ${state.editorial?.issueNumber||"036"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
 }
+
 function totalReaderPages(){const model=state.readerModel||buildReaderPages();return Math.max(1,model.pages.length)}
 function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
 function otherSourcesFor(a){
@@ -355,7 +451,7 @@ function setReaderView(view){
   renderReader();
 }
 
-async function loadArticles(){try{const[a,e,plan]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now()),fetch("data/editorial_plan.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null;state.editorialPlan=plan.ok?await plan.json():{REPORT:5,REVIEW:10,NEWS:10}}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
+async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a);if(!a.contentStatus){const blocks=Array.isArray(a.contentBlocks)?a.contentBlocks:[];const chars=blocks.reduce((n,b)=>n+String(b?.text||"").length,0);a.contentStatus=(chars>=700&&blocks.length>=2)?"full":"short";}});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
 try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}}
 function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} SOURCES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
 async function load(){await Promise.all([loadArticles(),refreshSources()]);renderAll()}

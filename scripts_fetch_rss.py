@@ -372,6 +372,12 @@ def enrich_article(a):
             blocks=[{"type":"p","text":str(a["description"]).strip()}]
         a["contentBlocks"]=blocks
         a["contentText"]="\n\n".join(b["text"] for b in blocks if b["type"] in ("p","blockquote"))
+        body_chars=sum(len(str(b.get("text", ""))) for b in blocks)
+        # A full story needs a meaningful article body. If the publisher only
+        # exposes an RSS/lead snippet, keep it as SHORT NEWS instead of pretending
+        # the snippet is the complete article.
+        a["contentStatus"]="full" if body_chars>=700 and len(blocks)>=2 else "short"
+        a["contentChars"]=body_chars
     except Exception as e:
         a.setdefault("headings",{"h1":[],"h2":[]}); a["enrichError"]=str(e)[:180]
     return a
@@ -394,13 +400,6 @@ TAG_RULES={
     "SECURITY":[r"hack(?:ed|ing)?",r"security",r"dark web",r"data breach",r"military",r"license(?:s)?"],
     "TECHNOLOGY":[r"technology",r"tech",r"device",r"digital",r"internet",r"online"],
 }
-
-EDITORIAL_TYPE_RULES={"REVIEW":[r"\breview\b",r"reseña",r"análisis",r"analisis",r"veredicto",r"impresiones",r"hands[- ]?on",r"reviewed",r"tested"],"REPORT":[r"\breport\b",r"reportaje",r"feature",r"deep dive",r"investigaci[oó]n",r"entrevista",r"retrospectiva",r"historia de",r"explicado",r"por qu[eé]",r"c[oó]mo funciona",r"analysis"]}
-def classify_editorial_type(a):
-    text=f"{a.get('title','')} {a.get('description','')}"
-    for kind,patterns in EDITORIAL_TYPE_RULES.items():
-        if any(re.search(p,text,re.I) for p in patterns): return kind
-    return "NEWS"
 
 def make_tags(a):
     hay=" ".join([a.get("title",""),a.get("description","")]).lower()
@@ -432,7 +431,6 @@ for a in sorted(window_articles,key=lambda x:x.get("published",""),reverse=True)
 unique=unique[:MAX_TOTAL]
 for a in unique:
     a["tags"]=make_tags(a)
-    a["editorialType"]=classify_editorial_type(a)
     a["editorialScore"]=round(score(a,unique))
 # Deterministic zero-AI story clustering. Titles are normalized and compared as a
 # graph so coverage can merge transitively across different publishers.
