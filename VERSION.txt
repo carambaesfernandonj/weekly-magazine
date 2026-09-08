@@ -1,1 +1,1 @@
-WEEKLY v0.9.18 — AI Editorial + Issue Lock + Spanish UI
+0.9.19
