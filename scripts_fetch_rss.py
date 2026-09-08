@@ -306,10 +306,31 @@ def loose_page_blocks(html):
         seen.add(low); out.append(b)
     return out
 
+def targeted_article_blocks(html):
+    """Fallback for publishers whose article body is present in a common content wrapper.
+    This deliberately extracts only paragraph-like tags from likely article containers,
+    avoiding site chrome and navigation without requiring a site-specific dependency.
+    """
+    patterns=[
+        r'<(?:article|div)[^>]+(?:class|id)=["\'][^"\']*(?:article[-_ ]?(?:body|content)|post[-_ ]?content|entry[-_ ]?content|story[-_ ]?body|article__body|article-body|article-content)[^"\']*["\'][^>]*>([\s\S]*?)</(?:article|div)>',
+        r'<article[^>]*>([\s\S]*?)</article>',
+    ]
+    for pat in patterns:
+        m=re.search(pat,html,flags=re.I)
+        if not m: continue
+        fragment=m.group(1)
+        found=[]
+        for tag,text in re.findall(r'<(p|h2|h3|blockquote)[^>]*>([\s\S]*?)</\1>',fragment,flags=re.I):
+            t=clean(text)
+            if len(t)>=25: found.append({"type":"p" if tag.lower()=="p" else tag.lower(),"text":t})
+        if found:
+            return found[:200]
+    return []
+
 def enrich_article(a):
     """Fetch the article page once to capture the main image and H1/H2s. Failure is non-fatal."""
     try:
-        req=urllib.request.Request(a["link"],headers={"User-Agent":"Mozilla/5.0 (compatible; WEEKLY/0.8.3; +personal reader)"})
+        req=urllib.request.Request(a["link"],headers={"User-Agent":"Mozilla/5.0 (compatible; WEEKLY/0.9.15; +personal reader)","Accept-Encoding":"identity","Accept-Language":"en-US,en;q=0.8,es;q=0.6"})
         with urllib.request.urlopen(req,timeout=10) as r:
             raw=r.read(700000); final=r.geturl()
         html=raw.decode("utf-8",errors="replace")
@@ -333,15 +354,19 @@ def enrich_article(a):
         # Some modern publishers render the article body client-side or expose it
         # only through JSON-LD. Prefer the scored parser, but never accept an
         # empty/one-line result when a fuller body is available.
-        if sum(len(b.get("text","")) for b in blocks) < 500:
+        if sum(len(b.get("text","")) for b in blocks) < 900:
             body=jsonld_article_body(html)
             json_blocks=blocks_from_article_body(body)
             if len(json_blocks) > len(blocks) or sum(len(b.get("text","")) for b in json_blocks) > sum(len(b.get("text","")) for b in blocks):
                 blocks=json_blocks
-        if sum(len(b.get("text","")) for b in blocks) < 500:
+        if sum(len(b.get("text","")) for b in blocks) < 900:
             loose=loose_page_blocks(html)
             if sum(len(b.get("text","")) for b in loose) > sum(len(b.get("text","")) for b in blocks):
                 blocks=loose
+        if sum(len(b.get("text","")) for b in blocks) < 900:
+            targeted=targeted_article_blocks(html)
+            if sum(len(b.get("text","")) for b in targeted) > sum(len(b.get("text","")) for b in blocks):
+                blocks=targeted
         a["headings"]={"h1":p.h1[:2] or [a.get("title","")],"h2":p.h2[:4]}
         if not blocks and a.get("description"):
             blocks=[{"type":"p","text":str(a["description"]).strip()}]
@@ -401,34 +426,63 @@ unique=unique[:MAX_TOTAL]
 for a in unique:
     a["tags"]=make_tags(a)
     a["editorialScore"]=round(score(a,unique))
-# Deterministic zero-AI story clustering. Merge only when titles share
-# enough meaningful words; generic RSS wording is excluded from the signal.
-CLUSTER_STOP={"this","that","with","from","into","about","after","before","over","under","your","will","have","has","for","and","the","los","las","una","uno","del","por","para","con","que","este","esta","new","news","video","review","first","latest"}
+# Deterministic zero-AI story clustering. Titles are normalized and compared as a
+# graph so coverage can merge transitively across different publishers.
+CLUSTER_STOP={"this","that","with","from","into","about","after","before","over","under","your","will","have","has","for","and","the","los","las","una","uno","del","por","para","con","que","este","esta","new","news","video","review","first","latest","just","says","said","announces","announce","reveals","reveal","officially","gets","get","coming","works","working","weeks","week","2026","2027","2028"}
 def cluster_tokens(title):
-    return {w for w in re.findall(r"[a-zA-ZÀ-ÿ0-9]{4,}", str(title or "").lower()) if w not in CLUSTER_STOP}
+    raw=re.findall(r"[a-zA-ZÀ-ÿ0-9]{4,}", str(title or "").lower())
+    out=set()
+    for w in raw:
+        if w in CLUSTER_STOP: continue
+        # Tiny deterministic stemmer for common English/Spanish plurals.
+        if len(w)>5 and w.endswith("ies"): w=w[:-3]+"y"
+        elif len(w)>5 and w.endswith("es"): w=w[:-2]
+        elif len(w)>5 and w.endswith("s") and not w.endswith("ss"): w=w[:-1]
+        out.add(w)
+    return out
 def cluster_similarity(a,b):
     ta,tb=cluster_tokens(a.get("title")),cluster_tokens(b.get("title"))
     if not ta or not tb:return 0.0
-    return len(ta&tb)/max(1,len(ta|tb))
+    common=len(ta&tb)
+    if common<2:return 0.0
+    return common/max(1,min(len(ta),len(tb)))
+def should_cluster(a,b):
+    ta,tb=cluster_tokens(a.get("title")),cluster_tokens(b.get("title"))
+    common=ta&tb
+    if len(common)<2:return False
+    sim=len(common)/max(1,min(len(ta),len(tb)))
+    same_source=str(a.get("source"))==str(b.get("source"))
+    # Cross-source coverage gets a slightly more permissive threshold, but still
+    # requires two meaningful shared terms. Same-source variants need a stronger match.
+    return sim>= (0.34 if not same_source else 0.45)
+
 clusters=[]; unused=set(range(len(unique)))
 while unused:
-    i=unused.pop(); group=[i]
-    for j in list(unused):
-        sim=cluster_similarity(unique[i],unique[j])
-        ti,tj=cluster_tokens(unique[i]["title"]),cluster_tokens(unique[j]["title"])
-        threshold=.45 if min(len(ti),len(tj))>=5 else .60
-        if sim>=threshold and len(ti&tj)>=2:
-            group.append(j); unused.remove(j)
+    seed=unused.pop(); group={seed}; changed=True
+    while changed:
+        changed=False
+        for j in list(unused):
+            if any(should_cluster(unique[i],unique[j]) for i in group):
+                group.add(j); unused.remove(j); changed=True
+    group=sorted(group)
     best=max(group,key=lambda k:unique[k]["editorialScore"])
     clusters.append({"lead":best,"articleIds":group,"size":len(group)})
 for c in clusters:
     lead=unique[c["lead"]]
     lead["clusterSize"]=c["size"]
     lead["otherSources"]=[]
+    lead_source=str(lead.get("source") or "").strip()
+    seen_other=set()
     for idx in c["articleIds"]:
         if idx==c["lead"]:continue
         other=unique[idx]
-        lead["otherSources"].append({"source":other.get("source"),"link":other.get("link"),"title":other.get("title")})
+        other_source=str(other.get("source") or "").strip()
+        # OTHER SOURCES means other publishers, not another article from the same feed.
+        if not other_source or other_source==lead_source: continue
+        key=(other_source,other.get("link") or other.get("id"))
+        if key in seen_other: continue
+        seen_other.add(key)
+        lead["otherSources"].append({"source":other_source,"link":other.get("link"),"title":other.get("title")})
 leads=sorted((unique[c["lead"]] for c in clusters),key=lambda a:a["editorialScore"],reverse=True)
 
 # Build a diverse weekly shortlist. The old selector walked the global ranking,

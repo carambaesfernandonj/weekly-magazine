@@ -237,7 +237,8 @@ function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,im
     ${continuationImage}
     <div class="source-body source-body-grid">${cols.map(columnHtml).join("")}</div>
     ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
-    ${pageIndex===totalPages-1?`${otherSourcesHtml(a)}<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
+    ${first?otherSourcesHtml(a):""}
+    ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
     <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
   </section>`;
 }
@@ -323,8 +324,8 @@ function paginateArticleFast(a){
   // Character budgets are deliberately conservative. They are not a visual
   // measurement; they are a deterministic packing rule whose only job is to
   // guarantee that every source block is consumed exactly once.
-  const colTarget=cols===2 ? (width>=1300?1550:1400) : (width<=720?1250:1750);
-  const firstColTarget=cols===2 ? 1150 : 1350;
+  const colTarget=cols===2 ? (width>=1300?760:700) : (width<=720?700:950);
+  const firstColTarget=cols===2 ? 520 : 760;
   const pages=[];
   let queue=blocks.map(b=>({...b,text:String(b.text||'').trim()})).filter(b=>b.text);
   let pageIndex=0;
@@ -341,7 +342,7 @@ function paginateArticleFast(a){
     }
 
     for(let ci=0;ci<cols && queue.length;ci++){
-      let budget=(pageIndex===0 && ci===0)?firstColTarget:colTarget;
+      let budget=(pageIndex===0 && ci===0)?firstColTarget:((pageIndex>0 && imageIndex>=0)?Math.round(colTarget*.68):colTarget);
       while(queue.length && budget>0){
         const b=queue[0];
         const text=String(b.text||'').trim();
@@ -419,11 +420,13 @@ function buildReaderPages(){
 function totalReaderPages(){const model=state.readerModel||buildReaderPages();return Math.max(1,model.pages.length)}
 function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
 function otherSourcesFor(a){
-  if(Array.isArray(a?.otherSources)) return a.otherSources;
+  const leadSource=String(a?.source||"").trim().toLowerCase();
+  const explicit=Array.isArray(a?.otherSources)?a.otherSources:[];
   const idx=state.articles.indexOf(a);
   const c=state.clusters?.find(x=>Array.isArray(x?.articleIds)&&x.articleIds.includes(idx));
-  if(!c)return [];
-  return c.articleIds.filter(i=>i!==idx).map(i=>state.articles[i]).filter(Boolean);
+  const derived=c?c.articleIds.filter(i=>i!==idx).map(i=>state.articles[i]).filter(Boolean).map(o=>({source:o.source,link:o.link,title:o.title})):[];
+  const all=[...explicit,...derived]; const seen=new Set();
+  return all.filter(o=>{const source=String(o?.source||"").trim(); const k=(source+"|"+(o?.link||"")).toLowerCase(); if(!source||source.toLowerCase()===leadSource||seen.has(k))return false; seen.add(k); return true;});
 }
 function otherSourcesHtml(a){
   const others=otherSourcesFor(a); if(!others.length)return "";
