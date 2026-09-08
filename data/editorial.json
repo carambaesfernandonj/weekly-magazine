@@ -6,17 +6,15 @@
     2,
     3,
     4,
-    5,
     8,
     9,
     10,
     11,
     12,
-    15,
+    13,
     16,
-    21,
-    26,
-    27
+    17,
+    20
   ],
   "stories": [
     {
@@ -61,10 +59,12 @@
       "summary": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: HobbyConsolas"
+        "H1: Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños"
       ],
       "headings": {
-        "h1": [],
+        "h1": [
+          "Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños"
+        ],
         "h2": []
       }
     },
@@ -91,35 +91,13 @@
       "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 5,
-      "headline": "Pac-Man, Space Invaders, Tetris, and other classic games",
-      "dek": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
-      "summary": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Pac-Man, Space Invaders, Tetris, and other classic games",
-        "H2: The arcade rulebook was tiny",
-        "H2: Why cabinets made people brave",
-        "H2: Home ports changed the argument"
+        "H1: An Emulation Mod Kit For The LEGO PlayStation Is In The Works"
       ],
       "headings": {
         "h1": [
-          "Pac-Man, Space Invaders, Tetris, and other classic games"
+          "An Emulation Mod Kit For The LEGO PlayStation Is In The Works"
         ],
-        "h2": [
-          "The arcade rulebook was tiny",
-          "Why cabinets made people brave",
-          "Home ports changed the argument",
-          "Patterns, panic, and score chasing"
-        ]
+        "h2": []
       }
     },
     {
@@ -129,87 +107,68 @@
       "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: Retro Dodo"
+        "H1: Retro YouTuber Announces A Cool New Emulation Frontend Called Jump"
       ],
       "headings": {
-        "h1": [],
+        "h1": [
+          "Retro YouTuber Announces A Cool New Emulation Frontend Called Jump"
+        ],
         "h2": []
       }
     },
     {
       "article_id": 9,
-      "headline": "Hyperkin Bring Modern Power To Retro Consoles With New USB-C Charging System Range",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 10,
       "headline": "The Interface Details That Made Computer Solitaire Feel Timeless",
       "dek": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
       "summary": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
+        "H1: The Interface Details That Made Computer Solitaire Feel Timeless",
         "H2: The Interface Details That Made Computer Solitaire Feel Timeless"
       ],
       "headings": {
-        "h1": [],
+        "h1": [
+          "The Interface Details That Made Computer Solitaire Feel Timeless"
+        ],
         "h2": [
           "The Interface Details That Made Computer Solitaire Feel Timeless"
         ]
       }
     },
     {
-      "article_id": 11,
+      "article_id": 10,
       "headline": "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena",
       "dek": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
       "summary": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: HobbyConsolas"
+        "H1: GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena"
       ],
       "headings": {
-        "h1": [],
+        "h1": [
+          "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena"
+        ],
         "h2": []
       }
     },
     {
-      "article_id": 12,
-      "headline": "PlayCase Is A New Retro iPhone Controller With Real Triggers",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 15,
+      "article_id": 11,
       "headline": "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox",
       "dek": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
       "summary": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: HobbyConsolas"
+        "H1: Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox"
       ],
       "headings": {
-        "h1": [],
+        "h1": [
+          "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox"
+        ],
         "h2": []
       }
     },
     {
-      "article_id": 16,
+      "article_id": 12,
       "headline": "Retro Re-release Roundup, week of September 3, 2026",
       "dek": "Ufouria, plus four more.",
       "summary": "Ufouria, plus four more.",
@@ -223,21 +182,23 @@
       }
     },
     {
-      "article_id": 21,
+      "article_id": 13,
       "headline": "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix",
       "dek": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
       "summary": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
-        "Fuente: HobbyConsolas"
+        "H1: Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix"
       ],
       "headings": {
-        "h1": [],
+        "h1": [
+          "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix"
+        ],
         "h2": []
       }
     },
     {
-      "article_id": 26,
+      "article_id": 16,
       "headline": "Kickstarter Kompilation: September 2026 edition",
       "dek": "Featuring books and shelves but no bookshelves",
       "summary": "Featuring books and shelves but no bookshelves",
@@ -251,10 +212,24 @@
       }
     },
     {
-      "article_id": 27,
+      "article_id": 17,
       "headline": "The Master System Directory (An-Ar)",
       "dek": "What would I give if I could live out of these waters",
       "summary": "What would I give if I could live out of these waters",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 20,
+      "headline": "Retronauts Episode 791: The Metroid Legacy: The Successors",
+      "dek": "call this Metroid: Other P(odcast)",
+      "summary": "call this Metroid: Other P(odcast)",
       "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
       "key_points": [
         "Fuente: RETRONAUTS"
@@ -274,22 +249,20 @@
         2,
         3,
         4,
-        5,
         8,
         9,
         10,
         11,
         12,
-        15,
+        13,
         16,
-        21,
-        26,
-        27
+        17,
+        20
       ]
     }
   ],
   "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
-  "generatedAt": "2026-09-08T00:22:27.971208+00:00",
+  "generatedAt": "2026-09-08T20:41:16.239876+00:00",
   "model": "zero-cost",
   "status": "rss",
   "editorial_profile": {
