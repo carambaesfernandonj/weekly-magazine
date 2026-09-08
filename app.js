@@ -386,7 +386,21 @@ function totalReaderPages(){const model=state.readerModel||buildReaderPages();re
 function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
 function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">READ ORIGINAL ↗</a>`:""}
 function renderReader(){
-  sync(); const model=state.readerModel||buildReaderPages(); state.readerModel=model; if(Number.isInteger(state._readerTargetStory)){ const t=model.articleStarts[state._readerTargetStory]; if(typeof t==="number"){ state.readerPage=state.readerView==="spread"?Math.floor(t/2)*2:t; } delete state._readerTargetStory; } const pages=model.pages; if(!pages.length)return;
+  sync();
+  if(!state.readerModel){
+    const spread=document.querySelector("#spread");
+    if(spread && !state.readerBuilding){
+      state.readerBuilding=true;
+      spread.classList.add("single-view");
+      spread.innerHTML=`<section class="page loading-page"><div class="loading-mark">W</div><div class="loading-copy"><span>WEEKLY</span><h2>LOADING<br>MAGAZINE…</h2><p>Composing this week's issue.</p></div></section>`;
+      requestAnimationFrame(()=>setTimeout(()=>{
+        try{ state.readerModel=buildReaderPages(); }
+        finally{ state.readerBuilding=false; renderReader(); }
+      },0));
+      return;
+    }
+  }
+  const model=state.readerModel||buildReaderPages(); state.readerModel=model; if(Number.isInteger(state._readerTargetStory)){ const t=model.articleStarts[state._readerTargetStory]; if(typeof t==="number"){ state.readerPage=state.readerView==="spread"?Math.floor(t/2)*2:t; } delete state._readerTargetStory; } const pages=model.pages; if(!pages.length)return;
   const total=pages.length;
   state.readerPage=Math.max(0,Math.min(state.readerPage,total-1));
   const spread=document.querySelector("#spread");

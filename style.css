@@ -327,3 +327,8 @@
     grid-template-columns:minmax(0,1fr)!important;
   }
 }
+.loading-page{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:18px}
+.loading-mark{font-size:72px;font-weight:900;line-height:1}
+.loading-copy span{font-size:12px;letter-spacing:.18em;font-weight:800}
+.loading-copy h2{font-size:clamp(32px,6vw,64px);line-height:.9;margin:8px 0}
+.loading-copy p{color:var(--muted);margin:0}
