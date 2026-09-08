@@ -1,4 +1,4 @@
-const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,readerPage:0,readerView:"single",shuffled:false,readerModel:null};
+const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,clusters:[],readerPage:0,readerView:"single",shuffled:false,readerModel:null};
 const titles={dashboard:"Dashboard",sources:"My Sources",articles:"This Week",magazine:"Magazine",reader:"Reader",archive:"Archive"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -46,7 +46,20 @@ function articleBelongsToActiveSource(a){
 const COMMERCIAL_PATTERNS=[/\bpromo(?:tion)?\s*code\b/i,/\bcoupon\s*code\b/i,/\bdiscount\s*code\b/i,/\bpromo\s*codes?\b/i,/\bcoupon\s*codes?\b/i,/\bdeals?\b/i,/\bdiscounts?\b/i,/\bgroupon\b/i,/\bsave\s+\d{1,3}%/i,/\b(?:up to|save)\s+\d{1,3}%\s+off\b/i,/\bsponsored\b/i,/\badvertorial\b/i,/\baffiliate\b/i,/\bshopping\s+guide\b/i];
 function isCommercial(a){const text=`${a?.title||""} ${a?.description||""} ${(a?.tags||[]).join(" ")}`;return COMMERCIAL_PATTERNS.some(re=>re.test(text));}
 function isUsableArticle(a){return articleBelongsToActiveSource(a)&&!isCommercial(a)}
-function candidatePool(){return state.articles.filter(isUsableArticle).filter(matchesTags)}
+function clusterLeadIds(){
+  const ids=new Set();
+  if(Array.isArray(state.clusters)&&state.clusters.length){
+    state.clusters.forEach(c=>{
+      const lead=Number(c?.lead); if(Number.isInteger(lead)&&state.articles[lead])ids.add(state.articles[lead].id||state.articles[lead].link);
+    });
+  }
+  return ids;
+}
+function candidatePool(){
+  const base=state.articles.filter(isUsableArticle).filter(matchesTags);
+  const leadIds=clusterLeadIds();
+  return leadIds.size?base.filter(a=>leadIds.has(a.id||a.link)):base;
+}
 function shuffleArray(arr){const out=[...arr];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
 function chooseRandomStories(pool=candidatePool()){const ranked=shuffleArray(pool.slice()).sort((a,b)=>((b.editorialScore||0)-(a.editorialScore||0))*(Math.random()*.55+.45));const out=[],counts={};for(const a of ranked){const cat=a.category||"Other";if((counts[cat]||0)>=8)continue;out.push(a);counts[cat]=(counts[cat]||0)+1;if(out.length>=24)break}return out}
 function sync(){if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories();state.shuffled=false}if(!state.selected.length)state.selected=candidatePool().filter(a=>a.selected).slice(0,24);updateCounts()}
@@ -224,7 +237,7 @@ function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,im
     ${continuationImage}
     <div class="source-body source-body-grid">${cols.map(columnHtml).join("")}</div>
     ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
-    ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
+    ${pageIndex===totalPages-1?`${otherSourcesHtml(a)}<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
     <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
   </section>`;
 }
@@ -405,6 +418,19 @@ function buildReaderPages(){
 }
 function totalReaderPages(){const model=state.readerModel||buildReaderPages();return Math.max(1,model.pages.length)}
 function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
+function otherSourcesFor(a){
+  if(Array.isArray(a?.otherSources)) return a.otherSources;
+  const idx=state.articles.indexOf(a);
+  const c=state.clusters?.find(x=>Array.isArray(x?.articleIds)&&x.articleIds.includes(idx));
+  if(!c)return [];
+  return c.articleIds.filter(i=>i!==idx).map(i=>state.articles[i]).filter(Boolean);
+}
+function otherSourcesHtml(a){
+  const others=otherSourcesFor(a); if(!others.length)return "";
+  const seen=new Set();
+  const items=others.filter(o=>{const k=o.link||o.id||o.source;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,6);
+  return `<div class="other-sources"><span>OTHER SOURCES</span><div>${items.map(o=>`<a href="${esc(o.link||'#')}" target="_blank" rel="noopener">${esc(o.source||"SOURCE")}</a>`).join("")}</div></div>`;
+}
 function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">READ ORIGINAL ↗</a>`:""}
 function renderReader(){
   sync();
@@ -451,7 +477,7 @@ function setReaderView(view){
   renderReader();
 }
 
-async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
+async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a)});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
 try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}}
 function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} SOURCES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
 async function load(){await Promise.all([loadArticles(),refreshSources()]);renderAll()}

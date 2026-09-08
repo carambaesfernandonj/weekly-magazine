@@ -401,13 +401,34 @@ unique=unique[:MAX_TOTAL]
 for a in unique:
     a["tags"]=make_tags(a)
     a["editorialScore"]=round(score(a,unique))
+# Deterministic zero-AI story clustering. Merge only when titles share
+# enough meaningful words; generic RSS wording is excluded from the signal.
+CLUSTER_STOP={"this","that","with","from","into","about","after","before","over","under","your","will","have","has","for","and","the","los","las","una","uno","del","por","para","con","que","este","esta","new","news","video","review","first","latest"}
+def cluster_tokens(title):
+    return {w for w in re.findall(r"[a-zA-ZÀ-ÿ0-9]{4,}", str(title or "").lower()) if w not in CLUSTER_STOP}
+def cluster_similarity(a,b):
+    ta,tb=cluster_tokens(a.get("title")),cluster_tokens(b.get("title"))
+    if not ta or not tb:return 0.0
+    return len(ta&tb)/max(1,len(ta|tb))
 clusters=[]; unused=set(range(len(unique)))
 while unused:
-    i=unused.pop(); group=[i]; ti=tokens(unique[i]["title"])
+    i=unused.pop(); group=[i]
     for j in list(unused):
-        tj=tokens(unique[j]["title"]); sim=len(ti&tj)/max(1,len(ti|tj))
-        if sim>=.38: group.append(j); unused.remove(j)
-    best=max(group,key=lambda k:unique[k]["editorialScore"]); clusters.append({"lead":best,"articleIds":group})
+        sim=cluster_similarity(unique[i],unique[j])
+        ti,tj=cluster_tokens(unique[i]["title"]),cluster_tokens(unique[j]["title"])
+        threshold=.45 if min(len(ti),len(tj))>=5 else .60
+        if sim>=threshold and len(ti&tj)>=2:
+            group.append(j); unused.remove(j)
+    best=max(group,key=lambda k:unique[k]["editorialScore"])
+    clusters.append({"lead":best,"articleIds":group,"size":len(group)})
+for c in clusters:
+    lead=unique[c["lead"]]
+    lead["clusterSize"]=c["size"]
+    lead["otherSources"]=[]
+    for idx in c["articleIds"]:
+        if idx==c["lead"]:continue
+        other=unique[idx]
+        lead["otherSources"].append({"source":other.get("source"),"link":other.get("link"),"title":other.get("title")})
 leads=sorted((unique[c["lead"]] for c in clusters),key=lambda a:a["editorialScore"],reverse=True)
 
 # Build a diverse weekly shortlist. The old selector walked the global ranking,

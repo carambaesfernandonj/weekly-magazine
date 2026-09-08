@@ -332,3 +332,12 @@
 .loading-copy span{font-size:12px;letter-spacing:.18em;font-weight:800}
 .loading-copy h2{font-size:clamp(32px,6vw,64px);line-height:.9;margin:8px 0}
 .loading-copy p{color:var(--muted);margin:0}
+
+/* V0.9.14 — deterministic story clusters / alternate coverage */
+.other-sources{margin:10px 0 8px;padding-top:8px;border-top:1px solid #8e8980;font:900 8px Arial;letter-spacing:.12em}
+.other-sources>span{display:block;margin-bottom:6px;color:#68645e}
+.other-sources>div{display:flex;flex-wrap:wrap;gap:5px}
+.other-sources a{display:inline-block;color:#17191b;border:1px solid #68645e;padding:5px 7px;text-decoration:none;letter-spacing:.05em}
+.other-sources a:hover{background:#17191b;color:#f2f3ef}
+.feature-dark .other-sources{border-color:#77736c}.feature-dark .other-sources>span{color:#aaa69e}.feature-dark .other-sources a{color:#eeeae1;border-color:#77736c}.feature-dark .other-sources a:hover{background:#eeeae1;color:#17191b}
+@media(max-width:720px){.other-sources a{font-size:8px;padding:5px 6px}}
