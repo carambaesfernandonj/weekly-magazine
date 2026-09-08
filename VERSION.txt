@@ -1,1 +1,1 @@
-WEEKLY v0.9.17 — Short News / Full Article Reader
+WEEKLY v0.9.18 — AI Editorial + Issue Lock + Spanish UI

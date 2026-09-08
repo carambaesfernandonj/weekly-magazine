@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="WEEKLY — revista personal de noticias, tecnología y videojuegos.">
-  <title>WEEKLY — Personal Edition</title>
+  <title>WEEKLY — Edición personal</title>
   <link rel="stylesheet" href="style.css">
   <script src="config.js"></script>
 </head>
@@ -13,101 +13,101 @@
     <aside class="sidebar">
       <div class="logo">W<span>EEKLY</span></div>
       <nav aria-label="Navegación principal">
-        <button class="nav-btn active" data-screen="dashboard">01 · Dashboard</button>
-        <button class="nav-btn" data-screen="sources">02 · My Sources</button>
-        <button class="nav-btn" data-screen="articles">03 · This Week</button>
-        <button class="nav-btn" data-screen="magazine">04 · Magazine</button>
-        <button class="nav-btn" data-screen="archive">05 · Archive</button>
+        <button class="nav-btn active" data-screen="dashboard">01 · Inicio</button>
+        <button class="nav-btn" data-screen="sources">02 · Mis fuentes</button>
+        <button class="nav-btn" data-screen="articles">03 · Esta semana</button>
+        <button class="nav-btn" data-screen="magazine">04 · Revista</button>
+        <button class="nav-btn" data-screen="archive">05 · Archivo</button>
       </nav>
-      <div class="side-info"><strong>V0.9.17</strong><br>Personal Edition<br><span id="connection-status">CONNECTING…</span></div>
+      <div class="side-info"><strong>V0.9.18</strong><br>Edición personal<br><span id="connection-status">CONNECTING…</span></div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <h2 id="screen-title">Dashboard</h2>
-        <span>PERSONAL EDITION · <span id="today"></span></span>
+        <h2 id="screen-title">Inicio</h2>
+        <span>EDICIÓN PERSONAL · <span id="today"></span></span>
       </header>
 
       <section class="screen active" id="dashboard">
-        <h1 class="hero-title">YOUR WEEK.<br>EDITED.</h1>
+        <h1 class="hero-title">TU SEMANA.<br>EDITADA.</h1>
         <p class="lead">WEEKLY recoge tus fuentes, encuentra las historias importantes y las convierte en una revista que puedes leer de principio a fin.</p>
         <div class="stat-grid">
-          <div class="card"><div class="fake-image"></div><h3 id="source-stat">6 SOURCES</h3><p>Tus medios y feeds favoritos.</p></div>
-          <div class="card"><div class="fake-image"></div><h3 id="found-stat">126 STORIES</h3><p>Historias encontradas esta semana.</p></div>
-          <div class="card"><div class="fake-image"></div><h3 id="selected-stat">24 SELECTED</h3><p>Historias candidatas para la edición.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="source-stat">6 FUENTES</h3><p>Tus medios y feeds favoritos.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="found-stat">126 HISTORIAS</h3><p>Historias encontradas esta semana.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="selected-stat">24 SELECCIONADAS</h3><p>Historias candidatas para la edición.</p></div>
         </div>
         <div class="actions">
-          <button class="primary" data-go="articles">REVIEW THIS WEEK →</button>
-          <button data-go="sources">MANAGE SOURCES</button>
+          <button class="primary" data-go="articles">REVISAR ESTA SEMANA →</button>
+          <button data-go="sources">GESTIONAR FUENTES</button>
         </div>
       </section>
 
       <section class="screen" id="sources">
-        <div class="section-head"><h1>MY SOURCES</h1><span id="source-count">6 ACTIVE FEEDS</span></div>
+        <div class="section-head"><h1>MIS FUENTES</h1><span id="source-count">6 FUENTES ACTIVAS</span></div>
         <p class="lead">Añade tus medios favoritos. Los feeds se guardan en Supabase y GitHub Actions los usará para construir la próxima edición.</p>
         <div class="source-grid" id="source-grid"></div>
-        <div class="actions"><button class="primary" id="add-source">+ ADD SOURCE</button><button id="refresh-sources">↻ REFRESH</button></div>
+        <div class="actions"><button class="primary" id="add-source">+ AÑADIR FUENTE</button><button id="refresh-sources">↻ ACTUALIZAR</button></div>
       </section>
 
       <section class="screen" id="articles">
-        <div class="section-head"><h1>THIS WEEK</h1><span id="article-count">0 STORIES IN POOL</span></div>
+        <div class="section-head"><h1>ESTA SEMANA</h1><span id="article-count">0 HISTORIAS IN POOL</span></div>
         <p class="lead">Elige los temas que quieres ver esta semana. WEEKLY seleccionará historias al azar dentro de esos tags y construirá la revista.</p>
         <div class="tag-panel">
-          <div class="tag-panel-head"><strong>CHOOSE YOUR TAGS</strong><span id="tag-count">0 TAGS</span></div>
+          <div class="tag-panel-head"><strong>ELIGE TUS TEMAS</strong><span id="tag-count">0 TEMAS</span></div>
           <div class="tag-cloud" id="tag-cloud"></div>
-          <div class="custom-topic"><div class="custom-topic-head"><strong>ADD YOUR OWN TOPIC</strong><span>e.g. anime · marvel · dc · retro gaming</span></div><div class="custom-topic-form"><input id="custom-topic-input" type="text" maxlength="40" placeholder="Type a topic…" autocomplete="off"><button id="add-custom-topic">+ ADD TOPIC</button></div><div class="topic-suggestions"><button data-topic="ANIME">ANIME</button><button data-topic="MARVEL">MARVEL</button><button data-topic="DC">DC</button><button data-topic="RETRO GAMING">RETRO GAMING</button><button data-topic="POKEMON">POKEMON</button><button data-topic="STAR WARS">STAR WARS</button></div></div>
-          <div class="tag-help">Los tags automáticos vienen del feed. Los temas personalizados buscan coincidencias en títulos, descripciones, H1, H2, fuente y tags. Puedes combinar ambos.</div>
+          <div class="custom-topic"><div class="custom-topic-head"><strong>AÑADE TU PROPIO TEMA</strong><span>ej. anime · marvel · dc · retro gaming</span></div><div class="custom-topic-form"><input id="custom-topic-input" type="text" maxlength="40" placeholder="Escribe un tema…" autocomplete="off"><button id="add-custom-topic">+ AÑADIR TEMA</button></div><div class="topic-suggestions"><button data-topic="ANIME">ANIME</button><button data-topic="MARVEL">MARVEL</button><button data-topic="DC">DC</button><button data-topic="RETRO GAMING">RETRO GAMING</button><button data-topic="POKEMON">POKEMON</button><button data-topic="STAR WARS">STAR WARS</button></div></div>
+          <div class="tag-help">Los temas automáticos vienen del feed. Los temas personalizados buscan coincidencias en títulos, descripciones, H1, H2, fuente y tags. Puedes combinar ambos.</div>
         </div>
         <div class="selection-preview">
-          <div><strong id="pool-stat">0 STORIES IN POOL</strong><small id="pool-note">Selecciona tags para acotar la piscina editorial.</small></div>
-          <button id="reshuffle">↻ SHUFFLE</button>
+          <div><strong id="pool-stat">0 HISTORIAS IN POOL</strong><small id="pool-note">Selecciona tags para acotar la piscina editorial.</small></div>
+          <button id="reshuffle">↻ MEZCLAR</button>
         </div>
         <div class="article-list" id="article-list"></div>
-        <div class="actions"><button class="primary" id="generate">GENERATE MAGAZINE →</button></div>
+        <div class="actions"><button class="primary" id="generate">ABRIR EDICIÓN →</button></div>
       </section>
 
       <section class="screen" id="magazine">
         <div class="issue-preview">
-          <div class="issue-top"><div class="issue-logo">WEEKLY</div><div class="issue-label">PERSONAL EDITION</div><div>ISSUE <span id="issue-number">036</span> · <span id="issue-date"></span></div></div>
+          <div class="issue-top"><div class="issue-logo">WEEKLY</div><div class="issue-label">EDICIÓN PERSONAL</div><div>EDICIÓN <span id="issue-number">036</span> · <span id="issue-date"></span></div></div>
           <div class="cover-grid magazine-cover-grid">
             <div>
-              <div class="eyebrow">THE WEEKLY BRIEFING · YOUR TOPICS</div>
-              <h1 class="cover-title" id="mag-cover-title">THE NEWS DESERVES A BETTER INTERFACE.</h1>
-              <p class="cover-dek" id="cover-dek">24 stories seleccionadas · 18 fuentes · una edición construida automáticamente.</p>
-              <div class="cover-image"><span>MAIN FEATURE</span></div>
+              <div class="eyebrow">EL RESUMEN SEMANAL · TUS TEMAS</div>
+              <h1 class="cover-title" id="mag-cover-title">LA SEMANA MERECE UNA MEJOR REVISTA.</h1>
+              <p class="cover-dek" id="cover-dek">24 historias seleccionadas · 18 fuentes · una edición construida automáticamente.</p>
+              <div class="cover-image"><span>DESTACADO</span></div>
             </div>
             <div id="cover-stories"></div>
           </div>
-          <div class="cover-meta"><span id="cover-tags">TAG MIX · RANDOMIZED</span><span id="cover-count">0 STORIES</span></div>
+          <div class="cover-meta"><span id="cover-tags">EDICIÓN SEMANAL · CERRADA</span><span id="cover-count">0 HISTORIAS</span></div>
         </div>
-        <div class="cover-caption"><span>EDITED FROM YOUR SOURCES</span><span>NO AI REQUIRED</span></div><div class="actions center">
-          <button id="back-to-articles">← EDIT SELECTION</button>
-          <button class="primary" id="open-reader">OPEN FULL MAGAZINE →</button>
+        <div class="cover-caption"><span>EDITADA DESDE TUS FUENTES</span><span>SIN IA · MANIFIESTO DE RESPALDO</span></div><div class="actions center">
+          <button id="back-to-articles">← VER HISTORIAS</button>
+          <button class="primary" id="open-reader">ABRIR REVISTA COMPLETA →</button>
         </div>
       </section>
 
       <section class="screen" id="reader">
         <div class="reader-shell">
           <div class="reader-top">
-            <button id="close-reader">← BACK</button>
-            <strong>WEEKLY · EDITORIAL EDITION</strong><span class="reader-mode">RSS EDITOR</span>
-            <div class="reader-tools"><button class="reader-view-btn active" data-reader-view="single">SINGLE</button><button class="reader-view-btn" data-reader-view="spread">SPREAD</button><span id="reader-page">01 / 26</span><button id="fullscreen-reader" title="Fullscreen">FULLSCREEN ⛶</button></div>
+            <button id="close-reader">← VOLVER</button>
+            <strong>WEEKLY · EDICIÓN EDITORIAL</strong><span class="reader-mode">EDITOR RSS</span>
+            <div class="reader-tools"><button class="reader-view-btn active" data-reader-view="single">PÁGINA</button><button class="reader-view-btn" data-reader-view="spread">DOBLE</button><span id="reader-page">01 / 26</span><button id="fullscreen-reader" title="Pantalla completa">PANTALLA COMPLETA ⛶</button></div>
           </div>
           <div class="spread" id="spread"></div>
           <div class="reader-nav">
-            <button id="prev-page">← PREV</button>
-            <span id="reader-status">SPREAD 01 / 13</span>
-            <button id="next-page">NEXT →</button>
+            <button id="prev-page">← ANTERIOR</button>
+            <span id="reader-status">DOBLE 01 / 13</span>
+            <button id="next-page">SIGUIENTE →</button>
           </div>
         </div>
       </section>
 
       <section class="screen" id="archive">
-        <div class="section-head"><h1>ARCHIVE</h1><span>3 EDITIONS</span></div>
+        <div class="section-head"><h1>ARCHIVO</h1><span>3 EDICIONES</span></div>
         <div class="archive">
-          <article><div class="archive-cover"><b>WEEKLY<br>#036</b></div><small>05 SEP 2026 · 24 STORIES</small></article>
-          <article><div class="archive-cover"><b>WEEKLY<br>#035</b></div><small>29 AUG 2026 · 27 STORIES</small></article>
-          <article><div class="archive-cover"><b>WEEKLY<br>#034</b></div><small>22 AUG 2026 · 21 STORIES</small></article>
+          <article><div class="archive-cover"><b>WEEKLY<br>#036</b></div><small>05 SEP 2026 · 24 HISTORIAS</small></article>
+          <article><div class="archive-cover"><b>WEEKLY<br>#035</b></div><small>29 AGO 2026 · 27 HISTORIAS</small></article>
+          <article><div class="archive-cover"><b>WEEKLY<br>#034</b></div><small>22 AGO 2026 · 21 HISTORIAS</small></article>
         </div>
       </section>
     </main>

@@ -1,5 +1,5 @@
 const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,clusters:[],readerPage:0,readerView:"single",shuffled:false,readerModel:null};
-const titles={dashboard:"Dashboard",sources:"My Sources",articles:"This Week",magazine:"Magazine",reader:"Reader",archive:"Archive"};
+const titles={dashboard:"Inicio",sources:"Mis fuentes",articles:"Esta semana",magazine:"Revista",reader:"Lector",archive:"Archivo"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 const cfg=window.WEEKLY_CONFIG||{};
@@ -12,8 +12,8 @@ async function db(path,options={}){const key=supabaseKey();const headers={apikey
 async function loadSources(){if(!hasSupabase())throw new Error("Supabase no está configurado. Crea config.js.");return db("/sources?select=id,name,url,category,enabled,created_at&order=created_at.asc")}
 async function addSource(){if(!hasSupabase()){alert("Primero configura Supabase en config.js. Mira README.md.");return}const name=prompt("Nombre del medio:","");if(name===null)return;const url=prompt("URL del RSS / Atom:","");if(url===null)return;const category=prompt("Categoría (Technology, Games, Culture, World, Other):","Other");if(category===null)return;if(!name.trim()||!url.trim()){alert("El nombre y la URL son obligatorios.");return}try{await db("/sources",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=representation"},body:JSON.stringify({name:name.trim(),url:url.trim(),category:category.trim()||"Other",enabled:true})});await refreshSources();show("sources");alert("Feed añadido correctamente. 🎉")}catch(err){console.error(err);alert("No pude guardar el feed.\n\n"+err.message)}}
 async function removeSource(id,name){if(!confirm(`¿Eliminar "${name}" de WEEKLY?`))return;try{await db(`/sources?id=eq.${encodeURIComponent(id)}`,{method:"DELETE"});await refreshSources()}catch(err){console.error(err);alert("No pude eliminar el feed.\n\n"+err.message)}}
-function renderSources(){const box=$("#source-grid");box.innerHTML="";state.sources.forEach(s=>{const e=document.createElement("div");e.className="source";e.innerHTML='<span class="dot"></span><div class="source-copy"><strong></strong><small></small><em></em></div><button class="remove">REMOVE</button>';e.querySelector("strong").textContent=s.name;e.querySelector("small").textContent=`${s.category||"Other"} · RSS`;e.querySelector("em").textContent=s.url;e.querySelector(".remove").onclick=()=>removeSource(s.id,s.name);box.appendChild(e)});$("#source-count").textContent=`${state.sources.filter(s=>s.enabled!==false).length} ACTIVE FEEDS`}
-async function refreshSources(){if(!hasSupabase()){setConnection("SUPABASE NOT CONFIGURED");renderSources();return}try{state.sources=await loadSources();setConnection("SUPABASE CONNECTED",true);renderSources();updateDash()}catch(err){console.error(err);setConnection("SUPABASE ERROR");alert("No pude leer Supabase.\n\n"+err.message)}}
+function renderSources(){const box=$("#source-grid");box.innerHTML="";state.sources.forEach(s=>{const e=document.createElement("div");e.className="source";e.innerHTML='<span class="dot"></span><div class="source-copy"><strong></strong><small></small><em></em></div><button class="remove">ELIMINAR</button>';e.querySelector("strong").textContent=s.name;e.querySelector("small").textContent=`${s.category||"Other"} · RSS`;e.querySelector("em").textContent=s.url;e.querySelector(".remove").onclick=()=>removeSource(s.id,s.name);box.appendChild(e)});$("#source-count").textContent=`${state.sources.filter(s=>s.enabled!==false).length} ACTIVE FEEDS`}
+async function refreshSources(){if(!hasSupabase()){setConnection("SUPABASE NO CONFIGURADO");renderSources();return}try{state.sources=await loadSources();setConnection("SUPABASE CONECTADO",true);renderSources();updateDash()}catch(err){console.error(err);setConnection("ERROR DE SUPABASE");alert("No pude leer Supabase.\n\n"+err.message)}}
 const TAG_STOP=new Set("the a an and or of to in on for with from by is are was were this that how why what your you new news more into about after as at it its there their they has have had will would could should just than then very been being not you our their from about today week best one two three get gets can may might while over under who where when into onto only also says said according latest plus here this these those all any any more most some such other another much many much new own its his her them he she we us i me my mine de an der die das und für mit von ist sind auf den im die der ein eine the los las del para por con que una uno como sus más este esta estos estas puede pueden fue han ha hay ya hoy según sobre entre tras al se su es en de".split());
 function deriveTags(a){const text=`${a.title||""} ${a.description||""} ${(a.headings?.h1||[]).join(" ")} ${(a.headings?.h2||[]).join(" ")}`.toLowerCase();const words=(text.match(/[a-zA-ZÀ-ÿ0-9]{4,}/g)||[]).map(w=>w.toLowerCase()).filter(w=>!TAG_STOP.has(w));const freq={};words.forEach(w=>freq[w]=(freq[w]||0)+1);const generic=new Set(["history","story","article","selected","source","week","today","best","world","thing","things","edition","review","technology","games"]);const keywords=Object.entries(freq).filter(([w])=>!generic.has(w)).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,5).map(([w])=>w.toUpperCase());const base=[];if(a.category)base.push(String(a.category).toUpperCase());if(Array.isArray(a.tags))base.push(...a.tags.map(x=>String(x).toUpperCase()));return [...new Set([...base,...keywords])].slice(0,8)}
 const CUSTOM_ALIASES={
@@ -77,8 +77,12 @@ function layoutFor(index){
   const layouts=["layout-feature","layout-news","layout-image","layout-quote","layout-short","layout-dark"];
   return layouts[Math.abs(Number(index)||0)%layouts.length]
 }
-function coverImage(a,cls="cover-image",label="WEEKLY FEATURE"){return a?.image?`<div class="${cls}"><img src="${esc(a.image)}" alt=""><span>${esc(label)}</span></div>`:`<div class="${cls}"><span>${esc(label)}</span></div>`}
-function storyTitle(a){const st=storyFor(a);return st?.headline||a?.title||"UNTITLED STORY"}
+function coverImage(a,cls="cover-image",label="DESTACADO WEEKLY"){return a?.image?`<div class="${cls}"><img src="${esc(a.image)}" alt=""><span>${esc(label)}</span></div>`:`<div class="${cls}"><span>${esc(label)}</span></div>`}
+function issueCoverImage(cls="cover-image",label="PORTADA"){const src=state.editorial?.coverImage||"assets/weekly-cover-fallback.svg";return `<div class="${cls} issue-cover-image"><img src="${esc(src)}" alt="Portada de WEEKLY"><span>${esc(label)}</span></div>`}
+function editorialParagraphs(){const text=String(state.editorial?.editorial||"").trim();if(!text)return [];return text.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean)}
+function issueDateLabel(){const w=state.editorial?.issueWindow||{};if(w.start&&w.end){const end=new Date(w.end+"T00:00:00Z");end.setUTCDate(end.getUTCDate()-1);const fmt=d=>d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric",timeZone:"UTC"}).toUpperCase();return `${fmt(new Date(w.start+"T00:00:00Z"))} — ${fmt(end)}`}return ""}
+function editorialPageHtml(globalNumber){const paras=editorialParagraphs();const title=state.editorial?.headline||"DESDE LA REDACCIÓN";const label=state.editorial?.editorialSource==="ai"?"EDITORIAL DE LA SEMANA":"MANIFIESTO WEEKLY";return `<section class="page editorial-page editorial-opening"><div class="story-running"><span>WEEKLY · ${label}</span><span>EDICIÓN #${esc(state.editorial?.issueNumber||"—")}</span></div><div class="editorial-kicker">DESDE LA REDACCIÓN</div><h2>${esc(title)}</h2><div class="editorial-copy">${paras.map(p=>`<p>${esc(p).replace(/\n/g,"<br>")}</p>`).join("")}</div><div class="editorial-sign">${state.editorial?.editorialSource==="ai"?"FERNANDON™ · EDITORIAL":"WEEKLY · MANIFIESTO"}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div></section>`}
+function storyTitle(a){const st=storyFor(a);return st?.headline||a?.title||"HISTORIA SIN TÍTULO"}
 function layoutFor(index){
   const layouts=["layout-feature","layout-news","layout-image","layout-quote","layout-short","layout-dark"];
   return layouts[Math.abs(Number(index)||0)%layouts.length]
@@ -95,13 +99,13 @@ function pullQuote(a){
   if(sentences.length)return sentences[Math.min(1,sentences.length-1)];
   return text.slice(0,150).trim()+ (text.length>150?"…":"");
 }
-function sectionName(a){return String(a?.category||"WEEKLY PICKS").toUpperCase();}
+function sectionName(a){return String(a?.category||"SELECCIÓN WEEKLY").toUpperCase();}
 function sectionOpener(a,number){
   const name=sectionName(a);
   const lead=storyTitle(a);
-  return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>UP NEXT</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
+  return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECCIÓN ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>A CONTINUACIÓN</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
 }
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];$("#cover-dek").textContent=`${s.length} stories · ${state.sources.length} sources · ${state.editorial?.status==="ai"?"AI EDITOR":"RSS EDITOR"}`;$("#mag-cover-title").textContent=storyTitle(cover)||"THE NEWS DESERVES A BETTER INTERFACE.";$("#issue-number").textContent=String(state.editorial?.issueNumber||"036");const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"TAG MIX · RANDOMIZED";$("#cover-count").textContent=`${s.length} STORIES`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTHER").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=coverImage(cover,"cover-image","MAIN FEATURE");old.replaceWith(holder.firstElementChild)}}
+function renderMagazine(){sync();const s=state.selected;const cover=s[0];const issue=state.editorial||{};$("#cover-dek").textContent=`${s.length} historias · ${state.sources.length} fuentes · ${issue.status==="ai"?"EDITORIAL IA":"MANIFIESTO WEEKLY"}`;$("#mag-cover-title").textContent=issue.headline||storyTitle(cover)||"WEEKLY";$("#issue-number").textContent=String(issue.issueNumber||"—");$("#issue-date").textContent=issueDateLabel();const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"EDICIÓN SEMANAL · CERRADA";$("#cover-count").textContent=`${s.length} HISTORIAS`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTROS").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=issueCoverImage("cover-image","PORTADA");old.replaceWith(holder.firstElementChild)}}
 // V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
 // Continuation pages intentionally carry much more text than the old 900-char cap.
 const PAGE_CHAR_TARGET_DESKTOP=2500;
@@ -152,7 +156,7 @@ function paginateBlocks(blocks,target){
     }
   }
   pushPage();
-  return pages.length?pages:[[{type:"p",text:"The source did not expose article text. Read the original article for the complete story."}]];
+  return pages.length?pages:[[{type:"p",text:"La fuente no expuso el texto completo. Lee el artículo original para consultar la historia completa."}]];
 }
 function firstPageBudget(a){
   const type=layoutFor((a?._storyIndex||0));
@@ -203,7 +207,7 @@ function inlineArticleImage(a,index){
   const imgs=articleImages(a);
   if(index<0||index>=imgs.length)return "";
   const item=imgs[index];
-  return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>ORIGINAL IMAGE</span></figure>`;
+  return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>IMAGEN ORIGINAL</span></figure>`;
 }
 function readerColumnCount(width){
   const viewport=window.innerWidth||1200;
@@ -219,11 +223,11 @@ function columnHtml(blocks){
 }
 function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,imageIndex=-1){
   const first=pageIndex===0; const imgs=articleImages(a); const h=a.headings||{};
-  const image=first?coverImage(a,"reader-story-image","ORIGINAL IMAGE"):"";
+  const image=first?coverImage(a,"reader-story-image","IMAGEN ORIGINAL"):"";
   const type=layoutFor((a._storyIndex||0)+pageIndex);
   const headlineClass=headlineClassFor(storyTitle(a));
   const quote=esc(pullQuote(a));
-  const tags=articleTags(a); const sourceLabel=esc(a.source||"ORIGINAL SOURCE");
+  const tags=articleTags(a); const sourceLabel=esc(a.source||"FUENTE ORIGINAL");
   const date=esc((a.published||"").slice(0,10));
   const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
   const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
@@ -232,13 +236,13 @@ function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,im
   const colCount=cols.length;
   return `<section class="page article-page source-text-page source-cols-${colCount} ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
     <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
-    ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINUED · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
+    ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINÚA · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
     ${firstExtras}
     ${continuationImage}
     <div class="source-body source-body-grid">${cols.map(columnHtml).join("")}</div>
     ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
     ${first?otherSourcesHtml(a):""}
-    ${pageIndex===totalPages-1?`<div class="source-end"><span>END OF STORY · ${featureNumber}</span>${linkButton(a)}</div>`:""}
+    ${pageIndex===totalPages-1?`<div class="source-end"><span>FIN DE LA HISTORIA · ${featureNumber}</span>${linkButton(a)}</div>`:""}
     <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
   </section>`;
 }
@@ -362,10 +366,11 @@ function buildReaderPages(){
   const shortStories=stories.filter(a=>a.contentStatus==='short');
   const cover=fullStories[0]||stories[0];
   const tags=articleTags(cover);
-  pages.push(`<section class="page cover-page">${coverImage(cover,"reader-cover-image","COVER STORY")}<div class="tag">WEEKLY · ${esc((cover?.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(cover))}</h2><p class="dek">${esc(cover?.description||"")}</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>THE WEEKLY / ${state.editorial?.issueNumber||"036"}</strong></p></section>`);
-  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${a.contentStatus==='short'?'SHORT NEWS':esc((a.category||"OTHER").toUpperCase())}</em></button>`).join("");
-  pages.push(`<section class="page index-page"><div class="index-kicker">CONTENTS</div><h2>THIS ISSUE</h2><p class="index-intro">${fullStories.length} full stories · ${shortStories.length} short news.</p><div class="toc">${tocItems}</div></section>`);
-  let physical=2; let lastSection=""; let sectionNumber=0;
+  pages.push(`<section class="page cover-page">${issueCoverImage("reader-cover-image","PORTADA")}<div class="tag">WEEKLY · EDICIÓN #${esc(state.editorial?.issueNumber||"—")}</div><h2>${esc(state.editorial?.headline||storyTitle(cover))}</h2><p class="dek">${esc(issueDateLabel())} · ${stories.length} historias</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>WEEKLY · EDICIÓN CERRADA</strong></p></section>`);
+  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${a.contentStatus==='short'?'NOTICIA BREVE':esc((a.category||"OTROS").toUpperCase())}</em></button>`).join("");
+  pages.push(`<section class="page index-page"><div class="index-kicker">ÍNDICE</div><h2>ESTA EDICIÓN</h2><p class="index-intro">${fullStories.length} historias completas · ${shortStories.length} noticias breves.</p><div class="toc">${tocItems}</div></section>`);
+  pages.push(editorialPageHtml(3));
+  let physical=3; let lastSection=""; let sectionNumber=0;
   fullStories.forEach(a=>{
     const i=stories.indexOf(a); a._storyIndex=i;
     const section=sectionName(a);
@@ -375,16 +380,16 @@ function buildReaderPages(){
     parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.columns,part.imageIndex));physical++});
   });
   if(shortStories.length){
-    pages.push(`<section class="page section-opener short-news-opener"><div class="section-opener-grid"><div class="section-marker">SECTION ${String(sectionNumber+1).padStart(2,"0")}</div><div class="section-name">SHORT NEWS</div><div class="section-rule"></div><div class="section-lead"><span>QUICK READS</span><h2>THE REST OF THE WEEK.</h2><p>Stories where the available source only provides a short lead. Read the original for the complete article.</p></div><div class="section-giant">S</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
+    pages.push(`<section class="page section-opener short-news-opener"><div class="section-opener-grid"><div class="section-marker">SECCIÓN ${String(sectionNumber+1).padStart(2,"0")}</div><div class="section-name">NOTICIAS BREVES</div><div class="section-rule"></div><div class="section-lead"><span>LECTURAS RÁPIDAS</span><h2>EL RESTO DE LA SEMANA.</h2><p>Stories where the available source only provides a short lead. Read the original for the complete article.</p></div><div class="section-giant">S</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
     const perPage=5;
     for(let off=0;off<shortStories.length;off+=perPage){
       const batch=shortStories.slice(off,off+perPage); const shortPage=physical;
       batch.forEach(a=>{articleStarts[stories.indexOf(a)]=shortPage});
-      const cards=batch.map((a,n)=>`<article class="short-news-card"><div class="short-news-meta"><span>${esc((a.source||"SOURCE").toUpperCase())}</span><span>${esc((a.published||"").slice(0,10))}</span></div><h3>${esc(storyTitle(a))}</h3><p>${esc(a.description||storyWords(a).slice(0,420))}</p><div class="short-news-foot">${linkButton(a)}</div></article>`).join("");
-      pages.push(`<section class="page short-news-page"><div class="story-running"><span>WEEKLY · SHORT NEWS</span><span>${String(off+1).padStart(2,"0")}–${String(Math.min(off+batch.length,shortStories.length)).padStart(2,"0")}</span></div><div class="short-news-header"><span>SHORT NEWS</span><h2>QUICK READS</h2></div><div class="short-news-list">${cards}</div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
+      const cards=batch.map((a,n)=>`<article class="short-news-card"><div class="short-news-meta"><span>${esc((a.source||"FUENTE").toUpperCase())}</span><span>${esc((a.published||"").slice(0,10))}</span></div><h3>${esc(storyTitle(a))}</h3><p>${esc(a.description||storyWords(a).slice(0,420))}</p><div class="short-news-foot">${linkButton(a)}</div></article>`).join("");
+      pages.push(`<section class="page short-news-page"><div class="story-running"><span>WEEKLY · NOTICIAS BREVES</span><span>${String(off+1).padStart(2,"0")}–${String(Math.min(off+batch.length,shortStories.length)).padStart(2,"0")}</span></div><div class="short-news-header"><span>NOTICIAS BREVES</span><h2>LECTURAS RÁPIDAS</h2></div><div class="short-news-list">${cards}</div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
     }
   }
-  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>END OF ISSUE</span><h2>SEE YOU<br>NEXT WEEK.</h2><p>WEEKLY is built from the sources you chose, arranged into a magazine you can actually sit down and read.</p><div class="closing-meta">${stories.length} STORIES · ${state.sources.length} SOURCES · ${state.editorial?.issueNumber||"036"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
+  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>FIN DE LA EDICIÓN</span><h2>NOS VEMOS<br>LA PRÓXIMA SEMANA.</h2><p>WEEKLY reúne las fuentes que elegiste y las convierte en una revista que se puede leer de principio a fin.</p><div class="closing-meta">${stories.length} HISTORIAS · ${state.sources.length} FUENTES · EDICIÓN ${state.editorial?.issueNumber||"—"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
 }
 
@@ -403,9 +408,9 @@ function otherSourcesHtml(a){
   const others=otherSourcesFor(a); if(!others.length)return "";
   const seen=new Set();
   const items=others.filter(o=>{const k=o.link||o.id||o.source;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,6);
-  return `<div class="other-sources"><span>OTHER SOURCES</span><div>${items.map(o=>`<a href="${esc(o.link||'#')}" target="_blank" rel="noopener">${esc(o.source||"SOURCE")}</a>`).join("")}</div></div>`;
+  return `<div class="other-sources"><span>OTRAS FUENTES</span><div>${items.map(o=>`<a href="${esc(o.link||'#')}" target="_blank" rel="noopener">${esc(o.source||"FUENTE")}</a>`).join("")}</div></div>`;
 }
-function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">READ ORIGINAL ↗</a>`:""}
+function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">LEER ORIGINAL ↗</a>`:""}
 function renderReader(){
   sync();
   if(!state.readerModel){
@@ -413,7 +418,7 @@ function renderReader(){
     if(spread && !state.readerBuilding){
       state.readerBuilding=true;
       spread.classList.add("single-view");
-      spread.innerHTML=`<section class="page loading-page"><div class="loading-mark">W</div><div class="loading-copy"><span>WEEKLY</span><h2>LOADING<br>MAGAZINE…</h2><p>Composing this week's issue.</p></div></section>`;
+      spread.innerHTML=`<section class="page loading-page"><div class="loading-mark">W</div><div class="loading-copy"><span>WEEKLY</span><h2>CARGANDO<br>REVISTA…</h2><p>Composing this week's issue.</p></div></section>`;
       requestAnimationFrame(()=>setTimeout(()=>{
         try{ state.readerModel=buildReaderPages(); }
         finally{ state.readerBuilding=false; renderReader(); }
@@ -429,13 +434,13 @@ function renderReader(){
     const spreadStart=Math.floor(state.readerPage/2)*2;
     state.readerPage=spreadStart;
     $("#reader-page").textContent=`${String(spreadStart+1).padStart(2,"0")}–${String(Math.min(spreadStart+2,total)).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-    $("#reader-status").textContent=`SPREAD ${String(Math.floor(spreadStart/2)+1).padStart(2,"0")} / ${String(Math.ceil(total/2)).padStart(2,"0")}`;
+    $("#reader-status").textContent=`DOBLE PÁGINA ${String(Math.floor(spreadStart/2)+1).padStart(2,"0")} / ${String(Math.ceil(total/2)).padStart(2,"0")}`;
     const right=pages[spreadStart+1]||`<section class="page blank-page"><span>WEEKLY</span></section>`;
     spread.classList.remove("single-view"); spread.classList.add("spread-view");
     spread.innerHTML=`${pages[spreadStart]}${right}`;
   } else {
     $("#reader-page").textContent=`${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-    $("#reader-status").textContent=`PAGE ${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
+    $("#reader-status").textContent=`PÁGINA ${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
     spread.classList.remove("spread-view"); spread.classList.add("single-view");
     spread.innerHTML=pages[state.readerPage];
   }
@@ -451,12 +456,12 @@ function setReaderView(view){
   renderReader();
 }
 
-async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a);if(!a.contentStatus){const blocks=Array.isArray(a.contentBlocks)?a.contentBlocks:[];const chars=blocks.reduce((n,b)=>n+String(b?.text||"").length,0);a.contentStatus=(chars>=700&&blocks.length>=2)?"full":"short";}});try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
+async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a);if(!a.contentStatus){const blocks=Array.isArray(a.contentBlocks)?a.contentBlocks:[];const chars=blocks.reduce((n,b)=>n+String(b?.text||"").length,0);a.contentStatus=(chars>=700&&blocks.length>=2)?"full":"short";}});if(Array.isArray(state.editorial?.selected_ids)&&state.editorial.selected_ids.length){state.selected=state.editorial.selected_ids.map(i=>state.articles[i]).filter(Boolean);state.shuffled=false;}try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
 try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}}
-function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} SOURCES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
+function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} FUENTES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
 async function load(){await Promise.all([loadArticles(),refreshSources()]);renderAll()}
 function renderAll(){renderSources();renderTags();renderArticles();renderMagazine();updateDash()}
-document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;state.readerModel=null;renderArticles();renderMagazine();show("magazine")};$("#reshuffle").onclick=()=>{state.selected=chooseRandomStories(candidatePool());state.shuffled=false;state.readerModel=null;renderArticles();renderMagazine()};$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;show("reader");requestAnimationFrame(()=>renderReader())};$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
+document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>alert("Esta edición ya fue cerrada. WEEKLY conserva el número semanal tal como fue generado.");$("#reshuffle").onclick=()=>alert("Esta edición ya fue cerrada. La selección semanal no se vuelve a barajar.");$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;show("reader");requestAnimationFrame(()=>renderReader())};$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
 const fullscreenBtn=$("#fullscreen-reader");
 async function enterReaderFullscreen(){
   readerEl.classList.add("reader-fullscreen");

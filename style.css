@@ -368,3 +368,15 @@
 .short-news-foot{display:flex;justify-content:flex-end}
 .short-news-foot .source-link{font-size:8px;padding:5px 7px}
 .short-news-opener .section-name{font-size:clamp(40px,7vw,88px)}
+
+/* V0.9.18 — issue lock, editorial opening, Spanish UI, AI/fallback cover */
+.issue-cover-image img{object-fit:cover!important}
+.editorial-opening{padding:38px 34px 30px;background:#e8e3d8;color:#17191b;display:flex;flex-direction:column;box-sizing:border-box}
+.editorial-kicker{font:900 9px Arial;letter-spacing:.16em;color:#555;margin:18px 0 8px}
+.editorial-opening h2{font-size:clamp(34px,4vw,58px);line-height:.92;letter-spacing:-.055em;max-width:14ch;margin:0 0 22px}
+.editorial-copy{max-width:68ch;flex:1}
+.editorial-copy p{font:14px/1.62 Georgia,serif;color:#333;margin:0 0 16px}
+.editorial-sign{margin-top:18px;border-top:2px solid #222;padding-top:9px;font:900 8px Arial;letter-spacing:.12em;color:#555}
+.editorial-opening .page-number{position:absolute;right:18px;bottom:14px;font:900 9px Arial;color:#777}
+.issue-locked{font:900 8px Arial;letter-spacing:.12em;color:#555}
+@media(max-width:720px){.editorial-opening{padding:28px 22px}.editorial-opening h2{font-size:34px}.editorial-copy p{font-size:13px;line-height:1.55}}
