@@ -1,0 +1,7 @@
+{
+  "REPORT": 5,
+  "REVIEW": 10,
+  "NEWS": 10,
+  "total": 25,
+  "fallback": "best_available"
+}

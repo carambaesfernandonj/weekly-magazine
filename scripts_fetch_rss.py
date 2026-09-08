@@ -395,6 +395,13 @@ TAG_RULES={
     "TECHNOLOGY":[r"technology",r"tech",r"device",r"digital",r"internet",r"online"],
 }
 
+EDITORIAL_TYPE_RULES={"REVIEW":[r"\breview\b",r"reseña",r"análisis",r"analisis",r"veredicto",r"impresiones",r"hands[- ]?on",r"reviewed",r"tested"],"REPORT":[r"\breport\b",r"reportaje",r"feature",r"deep dive",r"investigaci[oó]n",r"entrevista",r"retrospectiva",r"historia de",r"explicado",r"por qu[eé]",r"c[oó]mo funciona",r"analysis"]}
+def classify_editorial_type(a):
+    text=f"{a.get('title','')} {a.get('description','')}"
+    for kind,patterns in EDITORIAL_TYPE_RULES.items():
+        if any(re.search(p,text,re.I) for p in patterns): return kind
+    return "NEWS"
+
 def make_tags(a):
     hay=" ".join([a.get("title",""),a.get("description","")]).lower()
     tags=[]
@@ -425,6 +432,7 @@ for a in sorted(window_articles,key=lambda x:x.get("published",""),reverse=True)
 unique=unique[:MAX_TOTAL]
 for a in unique:
     a["tags"]=make_tags(a)
+    a["editorialType"]=classify_editorial_type(a)
     a["editorialScore"]=round(score(a,unique))
 # Deterministic zero-AI story clustering. Titles are normalized and compared as a
 # graph so coverage can merge transitively across different publishers.
