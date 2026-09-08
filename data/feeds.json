@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-08T00:22:12.226804+00:00",
+  "updatedAt": "2026-09-08T23:13:10.550563+00:00",
   "feeds": [
     {
       "id": 13,
@@ -58,13 +58,6 @@
       "enabled": true
     },
     {
-      "id": 22,
-      "name": "RETRONAUTS",
-      "url": "https://retronauts.com/feed",
-      "category": "Retrogaming",
-      "enabled": true
-    },
-    {
       "id": 23,
       "name": "Old School gAmer Magazine",
       "url": "https://oldschoolgamermagazine.com/feed",
@@ -76,6 +69,62 @@
       "name": "RETROMASH",
       "url": "https://retromash.com/blog/feed",
       "category": "Retrogaming",
+      "enabled": true
+    },
+    {
+      "id": 25,
+      "name": "Eurogamer",
+      "url": "https://www.eurogamer.net/feed",
+      "category": "Gaming",
+      "enabled": true
+    },
+    {
+      "id": 26,
+      "name": "Cartoon Brew",
+      "url": "https://feeds.feedburner.com/CartoonBrew",
+      "category": "Animation",
+      "enabled": true
+    },
+    {
+      "id": 27,
+      "name": "Animation Magazine",
+      "url": "https://www.animationmagazine.net/feed/",
+      "category": "Animation",
+      "enabled": true
+    },
+    {
+      "id": 29,
+      "name": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml",
+      "category": "technology",
+      "enabled": true
+    },
+    {
+      "id": 30,
+      "name": "Tech Crunch",
+      "url": "https://techcrunch.com/feed/",
+      "category": "Technology",
+      "enabled": true
+    },
+    {
+      "id": 31,
+      "name": "ARSTECHNICA",
+      "url": "https://feeds.arstechnica.com/arstechnica/index/",
+      "category": "Technology",
+      "enabled": true
+    },
+    {
+      "id": 32,
+      "name": "Hollywood Reporter",
+      "url": "https://www.hollywoodreporter.com/feed/",
+      "category": "Culture",
+      "enabled": true
+    },
+    {
+      "id": 33,
+      "name": "Deadline",
+      "url": "https://deadline.com/feed/",
+      "category": "Movies",
       "enabled": true
     }
   ]
