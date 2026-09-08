@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-08T23:13:49.750327+00:00",
+  "updatedAt": "2026-09-08T23:37:37.447668+00:00",
   "issueWindow": {
     "start": "2026-08-30",
     "end": "2026-09-06",
@@ -1480,7 +1480,7 @@
         "HARDWARE",
         "BUSINESS"
       ],
-      "editorialScore": 66,
+      "editorialScore": 65,
       "clusterSize": 1,
       "otherSources": [],
       "selected": false
@@ -7940,11 +7940,7 @@
   "errors": [
     {
       "source": "Gamasutra",
-      "error": "not well-formed (invalid token): line 1, column 1218"
-    },
-    {
-      "source": "BLEEDING COOL",
-      "error": "<urlopen error timed out>"
+      "error": "not well-formed (invalid token): line 1, column 1212"
     },
     {
       "source": "Animation Magazine",
