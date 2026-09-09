@@ -6,7 +6,7 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import mm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image, PageBreak
 
-ARTICLES=Path('data/articles.json'); EDITORIAL=Path('data/editorial.json'); OUT_DIR=Path('data/issues')
+ARTICLES=Path('data/articles.json'); EDITORIAL=Path('data/editorial.json'); OUT_DIR=Path('data/issues'); INDEX=OUT_DIR/'index.json'
 def load(p,d):
     try:return json.loads(p.read_text(encoding='utf-8'))
     except:return d
@@ -15,7 +15,7 @@ def esc(x):
 def img_from_url(url,max_w,max_h):
     try:
         if not str(url).startswith(('http://','https://')): return None
-        req=urllib.request.Request(url,headers={'User-Agent':'WEEKLY-PDF/0.9.19'})
+        req=urllib.request.Request(url,headers={'User-Agent':'WEEKLY-PDF/0.9.19b'})
         with urllib.request.urlopen(req,timeout=12) as r: raw=r.read(3_000_000)
         from PIL import Image as PILImage
         bio=io.BytesIO(raw); im=PILImage.open(bio); w,h=im.size
@@ -74,4 +74,9 @@ for n,a in enumerate(sel,1):
     if n<len(sel):story.append(PageBreak())
 
 doc=SimpleDocTemplate(str(out),pagesize=A4,leftMargin=18*mm,rightMargin=18*mm,topMargin=16*mm,bottomMargin=15*mm,title=f'WEEKLY #{issue}',author='WEEKLY')
-doc.build(story,onFirstPage=lambda c,d:footer(c,d,issue),onLaterPages=lambda c,d:footer(c,d,issue));print(out)
+doc.build(story,onFirstPage=lambda c,d:footer(c,d,issue),onLaterPages=lambda c,d:footer(c,d,issue))
+idx=load(INDEX,{"issues":[]}); issues=idx.get("issues",[]) if isinstance(idx,dict) else []
+entry={"number":issue,"start":(ed.get("issueWindow") or {}).get("start",""),"end":(ed.get("issueWindow") or {}).get("end",""),"stories":len(ids),"locked":True,"cover":ed.get("coverImage") or "assets/weekly-cover-fallback.svg","pdf":str(out).replace('\\','/') }
+issues=[x for x in issues if str(x.get("number"))!=str(issue)]; issues.append(entry); issues.sort(key=lambda x:int(x.get("number") or 0),reverse=True)
+INDEX.write_text(json.dumps({"issues":issues},ensure_ascii=False,indent=2),encoding="utf-8")
+print(out)

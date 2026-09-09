@@ -7,6 +7,8 @@ OUT = "data/editorial.json"
 MANIFESTO = "data/manifesto.json"
 COVER_DIR = Path("data/covers")
 FALLBACK_COVER = "assets/weekly-cover-fallback.svg"
+ISSUES_DIR = Path("data/issues")
+ISSUES_INDEX = ISSUES_DIR / "index.json"
 MODEL = os.environ.get("OPENAI_EDITOR_MODEL", "gpt-5.6-luna")
 EDITORIAL_PROFILE = {
     "name": "Fernando Mode",
@@ -35,6 +37,27 @@ def next_issue_number(previous):
         return int(previous or 0) + 1
     except Exception:
         return 1
+
+
+
+def update_archive_index(issue):
+    ISSUES_DIR.mkdir(parents=True, exist_ok=True)
+    data = load_json(ISSUES_INDEX, {"issues": []})
+    issues = data.get("issues", []) if isinstance(data, dict) else []
+    number = issue.get("issueNumber")
+    entry = {
+        "number": number,
+        "start": (issue.get("issueWindow") or {}).get("start", ""),
+        "end": (issue.get("issueWindow") or {}).get("end", ""),
+        "stories": len(issue.get("selected_ids") or []),
+        "locked": bool(issue.get("locked")),
+        "cover": issue.get("coverImage") or FALLBACK_COVER,
+        "pdf": f"data/issues/issue-{number}.pdf" if (ISSUES_DIR / f"issue-{number}.pdf").exists() else "",
+    }
+    issues = [x for x in issues if str(x.get("number")) != str(number)]
+    issues.append(entry)
+    issues.sort(key=lambda x: int(x.get("number") or 0), reverse=True)
+    ISSUES_INDEX.write_text(json.dumps({"issues": issues}, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def fallback_editorial(articles, number, window, manifesto):
@@ -167,6 +190,7 @@ existing = load_json(OUT, {})
 # editorial window must not regenerate its editorial or cover.
 if existing.get("locked") and existing.get("issueWindow") == window and os.environ.get("FORCE_REGENERATE_ISSUE", "false").lower() != "true":
     print(f"Issue #{existing.get('issueNumber','?')} is locked for {window.get('start')} → {window.get('end')}; keeping it unchanged.")
+    update_archive_index(existing)
     raise SystemExit(0)
 
 number = next_issue_number(existing.get("issueNumber") or 36)
@@ -212,4 +236,5 @@ if api_key:
 
 with open(OUT, "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
+update_archive_index(result)
 print(f"Published WEEKLY issue #{number}: status={result['status']} cover={result['coverSource']} stories={len(selected)}")

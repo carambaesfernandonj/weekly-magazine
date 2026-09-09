@@ -1,0 +1,31 @@
+{
+  "issues": [
+    {
+      "number": 36,
+      "start": "2026-08-30",
+      "end": "2026-09-06",
+      "stories": 24,
+      "locked": true,
+      "cover": "assets/weekly-cover-fallback.svg",
+      "pdf": "data/issues/issue-36.pdf"
+    },
+    {
+      "number": 35,
+      "start": "2026-08-23",
+      "end": "2026-08-30",
+      "stories": 27,
+      "locked": true,
+      "cover": "assets/weekly-cover-fallback.svg",
+      "pdf": ""
+    },
+    {
+      "number": 34,
+      "start": "2026-08-16",
+      "end": "2026-08-23",
+      "stories": 21,
+      "locked": true,
+      "cover": "assets/weekly-cover-fallback.svg",
+      "pdf": ""
+    }
+  ]
+}
