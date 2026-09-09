@@ -53,6 +53,7 @@ def update_archive_index(issue):
         "locked": bool(issue.get("locked")),
         "cover": issue.get("coverImage") or FALLBACK_COVER,
         "pdf": f"data/issues/issue-{number}.pdf" if (ISSUES_DIR / f"issue-{number}.pdf").exists() else "",
+        "file": f"data/issues/issue-{number}.json" if (ISSUES_DIR / f"issue-{number}.json").exists() else "",
     }
     issues = [x for x in issues if str(x.get("number")) != str(number)]
     issues.append(entry)
@@ -178,6 +179,30 @@ def generate_cover(prompt, api_key, issue_number):
     return str(out).replace("\\", "/")
 
 
+def write_issue_snapshot(issue, articles_data):
+    if not issue.get("locked") or not issue.get("issueNumber"):
+        return
+    number = str(issue.get("issueNumber"))
+    selected_ids = [i for i in (issue.get("selected_ids") or []) if isinstance(i, int) and 0 <= i < len(articles_data.get("articles", []))]
+    feeds = load_json("data/feeds.json", {}).get("feeds", [])
+    snapshot = {
+        "schemaVersion": 1,
+        "issueNumber": issue.get("issueNumber"),
+        "issueWindow": issue.get("issueWindow") or articles_data.get("issueWindow") or {},
+        "locked": True,
+        "generatedAt": issue.get("generatedAt") or datetime.now(timezone.utc).isoformat(),
+        "archivedAt": datetime.now(timezone.utc).isoformat(),
+        "editorial": issue,
+        "articles": articles_data.get("articles", []),
+        "clusters": articles_data.get("clusters", []),
+        "selected_ids": selected_ids,
+        "sourceCount": len([f for f in feeds if f.get("enabled", True)]),
+        "sources": feeds,
+    }
+    ISSUES_DIR.mkdir(parents=True, exist_ok=True)
+    (ISSUES_DIR / f"issue-{number}.json").write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 articles_data = load_json(ARTICLES, {})
 articles = articles_data.get("articles", [])
 if not articles:
@@ -190,6 +215,7 @@ existing = load_json(OUT, {})
 # editorial window must not regenerate its editorial or cover.
 if existing.get("locked") and existing.get("issueWindow") == window and os.environ.get("FORCE_REGENERATE_ISSUE", "false").lower() != "true":
     print(f"Issue #{existing.get('issueNumber','?')} is locked for {window.get('start')} → {window.get('end')}; keeping it unchanged.")
+    write_issue_snapshot(existing, articles_data)
     update_archive_index(existing)
     raise SystemExit(0)
 
@@ -236,5 +262,6 @@ if api_key:
 
 with open(OUT, "w", encoding="utf-8") as f:
     json.dump(result, f, ensure_ascii=False, indent=2)
+write_issue_snapshot(result, articles_data)
 update_archive_index(result)
 print(f"Published WEEKLY issue #{number}: status={result['status']} cover={result['coverSource']} stories={len(selected)}")

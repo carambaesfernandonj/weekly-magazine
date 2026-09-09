@@ -1,4 +1,4 @@
-const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,archiveIssues:[],clusters:[],readerPage:0,readerView:"single",shuffled:false,readerModel:null};
+const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,archiveIssues:[],clusters:[],readerPage:0,readerView:"single",shuffled:false,readerModel:null,issueSourceCount:0,archiveMode:false,activeArchiveNumber:null};
 const titles={dashboard:"Inicio",sources:"Mis fuentes",articles:"Esta semana",magazine:"Revista",reader:"Lector",archive:"Archivo"};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
@@ -107,7 +107,7 @@ function sectionOpener(a,number){
 }
 function issuePdfUrl(){const n=state.editorial?.issueNumber;return n?`data/issues/issue-${encodeURIComponent(n)}.pdf`:""}
 function downloadIssuePdf(){const url=issuePdfUrl();if(!url){alert("El PDF de esta edición todavía no está disponible.");return;}window.open(url,"_blank","noopener");}
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];const issue=state.editorial||{};$("#cover-dek").textContent=`${s.length} historias · ${state.sources.length} fuentes · ${issue.status==="ai"?"EDITORIAL IA":"MANIFIESTO WEEKLY"}`;$("#mag-cover-title").textContent=issue.headline||storyTitle(cover)||"WEEKLY";$("#issue-number").textContent=String(issue.issueNumber||"—");$("#issue-date").textContent=issueDateLabel();const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"EDICIÓN SEMANAL · CERRADA";$("#cover-count").textContent=`${s.length} HISTORIAS`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTROS").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=issueCoverImage("cover-image","PORTADA");old.replaceWith(holder.firstElementChild)}}
+function renderMagazine(){sync();const s=state.selected;const cover=s[0];const issue=state.editorial||{};const sourceCount=state.issueSourceCount||state.sources.length;$("#cover-dek").textContent=`${s.length} historias · ${sourceCount} fuentes · ${issue.status==="ai"?"EDITORIAL IA":"MANIFIESTO WEEKLY"}`;$("#mag-cover-title").textContent=issue.headline||storyTitle(cover)||"WEEKLY";$("#issue-number").textContent=String(issue.issueNumber||"—");$("#issue-date").textContent=issueDateLabel();const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"EDICIÓN SEMANAL · CERRADA";$("#cover-count").textContent=`${s.length} HISTORIAS`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTROS").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=issueCoverImage("cover-image","PORTADA");old.replaceWith(holder.firstElementChild)}}
 // V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
 // Continuation pages intentionally carry much more text than the old 900-char cap.
 const PAGE_CHAR_TARGET_DESKTOP=2500;
@@ -391,7 +391,7 @@ function buildReaderPages(){
       pages.push(`<section class="page short-news-page"><div class="story-running"><span>WEEKLY · NOTICIAS BREVES</span><span>${String(off+1).padStart(2,"0")}–${String(Math.min(off+batch.length,shortStories.length)).padStart(2,"0")}</span></div><div class="short-news-header"><span>NOTICIAS BREVES</span><h2>LECTURAS RÁPIDAS</h2></div><div class="short-news-list">${cards}</div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
     }
   }
-  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>FIN DE LA EDICIÓN</span><h2>NOS VEMOS<br>LA PRÓXIMA SEMANA.</h2><p>WEEKLY reúne las fuentes que elegiste y las convierte en una revista que se puede leer de principio a fin.</p><div class="closing-meta">${stories.length} HISTORIAS · ${state.sources.length} FUENTES · EDICIÓN ${state.editorial?.issueNumber||"—"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
+  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>FIN DE LA EDICIÓN</span><h2>NOS VEMOS<br>LA PRÓXIMA SEMANA.</h2><p>WEEKLY reúne las fuentes que elegiste y las convierte en una revista que se puede leer de principio a fin.</p><div class="closing-meta">${stories.length} HISTORIAS · ${state.issueSourceCount||state.sources.length} FUENTES · EDICIÓN ${state.editorial?.issueNumber||"—"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
   return {pages,articleStarts};
 }
 
@@ -469,23 +469,52 @@ function renderArchive(){
   issues.slice().sort((a,b)=>Number(b.number||0)-Number(a.number||0)).forEach(issue=>{
     const card=document.createElement("article");
     const cover=issue.cover||"assets/weekly-cover-fallback.svg";
-    const canRead=Number(issue.number)===Number(state.editorial?.issueNumber);
+    const isCurrent=Number(issue.number)===Number(state.editorial?.issueNumber);
+    const file=issue.file||`data/issues/issue-${encodeURIComponent(issue.number)}.json`;
     const pdf=issue.pdf||`data/issues/issue-${encodeURIComponent(issue.number)}.pdf`;
+    const canRead=Boolean(issue.file)||isCurrent;
     card.innerHTML=`<div class="archive-cover archive-cover-image"><img src="${esc(cover)}" alt="Portada WEEKLY #${esc(issue.number)}"><b>WEEKLY<br>#${esc(issue.number)}</b></div><small>${esc(formatArchiveDate(issue.start,issue.end))} · ${esc(issue.stories||0)} HISTORIAS</small><div class="archive-actions">${canRead?'<button class="primary archive-read">LEER</button>':''}${issue.pdf?`<a class="archive-pdf" href="${esc(pdf)}" download>PDF ↓</a>`:''}</div>`;
-    if(canRead) card.querySelector('.archive-read').onclick=()=>{show("magazine")};
+    if(canRead) card.querySelector('.archive-read').onclick=()=>openArchivedIssue(issue,file,isCurrent);
     box.appendChild(card);
   });
 }
+async function openArchivedIssue(issue,file,isCurrent=false){
+  if(isCurrent && !issue.file){
+    state.archiveMode=false; state.activeArchiveNumber=null; show("magazine"); renderMagazine(); return;
+  }
+  try{
+    const r=await fetch(`${file}?ts=${Date.now()}`);
+    if(!r.ok)throw new Error(`HTTP ${r.status}`);
+    const snap=await r.json();
+    if(!snap?.editorial?.locked)throw new Error("La copia archivada no está cerrada.");
+    state.archiveMode=true;
+    state.activeArchiveNumber=snap.issueNumber;
+    state.editorial=snap.editorial;
+    state.articles=Array.isArray(snap.articles)?snap.articles:[];
+    state.clusters=Array.isArray(snap.clusters)?snap.clusters:[];
+    state.selected_ids=snap.selected_ids||snap.editorial.selected_ids||[];
+    state.selected=state.selected_ids.map(i=>state.articles[i]).filter(Boolean);
+    state.issueSourceCount=Number(snap.sourceCount||0);
+    state.readerPage=0; state.readerModel=null; state.readerView="single";
+    show("magazine"); renderMagazine();
+  }catch(err){console.error(err);alert("No pude abrir esta edición archivada.\n\n"+err.message)}
+}
+function restoreCurrentIssue(){
+  state.archiveMode=false; state.activeArchiveNumber=null; state.readerModel=null;
+  loadArticles().then(()=>{state.issueSourceCount=state.sources.length;renderAll()});
+}
+
 async function loadArchive(){
   try{const r=await fetch("data/issues/index.json?ts="+Date.now());state.archiveIssues=r.ok?((await r.json()).issues||[]):[];}
   catch(err){state.archiveIssues=[];console.warn("No se pudo cargar el archivo de ediciones",err)}
 }
 async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a);if(!a.contentStatus){const blocks=Array.isArray(a.contentBlocks)?a.contentBlocks:[];const chars=blocks.reduce((n,b)=>n+String(b?.text||"").length,0);a.contentStatus=(chars>=700&&blocks.length>=2)?"full":"short";}});if(Array.isArray(state.editorial?.selected_ids)&&state.editorial.selected_ids.length){state.selected=state.editorial.selected_ids.map(i=>state.articles[i]).filter(Boolean);state.shuffled=false;}try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
-try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}}
+try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}
+state.archiveMode=false; state.activeArchiveNumber=null; state.issueSourceCount=state.sources.length;}
 function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} FUENTES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
-async function load(){await Promise.all([loadArticles(),refreshSources(),loadArchive()]);renderAll()}
+async function load(){await Promise.all([loadArticles(),refreshSources(),loadArchive()]);state.issueSourceCount=state.sources.length;renderAll()}
 function renderAll(){renderSources();renderTags();renderArticles();renderMagazine();renderArchive();updateDash()}
-document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>show(b.dataset.screen));document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>alert("Esta edición ya fue cerrada. WEEKLY conserva el número semanal tal como fue generado.");$("#reshuffle").onclick=()=>alert("Esta edición ya fue cerrada. La selección semanal no se vuelve a barajar.");$("#back-to-articles").onclick=()=>show("articles");$("#open-reader").onclick=()=>{state.readerPage=0;show("reader");requestAnimationFrame(()=>renderReader())};$("#download-pdf").onclick=downloadIssuePdf;$("#download-pdf-reader").onclick=downloadIssuePdf;$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
+document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>{if(b.dataset.screen==="magazine"&&state.archiveMode)restoreCurrentIssue();else show(b.dataset.screen)});document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>alert("Esta edición ya fue cerrada. WEEKLY conserva el número semanal tal como fue generado.");$("#reshuffle").onclick=()=>alert("Esta edición ya fue cerrada. La selección semanal no se vuelve a barajar.");$("#back-to-articles").onclick=()=>{if(state.archiveMode){show("archive");renderArchive()}else show("articles")};$("#open-reader").onclick=()=>{state.readerPage=0;show("reader");requestAnimationFrame(()=>renderReader())};$("#download-pdf").onclick=downloadIssuePdf;$("#download-pdf-reader").onclick=downloadIssuePdf;$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();if(state.archiveMode){state.readerModel=null;show("archive");renderArchive();}else show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
 const fullscreenBtn=$("#fullscreen-reader");
 async function enterReaderFullscreen(){
   readerEl.classList.add("reader-fullscreen");

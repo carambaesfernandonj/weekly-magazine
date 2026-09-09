@@ -1,15 +1,6 @@
 {
   "issues": [
     {
-      "number": 37,
-      "start": "2026-08-30",
-      "end": "2026-09-06",
-      "stories": 17,
-      "locked": true,
-      "cover": "assets/weekly-cover-fallback.svg",
-      "pdf": "data/issues/issue-37.pdf"
-    },
-    {
       "number": 36,
       "start": "2026-08-30",
       "end": "2026-09-06",

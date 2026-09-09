@@ -76,7 +76,7 @@ for n,a in enumerate(sel,1):
 doc=SimpleDocTemplate(str(out),pagesize=A4,leftMargin=18*mm,rightMargin=18*mm,topMargin=16*mm,bottomMargin=15*mm,title=f'WEEKLY #{issue}',author='WEEKLY')
 doc.build(story,onFirstPage=lambda c,d:footer(c,d,issue),onLaterPages=lambda c,d:footer(c,d,issue))
 idx=load(INDEX,{"issues":[]}); issues=idx.get("issues",[]) if isinstance(idx,dict) else []
-entry={"number":issue,"start":(ed.get("issueWindow") or {}).get("start",""),"end":(ed.get("issueWindow") or {}).get("end",""),"stories":len(ids),"locked":True,"cover":ed.get("coverImage") or "assets/weekly-cover-fallback.svg","pdf":str(out).replace('\\','/') }
+entry={"number":issue,"start":(ed.get("issueWindow") or {}).get("start",""),"end":(ed.get("issueWindow") or {}).get("end",""),"stories":len(ids),"locked":True,"cover":ed.get("coverImage") or "assets/weekly-cover-fallback.svg","pdf":str(out).replace('\\','/'),"file":f"data/issues/issue-{issue}.json" if (OUT_DIR/f"issue-{issue}.json").exists() else "" }
 issues=[x for x in issues if str(x.get("number"))!=str(issue)]; issues.append(entry); issues.sort(key=lambda x:int(x.get("number") or 0),reverse=True)
 INDEX.write_text(json.dumps({"issues":issues},ensure_ascii=False,indent=2),encoding="utf-8")
 print(out)
