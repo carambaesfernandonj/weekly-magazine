@@ -1,22 +1,39 @@
 {
-  "cover_story": 0,
+  "issueNumber": 37,
+  "issueWindow": {
+    "start": "2026-08-30",
+    "end": "2026-09-06",
+    "timezone": "UTC",
+    "endExclusive": true
+  },
+  "locked": true,
+  "status": "rss",
+  "model": "zero-cost",
+  "headline": "UNA SEMANA. UN NÚMERO.",
+  "editorial": "WEEKLY existe porque internet produce demasiadas cosas interesantes como para intentar leerlas todas y demasiadas cosas absurdas como para dejar que el algoritmo decida por nosotros.\n\nEsta revista junta las fuentes que elegiste, encuentra historias que merecen atención y las convierte en un número que se puede leer de principio a fin. No pretende ser neutral sobre lo que resulta interesante: pretende ser curiosa.\n\nAquí conviven videojuegos, cine, animación, tecnología, retro y todas esas cosas raras que terminan apareciendo cuando uno sigue un enlace porque decía que algo era prácticamente magia.\n\nWEEKLY no quiere reemplazar a las fuentes originales. Quiere ser el lugar desde donde descubres qué vale la pena abrir. Cuando una historia está completa, la leemos aquí. Cuando una fuente solo permite ofrecer un resumen, te mandamos a leerla donde corresponde.\n\nUna semana. Un número. Un montón de cosas interesantes.\n\nNos vemos la próxima semana.",
+  "editorialSource": "manifesto",
+  "coverImage": "assets/weekly-cover-fallback.svg",
+  "coverSource": "fallback",
+  "coverPrompt": "Editorial magazine cover for WEEKLY issue #37. Visual language inspired by glossy videogame, film and technology magazines from the early 2000s: bold Y2K editorial design, dramatic central visual, slightly chaotic but deliberate cover composition, glossy print feel, strong shapes, energetic lighting, subtle retro-futurist details. The cover should feel like a real magazine, not a generic poster. No readable words, no fake logos, no watermarks, no UI, no collage of unrelated tiny objects. Build one coherent visual metaphor from these weekly themes and stories: [{\"source\": \"Old School gAmer Magazine\", \"title\": \"HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S\", \"summary\": \"There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKAN\"}, {\"source\": \"Old School gAmer Magazine\", \"title\": \"Atari and Vice Beer Introduce New Beer Collection\", \"summary\": \"ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Intr\"}, {\"source\": \"Eurogamer\", \"title\": \"Xbox Cloud Gaming's new hourly cap is reportedly set exactly where Microsoft stops making money on it\", \"summary\": \"A new report suggests that Xbox has capped its cloud gaming usage to 15 hours for Game Pass Ultimate subscribers because that's when the service stops being profitable. Read more\"}, {\"source\": \"Eurogamer\", \"title\": \"Sony clarifies PlayStation disc production is dropping by 10 percent in 2028, not to 10 percent\", \"summary\": \"Sony has pushed back on a wave of reports suggesting PlayStation disc manufacturing is about to be gutted by 90 percent after comments from a Sony DADC executive were allegedly misunderstood. Read more\"}, {\"source\": \"Eurogamer\", \"title\": \"Gamescom apologises for how it initially responded to indie developer hardware thefts\", \"summary\": \"Gamescom has apologised for the way it \\\"communicated about the theft of hardware belonging to several indie developers\\\" last week, admitting, \\\"our first response did not strike the right tone, and it did not show the people affected the empathy they deserved\\\". Read more\"}, {\"source\": \"HobbyConsolas\", \"title\": \"Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños\", \"summary\": \"La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.\"}, {\"source\": \"Old School gAmer Magazine\", \"title\": \"Streets of Rage Micro Player Pro Licensed By SEGA\", \"summary\": \"lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old Sch\"}, {\"source\": \"Cartoon Brew\", \"title\": \"Aardman Is Auctioning More Than 220 Puppets, Props, And Artworks For Its 50th Anniversary\", \"summary\": \"More than 220 Aardman puppets, props, and pieces of artwork will be auctioned to celebrate the studio’s 50th anniversary.\"}, {\"source\": \"Cartoon Brew\", \"title\": \"‘Frankelda’ Bros. Next Film; White House Propaganda Games; ‘Skibidi’ Loses Its Creator\", \"summary\": \"Following the success of I Am Frankelda, Mexican filmmakers Roy and Arturo Ambriz are taking their long-gestating stop-motion fantasy, The Ballad of the Phoenix, to this year’s Venice Gap-financing market, … Continued\"}, {\"source\": \"Old School gAmer Magazine\", \"title\": \"Pac-Man, Space Invaders, Tetris, and other classic games\", \"summary\": \"Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic \"}, {\"source\": \"Cartoon Brew\", \"title\": \"‘Atlas: The Animated Movie’ A Bold Indie Feature As Unlikely As Its Long-Forgotten Hero (EXCLUSIVE)\", \"summary\": \"Austin McConnell taught himself CG animation, built a production pipeline in his basement, and overcame a debilitating stroke to complete his 90-minute feature.\"}, {\"source\": \"Cartoon Brew\", \"title\": \"Wile E. Coyote Shades David Zaslav In Looney Reddit AMA\", \"summary\": \"Wile E. Coyote addressed David Zaslav, ACME, the Road Runner, and his decades of failure in a funny and surprisingly thoughtful Reddit AMA.\"}, {\"source\": \"RETROMASH\", \"title\": \"The Interface Details That Made Computer Solitaire Feel Timeless\", \"summary\": \"Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .\"}, {\"source\": \"HobbyConsolas\", \"title\": \"GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena\", \"summary\": \"GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.\"}, {\"source\": \"HobbyConsolas\", \"title\": \"Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox\", \"summary\": \"GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.\"}, {\"source\": \"Eurogamer\", \"title\": \"Everything announced at Sony's State of Play September 2026\", \"summary\": \"It's showcase time! After a packed Gamescom, Sony's doing its own thing once more, this time giving a taste of everything coming to PlayStation 5 in the coming months and beyond. That includes a final look at Marvel's Wolverine before its impending release, another glimpse of Zach Cregger's promising Resident Evil movie (although that's obviously one coming to the big screen), as well as plenty mo\"}]",
+  "coverStory": 0,
   "selected_ids": [
     0,
     1,
     2,
     3,
     4,
-    5,
     8,
-    9,
     10,
-    11,
-    12,
     15,
     16,
+    17,
+    19,
     21,
+    24,
     26,
-    27
+    29,
+    42,
+    54
   ],
   "stories": [
     {
@@ -24,280 +41,128 @@
       "headline": "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
       "dek": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
       "summary": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
-        "H2: Arcade Archives 2 Features"
-      ],
-      "headings": {
-        "h1": [
-          "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S"
-        ],
-        "h2": [
-          "Arcade Archives 2 Features"
-        ]
-      }
+      "source": "Old School gAmer Magazine"
     },
     {
       "article_id": 1,
       "headline": "Atari and Vice Beer Introduce New Beer Collection",
       "dek": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
       "summary": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Atari and Vice Beer Introduce New Beer Collection"
-      ],
-      "headings": {
-        "h1": [
-          "Atari and Vice Beer Introduce New Beer Collection"
-        ],
-        "h2": []
-      }
+      "source": "Old School gAmer Magazine"
     },
     {
       "article_id": 2,
-      "headline": "Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños",
-      "dek": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
-      "summary": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "Xbox Cloud Gaming's new hourly cap is reportedly set exactly where Microsoft stops making money on it",
+      "dek": "A new report suggests that Xbox has capped its cloud gaming usage to 15 hours for Game Pass Ultimate subscribers because that's when the service stops being profitable. Read more",
+      "summary": "A new report suggests that Xbox has capped its cloud gaming usage to 15 hours for Game Pass Ultimate subscribers because that's when the service stops being profitable. Read more",
+      "source": "Eurogamer"
     },
     {
       "article_id": 3,
-      "headline": "Streets of Rage Micro Player Pro Licensed By SEGA",
-      "dek": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
-      "summary": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Streets of Rage Micro Player Pro Licensed By SEGA"
-      ],
-      "headings": {
-        "h1": [
-          "Streets of Rage Micro Player Pro Licensed By SEGA"
-        ],
-        "h2": []
-      }
+      "headline": "Sony clarifies PlayStation disc production is dropping by 10 percent in 2028, not to 10 percent",
+      "dek": "Sony has pushed back on a wave of reports suggesting PlayStation disc manufacturing is about to be gutted by 90 percent after comments from a Sony DADC executive were allegedly misunderstood. Read more",
+      "summary": "Sony has pushed back on a wave of reports suggesting PlayStation disc manufacturing is about to be gutted by 90 percent after comments from a Sony DADC executive were allegedly misunderstood. Read more",
+      "source": "Eurogamer"
     },
     {
       "article_id": 4,
-      "headline": "An Emulation Mod Kit For The LEGO PlayStation Is In The Works",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 5,
-      "headline": "Pac-Man, Space Invaders, Tetris, and other classic games",
-      "dek": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
-      "summary": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H1: Pac-Man, Space Invaders, Tetris, and other classic games",
-        "H2: The arcade rulebook was tiny",
-        "H2: Why cabinets made people brave",
-        "H2: Home ports changed the argument"
-      ],
-      "headings": {
-        "h1": [
-          "Pac-Man, Space Invaders, Tetris, and other classic games"
-        ],
-        "h2": [
-          "The arcade rulebook was tiny",
-          "Why cabinets made people brave",
-          "Home ports changed the argument",
-          "Patterns, panic, and score chasing"
-        ]
-      }
+      "headline": "Gamescom apologises for how it initially responded to indie developer hardware thefts",
+      "dek": "Gamescom has apologised for the way it \"communicated about the theft of hardware belonging to several indie developers\" last week, admitting, \"our first response did not strike the right tone, and it did not show the people affected the empathy they deserved\". Read more",
+      "summary": "Gamescom has apologised for the way it \"communicated about the theft of hardware belonging to several indie developers\" last week, admitting, \"our first response did not strike the right tone, and it did not show the people affected the empathy they deserved\". Read more",
+      "source": "Eurogamer"
     },
     {
       "article_id": 8,
-      "headline": "Retro YouTuber Announces A Cool New Emulation Frontend Called Jump",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 9,
-      "headline": "Hyperkin Bring Modern Power To Retro Consoles With New USB-C Charging System Range",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños",
+      "dek": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "summary": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "source": "HobbyConsolas"
     },
     {
       "article_id": 10,
-      "headline": "The Interface Details That Made Computer Solitaire Feel Timeless",
-      "dek": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
-      "summary": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "H2: The Interface Details That Made Computer Solitaire Feel Timeless"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": [
-          "The Interface Details That Made Computer Solitaire Feel Timeless"
-        ]
-      }
-    },
-    {
-      "article_id": 11,
-      "headline": "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena",
-      "dek": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
-      "summary": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    },
-    {
-      "article_id": 12,
-      "headline": "PlayCase Is A New Retro iPhone Controller With Real Triggers",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: Retro Dodo"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "Streets of Rage Micro Player Pro Licensed By SEGA",
+      "dek": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "summary": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "source": "Old School gAmer Magazine"
     },
     {
       "article_id": 15,
-      "headline": "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox",
-      "dek": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
-      "summary": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "Aardman Is Auctioning More Than 220 Puppets, Props, And Artworks For Its 50th Anniversary",
+      "dek": "More than 220 Aardman puppets, props, and pieces of artwork will be auctioned to celebrate the studio’s 50th anniversary.",
+      "summary": "More than 220 Aardman puppets, props, and pieces of artwork will be auctioned to celebrate the studio’s 50th anniversary.",
+      "source": "Cartoon Brew"
     },
     {
       "article_id": 16,
-      "headline": "Retro Re-release Roundup, week of September 3, 2026",
-      "dek": "Ufouria, plus four more.",
-      "summary": "Ufouria, plus four more.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: RETRONAUTS"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "‘Frankelda’ Bros. Next Film; White House Propaganda Games; ‘Skibidi’ Loses Its Creator",
+      "dek": "Following the success of I Am Frankelda, Mexican filmmakers Roy and Arturo Ambriz are taking their long-gestating stop-motion fantasy, The Ballad of the Phoenix, to this year’s Venice Gap-financing market, … Continued",
+      "summary": "Following the success of I Am Frankelda, Mexican filmmakers Roy and Arturo Ambriz are taking their long-gestating stop-motion fantasy, The Ballad of the Phoenix, to this year’s Venice Gap-financing market, … Continued",
+      "source": "Cartoon Brew"
+    },
+    {
+      "article_id": 17,
+      "headline": "Pac-Man, Space Invaders, Tetris, and other classic games",
+      "dek": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
+      "summary": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
+      "source": "Old School gAmer Magazine"
+    },
+    {
+      "article_id": 19,
+      "headline": "‘Atlas: The Animated Movie’ A Bold Indie Feature As Unlikely As Its Long-Forgotten Hero (EXCLUSIVE)",
+      "dek": "Austin McConnell taught himself CG animation, built a production pipeline in his basement, and overcame a debilitating stroke to complete his 90-minute feature.",
+      "summary": "Austin McConnell taught himself CG animation, built a production pipeline in his basement, and overcame a debilitating stroke to complete his 90-minute feature.",
+      "source": "Cartoon Brew"
     },
     {
       "article_id": 21,
-      "headline": "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix",
-      "dek": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
-      "summary": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: HobbyConsolas"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "Wile E. Coyote Shades David Zaslav In Looney Reddit AMA",
+      "dek": "Wile E. Coyote addressed David Zaslav, ACME, the Road Runner, and his decades of failure in a funny and surprisingly thoughtful Reddit AMA.",
+      "summary": "Wile E. Coyote addressed David Zaslav, ACME, the Road Runner, and his decades of failure in a funny and surprisingly thoughtful Reddit AMA.",
+      "source": "Cartoon Brew"
+    },
+    {
+      "article_id": 24,
+      "headline": "The Interface Details That Made Computer Solitaire Feel Timeless",
+      "dek": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
+      "summary": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
+      "source": "RETROMASH"
     },
     {
       "article_id": 26,
-      "headline": "Kickstarter Kompilation: September 2026 edition",
-      "dek": "Featuring books and shelves but no bookshelves",
-      "summary": "Featuring books and shelves but no bookshelves",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: RETRONAUTS"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
+      "headline": "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena",
+      "dek": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
+      "summary": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
+      "source": "HobbyConsolas"
     },
     {
-      "article_id": 27,
-      "headline": "The Master System Directory (An-Ar)",
-      "dek": "What would I give if I could live out of these waters",
-      "summary": "What would I give if I could live out of these waters",
-      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
-      "key_points": [
-        "Fuente: RETRONAUTS"
-      ],
-      "headings": {
-        "h1": [],
-        "h2": []
-      }
-    }
-  ],
-  "sections": [
+      "article_id": 29,
+      "headline": "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox",
+      "dek": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
+      "summary": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
+      "source": "HobbyConsolas"
+    },
     {
-      "name": "WEEKLY PICKS",
-      "ids": [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        8,
-        9,
-        10,
-        11,
-        12,
-        15,
-        16,
-        21,
-        26,
-        27
-      ]
+      "article_id": 42,
+      "headline": "Everything announced at Sony's State of Play September 2026",
+      "dek": "It's showcase time! After a packed Gamescom, Sony's doing its own thing once more, this time giving a taste of everything coming to PlayStation 5 in the coming months and beyond. That includes a final look at Marvel's Wolverine before its impending release, another glimpse of Zach Cregger's promising Resident Evil movie (although that's obviously one coming to the big screen), as well as plenty more. We'll be updating as the show goes on… Read more",
+      "summary": "It's showcase time! After a packed Gamescom, Sony's doing its own thing once more, this time giving a taste of everything coming to PlayStation 5 in the coming months and beyond. That includes a final look at Marvel's Wolverine before its impending release, another glimpse of Zach Cregger's promising Resident Evil movie (although that's obviously one coming to the big screen), as well as plenty more. We'll be updating as the show goes on… Read more",
+      "source": "Eurogamer"
+    },
+    {
+      "article_id": 54,
+      "headline": "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix",
+      "dek": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
+      "summary": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
+      "source": "HobbyConsolas"
     }
   ],
-  "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
-  "generatedAt": "2026-09-08T00:22:27.971208+00:00",
-  "model": "zero-cost",
-  "status": "rss",
+  "generatedAt": "2026-09-09T19:46:20.975637+00:00",
   "editorial_profile": {
     "name": "Fernando Mode",
-    "voice": "intelligent, curious, informal and editorial",
-    "humor": "dry and occasional; never force jokes",
-    "attitude": "opinionated but fair, skeptical of hype, interested in weird connections",
-    "writing": "strong headlines, short paragraphs, clear explanations, occasional punchlines",
-    "rule": "inform first, entertain second; never invent facts"
+    "voice": "inteligente, curioso, informal y editorial",
+    "humor": "seco y ocasional; nunca forzado",
+    "attitude": "opinión clara pero justa, escéptica con el hype y atenta a conexiones raras",
+    "writing": "titulares fuertes, párrafos cortos, explicaciones claras y remates ocasionales",
+    "rule": "informar primero, entretener después; no inventar hechos"
   }
 }
