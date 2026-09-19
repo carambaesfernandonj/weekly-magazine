@@ -3,120 +3,112 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#171717">
-  <meta name="description" content="La Pulenta Biblioteca · Tu estantería digital personal.">
-  <title>La Pulenta Biblioteca</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css">
+  <meta name="description" content="WEEKLY — revista personal de noticias, tecnología y videojuegos.">
+  <title>WEEKLY — Edición personal</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark">📚</div>
-      <div><h1>La Pulenta Biblioteca</h1><p>Tu estantería digital.</p></div>
-    </div>
-    <nav class="main-nav" aria-label="Navegación principal">
-      <button class="nav-btn active" data-view="home" type="button">🏠 Inicio</button>
-      <button class="nav-btn" data-view="collections" type="button">📚 Colecciones</button>
-      <button class="nav-btn" data-view="library" type="button">🗂 Biblioteca</button>
-    </nav>
-    <div class="add-wrap">
-      <button id="addBtn" class="primary" type="button">＋ Añadir</button>
-      <div id="addMenu" class="add-menu hidden">
-        <button id="addFilesBtn" type="button">📄 Archivos PDF / EPUB</button>
-        <button id="addFolderBtn" type="button">📁 Carpeta completa</button>
-      </div>
-    </div>
-    <input id="fileInput" type="file" accept=".pdf,.epub,application/pdf,application/epub+zip" multiple hidden>
-    <input id="folderInput" type="file" accept=".pdf,.epub,application/pdf,application/epub+zip" webkitdirectory directory multiple hidden>
-  </header>
+  <div id="app" class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">W<span>EEKLY</span></div>
+      <nav aria-label="Navegación principal">
+        <button class="nav-btn active" data-screen="dashboard">01 · Inicio</button>
+        <button class="nav-btn" data-screen="sources">02 · Mis fuentes</button>
+        <button class="nav-btn" data-screen="articles">03 · Esta semana</button>
+        <button class="nav-btn" data-screen="magazine">04 · Revista</button>
+        <button class="nav-btn" data-screen="archive">05 · Archivo</button>
+      </nav>
+      <div class="side-info"><strong>V0.9.22</strong><br>Edición personal<br><span id="connection-status">CONNECTING…</span></div>
+    </aside>
 
-  <main>
-    <section id="viewHome" class="app-view">
-      <div class="page-intro">
-        <div><span class="eyebrow">LA PULENTA</span><h2>Lecturas actuales</h2></div>
-        <p>Hasta 20 libros que ya empezaste a leer.</p>
-      </div>
-      <section id="homeDashboard" class="home-dashboard">
-        <div id="homeCurrent" class="shelf-section hidden"></div>
-        <div id="homeEmpty" class="empty hidden">
-          <div class="empty-icon">📖</div><h2>Aún no tienes lecturas actuales</h2>
-          <p>Cuando abras un libro y avances en él, aparecerá aquí para continuar rápidamente.</p>
-          <button id="homeLibraryBtn" class="primary" type="button">🗂 Ir a mi biblioteca</button>
+    <main class="main">
+      <header class="topbar">
+        <h2 id="screen-title">Inicio</h2>
+        <span>EDICIÓN PERSONAL · <span id="today"></span></span>
+      </header>
+
+      <section class="screen active" id="dashboard">
+        <h1 class="hero-title">TU SEMANA.<br>EDITADA.</h1>
+        <p class="lead">WEEKLY recoge tus fuentes, encuentra las historias importantes y las convierte en una revista que puedes leer de principio a fin.</p>
+        <div class="stat-grid">
+          <div class="card"><div class="fake-image"></div><h3 id="source-stat">6 FUENTES</h3><p>Tus medios y feeds favoritos.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="found-stat">126 HISTORIAS</h3><p>Historias encontradas esta semana.</p></div>
+          <div class="card"><div class="fake-image"></div><h3 id="selected-stat">24 SELECCIONADAS</h3><p>Historias candidatas para la edición.</p></div>
+        </div>
+        <div class="actions">
+          <button class="primary" data-go="articles">REVISAR ESTA SEMANA →</button>
+          <button data-go="sources">GESTIONAR FUENTES</button>
         </div>
       </section>
-    </section>
 
-    <section id="viewCollections" class="app-view hidden">
-      <div class="page-intro">
-        <div><span class="eyebrow">ORGANIZA COMO QUIERAS</span><h2>Mis colecciones</h2></div>
-        <button id="newCollectionPageBtn" class="primary" type="button">＋ Nueva colección</button>
-      </div>
-      <div id="collectionsPageGrid" class="collection-page-grid"></div>
-      <p class="page-note">Las colecciones no mueven ni duplican tus archivos: solo los organizan.</p>
-      <div id="collectionsEmpty" class="empty hidden">
-        <div class="empty-icon">📚</div><h2>Todavía no tienes colecciones</h2>
-        <p>Crea una para empezar a ordenar tus libros como quieras.</p>
-        <button id="newCollectionEmptyBtn" class="primary" type="button">＋ Crear colección</button>
-      </div>
-    </section>
+      <section class="screen" id="sources">
+        <div class="section-head"><h1>MIS FUENTES</h1><span id="source-count">6 FUENTES ACTIVAS</span></div>
+        <p class="lead">Añade tus medios favoritos. Los feeds se guardan en Supabase y GitHub Actions los usará para construir la próxima edición.</p>
+        <div class="source-grid" id="source-grid"></div>
+        <div class="actions"><button class="primary" id="add-source">+ AÑADIR FUENTE</button><button id="refresh-sources">↻ ACTUALIZAR</button></div>
+      </section>
 
-    <section id="viewLibrary" class="app-view hidden">
-      <section class="library-heading">
-        <div><span class="eyebrow">TU BIBLIOTECA</span><h2>Todos tus libros</h2></div>
-        <p>Busca, filtra y ordena toda tu colección.</p>
-      </section>
-      <section class="toolbar">
-        <label class="search"><span>🔎</span><input id="searchInput" type="search" placeholder="Buscar título, autor, archivo o tag…"></label>
-        <div class="stats" id="stats">0 libros</div>
-        <button id="showCollectionsBtn" class="secondary tag-toggle" type="button">📚 Colecciones</button><button id="showTagsBtn" class="secondary tag-toggle" type="button">🏷️ Tags</button>
-      </section>
-      <section class="library-controls">
-        <div class="filter-pills" id="filterPills">
-          <button class="filter-pill active" data-filter="all" type="button">Todos</button><button class="filter-pill" data-filter="favorites" type="button">♥ Favoritos</button><button class="filter-pill" data-filter="pdf" type="button">PDF</button><button class="filter-pill" data-filter="epub" type="button">EPUB</button>
+      <section class="screen" id="articles">
+        <div class="section-head"><h1>ESTA SEMANA</h1><span id="article-count">0 HISTORIAS IN POOL</span></div>
+        <p class="lead">Elige los temas que quieres ver esta semana. WEEKLY seleccionará historias al azar dentro de esos tags y construirá la revista.</p>
+        <div class="tag-panel">
+          <div class="tag-panel-head"><strong>ELIGE TUS TEMAS</strong><span id="tag-count">0 TEMAS</span></div>
+          <div class="tag-cloud" id="tag-cloud"></div>
+          <div class="custom-topic"><div class="custom-topic-head"><strong>AÑADE TU PROPIO TEMA</strong><span>ej. anime · marvel · dc · retro gaming</span></div><div class="custom-topic-form"><input id="custom-topic-input" type="text" maxlength="40" placeholder="Escribe un tema…" autocomplete="off"><button id="add-custom-topic">+ AÑADIR TEMA</button></div><div class="topic-suggestions"><button data-topic="ANIME">ANIME</button><button data-topic="MARVEL">MARVEL</button><button data-topic="DC">DC</button><button data-topic="RETRO GAMING">RETRO GAMING</button><button data-topic="POKEMON">POKEMON</button><button data-topic="STAR WARS">STAR WARS</button></div></div>
+          <div class="tag-help">Los temas automáticos vienen del feed. Los temas personalizados buscan coincidencias en títulos, descripciones, H1, H2, fuente y tags. Puedes combinar ambos.</div>
         </div>
-        <div class="sort-view"><label class="sort-label">Ordenar<select id="sortSelect"><option value="updated">Últimos usados</option><option value="title">Título A–Z</option><option value="author">Autor A–Z</option><option value="progress">Progreso</option></select></label><div class="view-toggle" aria-label="Vista"><button id="gridViewBtn" class="view-btn active" type="button" title="Vista de portadas">▦</button><button id="listViewBtn" class="view-btn" type="button" title="Vista de lista">☰</button></div></div>
-      </section>
-      <section>
-        <div id="collectionBar" class="collection-bar hidden" aria-label="Colecciones"></div><div id="tagBar" class="tag-bar hidden" aria-label="Filtros por tags"></div><div id="collectionSummary" class="collection-summary hidden"></div>
-        <div id="emptyState" class="empty"><div class="empty-icon">📖</div><h2>Tu biblioteca está vacía</h2><p>Añade tu primer PDF o EPUB y quedará guardado aquí para la próxima vez.</p><button id="emptyAddBtn" class="primary">＋ Añadir mi primer libro</button></div>
-        <div id="noResults" class="empty hidden"><div class="empty-icon">🔎</div><h2>No encontré libros</h2><p>Prueba con otra búsqueda, tag o filtro.</p></div>
-        <div id="libraryGrid" class="grid"></div>
-      </section>
-    </section>
-  </main>
-
-  <div id="reader" class="reader hidden" aria-modal="true" role="dialog">
-    <div class="reader-head"><div><strong id="readerTitle">—</strong><span id="readerInfo">—</span></div><div class="reader-actions"><button id="prevPageBtn" class="secondary" type="button">← Anterior</button><button id="nextPageBtn" class="secondary" type="button">Siguiente →</button><button id="saveProgressBtn" class="secondary" type="button">Guardar posición</button><button id="closeReaderBtn" class="icon-btn" title="Cerrar">✕</button></div></div>
-    <div id="readerBody" class="reader-body"></div>
-  </div>
-
-  <div id="loadingPanel" class="loading-panel hidden" role="dialog" aria-modal="true" aria-labelledby="loadingTitle">
-    <div class="loading-card"><div class="loading-icon">📚</div><div id="loadingTitle" class="loading-title">Añadiendo libros…</div><div id="loadingDetail" class="loading-detail">Preparando archivos</div><div class="loading-track"><span id="loadingBar"></span></div><div class="loading-numbers"><span id="loadingCount">0 / 0</span><span id="loadingPercent">0%</span></div><div id="loadingDone" class="loading-done hidden">✓ Todos los archivos fueron procesados</div><div id="loadingHint" class="loading-hint">No cierres esta ventana hasta que termine.</div></div>
-  </div>
-
-  <div id="bookModal" class="book-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="book-modal-card">
-      <button id="modalClose" class="modal-close" type="button" aria-label="Cerrar">✕</button>
-      <div class="modal-grid">
-        <div class="modal-cover-wrap"><div id="modalCover" class="modal-cover"></div><button id="favoriteBook" class="favorite-big" type="button">♡ Favorito</button></div>
-        <div class="modal-info">
-          <div class="eyebrow">DETALLES DEL LIBRO</div><h2 id="modalTitle">—</h2>
-          <label>Título<input id="editTitle" type="text"></label>
-          <label>Autor<input id="editAuthor" type="text" placeholder="Opcional"></label>
-          <div><div class="label">Tags</div><div id="modalTags" class="modal-tags"></div><div class="tag-editor"><input id="newTag" type="text" placeholder="Añadir tag…"><button id="addTag" class="secondary" type="button">＋</button></div></div>
-          <div class="modal-collections"><div class="label">Colecciones</div><div id="modalCollections" class="modal-tags"></div><div class="collection-create"><input id="newCollection" type="text" placeholder="Nueva colección…"><button id="createCollection" class="secondary" type="button">＋ Crear</button></div></div>
-          <div class="modal-actions"><button id="saveBook" class="primary" type="button">Guardar cambios</button><button id="readBook" class="secondary" type="button">📖 Continuar leyendo</button></div>
-          <div class="modal-progress-wrap"><div class="modal-progress-head"><span>Progreso</span><strong id="modalProgressText">0%</strong></div><div class="modal-progress"><span id="modalProgressBar"></span></div></div><div id="modalMeta" class="modal-meta"></div>
+        <div class="selection-preview">
+          <div><strong id="pool-stat">0 HISTORIAS IN POOL</strong><small id="pool-note">Selecciona tags para acotar la piscina editorial.</small></div>
+          <button id="reshuffle">↻ MEZCLAR</button>
         </div>
-      </div>
-    </div>
-  </div>
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        <div class="article-list" id="article-list"></div>
+        <div class="actions"><button class="primary" id="generate">ABRIR EDICIÓN →</button></div>
+      </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/epubjs@0.3.93/dist/epub.min.js"></script>
+      <section class="screen" id="magazine">
+        <div class="issue-preview">
+          <div class="issue-top"><div class="issue-logo">WEEKLY</div><div class="issue-label">EDICIÓN PERSONAL</div><div>EDICIÓN <span id="issue-number">036</span> · <span id="issue-date"></span></div></div>
+          <div class="cover-grid magazine-cover-grid">
+            <div>
+              <div class="eyebrow">EL RESUMEN SEMANAL · TUS TEMAS</div>
+              <h1 class="cover-title" id="mag-cover-title">LA SEMANA MERECE UNA MEJOR REVISTA.</h1>
+              <p class="cover-dek" id="cover-dek">24 historias seleccionadas · 18 fuentes · una edición construida automáticamente.</p>
+              <div class="cover-image"><span>DESTACADO</span></div>
+            </div>
+            <div id="cover-stories"></div>
+          </div>
+          <div class="cover-meta"><span id="cover-tags">EDICIÓN SEMANAL · CERRADA</span><span id="cover-count">0 HISTORIAS</span></div>
+        </div>
+        <div class="cover-caption"><span>EDITADA DESDE TUS FUENTES</span><span>SIN IA · MANIFIESTO DE RESPALDO</span></div><div class="actions center">
+          <button id="back-to-articles">← VER HISTORIAS</button>
+          <button class="primary" id="open-reader">ABRIR REVISTA COMPLETA →</button><button id="download-pdf">DESCARGAR PDF ↓</button>
+        </div>
+      </section>
+
+      <section class="screen" id="reader">
+        <div class="reader-shell">
+          <div class="reader-top">
+            <button id="close-reader">← VOLVER</button>
+            <strong>WEEKLY · EDICIÓN EDITORIAL</strong><span class="reader-mode">EDITOR RSS</span>
+            <div class="reader-tools"><button class="reader-view-btn active" data-reader-view="single">PÁGINA</button><button class="reader-view-btn" data-reader-view="spread">DOBLE</button><span id="reader-page">01 / 26</span><button id="fullscreen-reader" title="Pantalla completa">PANTALLA COMPLETA ⛶</button><button id="download-pdf-reader">PDF ↓</button></div>
+          </div>
+          <div class="spread" id="spread"></div>
+          <div class="reader-nav">
+            <button id="prev-page">← ANTERIOR</button>
+            <span id="reader-status">DOBLE 01 / 13</span>
+            <button id="next-page">SIGUIENTE →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="archive">
+        <div class="section-head"><h1>ARCHIVO</h1><span>EDICIONES CERRADAS</span></div>
+        <p class="lead">Aquí quedan guardados los números que WEEKLY ha cerrado. Cada edición conserva su portada, fecha, historias y PDF cuando está disponible.</p>
+        <div class="archive" id="archive-list"></div>
+      </section>
+    </main>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>

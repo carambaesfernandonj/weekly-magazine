@@ -1,21 +1,5 @@
 {
-  "issueNumber": 38,
-  "issueWindow": {
-    "start": "2026-09-06",
-    "end": "2026-09-13",
-    "timezone": "UTC",
-    "endExclusive": true
-  },
-  "locked": true,
-  "status": "rss",
-  "model": "zero-cost",
-  "headline": "UNA SEMANA. UN NÚMERO.",
-  "editorial": "WEEKLY existe porque internet produce demasiadas cosas interesantes como para intentar leerlas todas y demasiadas cosas absurdas como para dejar que el algoritmo decida por nosotros.\n\nEsta revista junta las fuentes que elegiste, encuentra historias que merecen atención y las convierte en un número que se puede leer de principio a fin. No pretende ser neutral sobre lo que resulta interesante: pretende ser curiosa.\n\nAquí conviven videojuegos, cine, animación, tecnología, retro y todas esas cosas raras que terminan apareciendo cuando uno sigue un enlace porque decía que algo era prácticamente magia.\n\nWEEKLY no quiere reemplazar a las fuentes originales. Quiere ser el lugar desde donde descubres qué vale la pena abrir. Cuando una historia está completa, la leemos aquí. Cuando una fuente solo permite ofrecer un resumen, te mandamos a leerla donde corresponde.\n\nUna semana. Un número. Un montón de cosas interesantes.\n\nNos vemos la próxima semana.",
-  "editorialSource": "manifesto",
-  "coverImage": "assets/weekly-cover-fallback.svg",
-  "coverSource": "fallback",
-  "coverPrompt": "Editorial magazine cover for WEEKLY issue #38. Visual language inspired by glossy videogame, film and technology magazines from the early 2000s: bold Y2K editorial design, dramatic central visual, slightly chaotic but deliberate cover composition, glossy print feel, strong shapes, energetic lighting, subtle retro-futurist details. The cover should feel like a real magazine, not a generic poster. No readable words, no fake logos, no watermarks, no UI, no collage of unrelated tiny objects. Build one coherent visual metaphor from these weekly themes and stories: [{\"source\": \"Hollywood Reporter\", \"title\": \"Sandra Bullock Recalls “Auditioning for Every Pervert” and Being Asked to “Drop My Pants”: “Not the Role for Me”\", \"summary\": \"The Oscar winner looked back on her career in the entertainment industry in conversation with Jennifer Aniston for Interview magazine.\"}, {\"source\": \"Tech Crunch\", \"title\": \"Automattic confirms Mullenweg has returned as CEO after attempted ouster by board\", \"summary\": \"Automattic says Mullenweg is back as \\\"chairman and CEO of Automattic, with full support of the board.\\\"\"}, {\"source\": \"IGN\", \"title\": \"StarCraft Devs Promise New Game Will Definitely Release in 2030\", \"summary\": \"We got the chance to speak with the developers of the new StaCcraft game, who explained why they shared such a distant release date and even teased some potential gameplay elements.\"}, {\"source\": \"Hollywood Reporter\", \"title\": \"‘Reacher’ Star Alan Ritchson and His Wife Catherine Ritchson Announce Split After 20 Years of Marriage\", \"summary\": \"\\\"We grew up together. We built a life and a family together. And we are raising three incredible boys who will always be the center of our world,\\\" the pair wrote in a joint Instagram post Saturday.\"}, {\"source\": \"Deadline\", \"title\": \"Netflix Developing ‘Diablo’ Animated Series\", \"summary\": \"The Diablo video game is coming to Netflix. Blizzard Entertainment chief Johanna Faries revealed at BlizzCon in Anaheim Saturday that the streamer is adapting the game as an animated series. Here’s the description of the project, per Variety: “After decades of bringing entire universes to life through our games, we’re partnering with some creative powerhouses […]\"}, {\"source\": \"Deadline\", \"title\": \"L.A. County Projects Huge Job Losses If Paramount Exits California; Company Slams Antitrust Action By AGs & WGA In Official Rebuke\", \"summary\": \"There will be harsh job losses and severe economic pain if Paramount carries out its threat to leave California over the antitrust action a coalition of blue state attorneys general are pursuing to stop David Ellison’s $111 billion merger with Warner Bros Discovery, an internal L.A. County report estimates. “At a minimum, relocating Paramount’s headquarters […]\"}, {\"source\": \"Tech Crunch\", \"title\": \"OpenAI’s Sam Altman says it would be ‘ill-advised’ to go public in 2026\", \"summary\": \"While OpenAI has filed confidentially for an IPO, the company will not be going public this year, according to CEO Sam Altman.\"}, {\"source\": \"Nintenderos\", \"title\": \"Nintendo dejará de vender todos estos productos extra de Switch en Europa por la nueva normativa de baterías\", \"summary\": \"Detalles interesantes para los usuarios de Nintendo Switch: además de los modelos originales de Nintendo Switch, Nintendo dejará de ofrecer determinados productos en el mercado europeo debido a la normativa de la UE sobre baterías reemplazables por el usuario. Son los siguientes: Nintendo Entertainment System (NES) Controller para Nintendo Switch* — dejará de ofrecerse una […]\"}, {\"source\": \"Nintenderos\", \"title\": \"Minecraft recibe estos contenidos de Transformers\", \"summary\": \"Tras los últimos contenidos de Herschel Backpack Trials, los fans siguen disfrutando de novedades. Minecraft. Ahora Mojang ha anunciado el nuevo complemento de Transformers para Minecraft, desarrollado por Syclone Studios, que permite llevar el universo de Cybertron al juego con 12 personajes icónicos como Optimus Prime, Megatron, Starscream o Soundwave, cada uno con habilidades, armas y modos […]\"}, {\"source\": \"Old School gAmer Magazine\", \"title\": \"Retro Review: Lost Planet 3\", \"summary\": \"Set 50 years before the events of the first “Lost Planet,” this game is definitely geared more towards fans of the series. At the same time, since it’s a prequel, it’s not a bad place to start for newcomers either. If you’ve played the series before, the gameplay is similar in the fact that you’ll […] The post Retro Review: Lost Planet 3 appeared first on Old School Gamer Magazine .\"}, {\"source\": \"Vida Extra\", \"title\": \"Pierrot retrasa los dos últimos episodios del anime de Bleach con un objetivo claro: hacer un final a la altura de la obra de Tite Kubo\", \"summary\": \"El 2026 iba a marcar el final definitivo del anime de Bleach . Tras su vuelta hace unos años, Pierrot ha ido construyendo una última temporada que los fans están recibiendo con los brazos abiertos. Sin embargo, para su recta final, el estudio ha decidido tomar medidas preventivas. A través de su cuenta oficial, el anime de Bleach ha anunciado que los dos últimos episodio s de la serie, el 49 y el \"}, {\"source\": \"The Verge\", \"title\": \"OpenAI’s rogue AI tried to hack another company in May\", \"summary\": \"In May, hundreds of malicious and spam packages were uploaded to RubyGems, causing a serious disruption for the host. Now independent researchers have said that a swarm of OpenAI agents were responsible for the attack. Not only that, but the AI tried to steal users' API keys. At the time, RubyGems described it as a […]\"}, {\"source\": \"HobbyConsolas\", \"title\": \"Estos 7 juegos de PS4 y PS5, en oferta en formato físico, nos siguen recordando que muchas gangas están fuera de las tiendas digitales\", \"summary\": \"Te vamos a indicar cómo conseguir 7 juegos para PS4 y PS5 de oferta en formato físico y que, aunque parezca increíble, muchas gangas están fuera de las tiendas digitales.\"}, {\"source\": \"HobbyConsolas\", \"title\": \"Linternas no para de triunfar en HBO Max, pero su renovación para una temporada 2 sigue siendo incierta\", \"summary\": \"Linterna Verde regresó a la televisión este verano con una serie exclusiva de HBO Max que está arrasando entre el público, pero todavía no sabemos si tendrá más temporadas.\"}, {\"source\": \"IGN\", \"title\": \"BlizzCon 2026 Opening Ceremony: Everything Announced\", \"summary\": \"BlizzCon 2026 is upon is, and IGN is reporting live on all the announcements direct from the opening ceremony. Expect big news on everything from World of Warcraft to Diablo, amid strong rumors of a StarCraft announcement.\"}, {\"source\": \"Eurogamer\", \"title\": \"UK studio Bulkhead's Wardogs sells over a million copies and tops 350,000 concurrent players on launch day\", \"summary\": \"Wardogs, the new tactical shooter from Derby-based studio Bulkhead, has sold more than a million copies and passed 350,000 concurrent players within hours of launching into Steam early access. Read more\"}]",
-  "coverStory": 0,
+  "cover_story": 0,
   "selected_ids": [
     0,
     1,
@@ -23,202 +7,297 @@
     3,
     4,
     5,
-    14,
-    17,
-    18,
+    8,
+    9,
+    10,
+    11,
+    12,
+    15,
+    16,
     21,
-    23,
-    33,
-    40,
-    41,
-    45,
-    49,
-    50,
-    66,
-    70,
-    87,
-    93,
-    94,
-    126,
-    167
+    26,
+    27
   ],
   "stories": [
     {
       "article_id": 0,
-      "headline": "Sandra Bullock Recalls “Auditioning for Every Pervert” and Being Asked to “Drop My Pants”: “Not the Role for Me”",
-      "dek": "The Oscar winner looked back on her career in the entertainment industry in conversation with Jennifer Aniston for Interview magazine.",
-      "summary": "The Oscar winner looked back on her career in the entertainment industry in conversation with Jennifer Aniston for Interview magazine.",
-      "source": "Hollywood Reporter"
+      "headline": "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
+      "dek": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
+      "summary": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
+        "H2: Arcade Archives 2 Features"
+      ],
+      "headings": {
+        "h1": [
+          "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S"
+        ],
+        "h2": [
+          "Arcade Archives 2 Features"
+        ]
+      }
     },
     {
       "article_id": 1,
-      "headline": "Automattic confirms Mullenweg has returned as CEO after attempted ouster by board",
-      "dek": "Automattic says Mullenweg is back as \"chairman and CEO of Automattic, with full support of the board.\"",
-      "summary": "Automattic says Mullenweg is back as \"chairman and CEO of Automattic, with full support of the board.\"",
-      "source": "Tech Crunch"
+      "headline": "Atari and Vice Beer Introduce New Beer Collection",
+      "dek": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
+      "summary": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Atari and Vice Beer Introduce New Beer Collection"
+      ],
+      "headings": {
+        "h1": [
+          "Atari and Vice Beer Introduce New Beer Collection"
+        ],
+        "h2": []
+      }
     },
     {
       "article_id": 2,
-      "headline": "StarCraft Devs Promise New Game Will Definitely Release in 2030",
-      "dek": "We got the chance to speak with the developers of the new StaCcraft game, who explained why they shared such a distant release date and even teased some potential gameplay elements.",
-      "summary": "We got the chance to speak with the developers of the new StaCcraft game, who explained why they shared such a distant release date and even teased some potential gameplay elements.",
-      "source": "IGN"
+      "headline": "Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños",
+      "dek": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "summary": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 3,
-      "headline": "‘Reacher’ Star Alan Ritchson and His Wife Catherine Ritchson Announce Split After 20 Years of Marriage",
-      "dek": "\"We grew up together. We built a life and a family together. And we are raising three incredible boys who will always be the center of our world,\" the pair wrote in a joint Instagram post Saturday.",
-      "summary": "\"We grew up together. We built a life and a family together. And we are raising three incredible boys who will always be the center of our world,\" the pair wrote in a joint Instagram post Saturday.",
-      "source": "Hollywood Reporter"
+      "headline": "Streets of Rage Micro Player Pro Licensed By SEGA",
+      "dek": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "summary": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Streets of Rage Micro Player Pro Licensed By SEGA"
+      ],
+      "headings": {
+        "h1": [
+          "Streets of Rage Micro Player Pro Licensed By SEGA"
+        ],
+        "h2": []
+      }
     },
     {
       "article_id": 4,
-      "headline": "Netflix Developing ‘Diablo’ Animated Series",
-      "dek": "The Diablo video game is coming to Netflix. Blizzard Entertainment chief Johanna Faries revealed at BlizzCon in Anaheim Saturday that the streamer is adapting the game as an animated series. Here’s the description of the project, per Variety: “After decades of bringing entire universes to life through our games, we’re partnering with some creative powerhouses […]",
-      "summary": "The Diablo video game is coming to Netflix. Blizzard Entertainment chief Johanna Faries revealed at BlizzCon in Anaheim Saturday that the streamer is adapting the game as an animated series. Here’s the description of the project, per Variety: “After decades of bringing entire universes to life through our games, we’re partnering with some creative powerhouses […]",
-      "source": "Deadline"
+      "headline": "An Emulation Mod Kit For The LEGO PlayStation Is In The Works",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 5,
-      "headline": "L.A. County Projects Huge Job Losses If Paramount Exits California; Company Slams Antitrust Action By AGs & WGA In Official Rebuke",
-      "dek": "There will be harsh job losses and severe economic pain if Paramount carries out its threat to leave California over the antitrust action a coalition of blue state attorneys general are pursuing to stop David Ellison’s $111 billion merger with Warner Bros Discovery, an internal L.A. County report estimates. “At a minimum, relocating Paramount’s headquarters […]",
-      "summary": "There will be harsh job losses and severe economic pain if Paramount carries out its threat to leave California over the antitrust action a coalition of blue state attorneys general are pursuing to stop David Ellison’s $111 billion merger with Warner Bros Discovery, an internal L.A. County report estimates. “At a minimum, relocating Paramount’s headquarters […]",
-      "source": "Deadline"
+      "headline": "Pac-Man, Space Invaders, Tetris, and other classic games",
+      "dek": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
+      "summary": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Pac-Man, Space Invaders, Tetris, and other classic games",
+        "H2: The arcade rulebook was tiny",
+        "H2: Why cabinets made people brave",
+        "H2: Home ports changed the argument"
+      ],
+      "headings": {
+        "h1": [
+          "Pac-Man, Space Invaders, Tetris, and other classic games"
+        ],
+        "h2": [
+          "The arcade rulebook was tiny",
+          "Why cabinets made people brave",
+          "Home ports changed the argument",
+          "Patterns, panic, and score chasing"
+        ]
+      }
     },
     {
-      "article_id": 14,
-      "headline": "OpenAI’s Sam Altman says it would be ‘ill-advised’ to go public in 2026",
-      "dek": "While OpenAI has filed confidentially for an IPO, the company will not be going public this year, according to CEO Sam Altman.",
-      "summary": "While OpenAI has filed confidentially for an IPO, the company will not be going public this year, according to CEO Sam Altman.",
-      "source": "Tech Crunch"
+      "article_id": 8,
+      "headline": "Retro YouTuber Announces A Cool New Emulation Frontend Called Jump",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 17,
-      "headline": "Nintendo dejará de vender todos estos productos extra de Switch en Europa por la nueva normativa de baterías",
-      "dek": "Detalles interesantes para los usuarios de Nintendo Switch: además de los modelos originales de Nintendo Switch, Nintendo dejará de ofrecer determinados productos en el mercado europeo debido a la normativa de la UE sobre baterías reemplazables por el usuario. Son los siguientes: Nintendo Entertainment System (NES) Controller para Nintendo Switch* — dejará de ofrecerse una […]",
-      "summary": "Detalles interesantes para los usuarios de Nintendo Switch: además de los modelos originales de Nintendo Switch, Nintendo dejará de ofrecer determinados productos en el mercado europeo debido a la normativa de la UE sobre baterías reemplazables por el usuario. Son los siguientes: Nintendo Entertainment System (NES) Controller para Nintendo Switch* — dejará de ofrecerse una […]",
-      "source": "Nintenderos"
+      "article_id": 9,
+      "headline": "Hyperkin Bring Modern Power To Retro Consoles With New USB-C Charging System Range",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 18,
-      "headline": "Minecraft recibe estos contenidos de Transformers",
-      "dek": "Tras los últimos contenidos de Herschel Backpack Trials, los fans siguen disfrutando de novedades. Minecraft. Ahora Mojang ha anunciado el nuevo complemento de Transformers para Minecraft, desarrollado por Syclone Studios, que permite llevar el universo de Cybertron al juego con 12 personajes icónicos como Optimus Prime, Megatron, Starscream o Soundwave, cada uno con habilidades, armas y modos […]",
-      "summary": "Tras los últimos contenidos de Herschel Backpack Trials, los fans siguen disfrutando de novedades. Minecraft. Ahora Mojang ha anunciado el nuevo complemento de Transformers para Minecraft, desarrollado por Syclone Studios, que permite llevar el universo de Cybertron al juego con 12 personajes icónicos como Optimus Prime, Megatron, Starscream o Soundwave, cada uno con habilidades, armas y modos […]",
-      "source": "Nintenderos"
+      "article_id": 10,
+      "headline": "The Interface Details That Made Computer Solitaire Feel Timeless",
+      "dek": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
+      "summary": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H2: The Interface Details That Made Computer Solitaire Feel Timeless"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": [
+          "The Interface Details That Made Computer Solitaire Feel Timeless"
+        ]
+      }
+    },
+    {
+      "article_id": 11,
+      "headline": "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena",
+      "dek": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
+      "summary": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 12,
+      "headline": "PlayCase Is A New Retro iPhone Controller With Real Triggers",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 15,
+      "headline": "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox",
+      "dek": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
+      "summary": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 16,
+      "headline": "Retro Re-release Roundup, week of September 3, 2026",
+      "dek": "Ufouria, plus four more.",
+      "summary": "Ufouria, plus four more.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 21,
-      "headline": "Retro Review: Lost Planet 3",
-      "dek": "Set 50 years before the events of the first “Lost Planet,” this game is definitely geared more towards fans of the series. At the same time, since it’s a prequel, it’s not a bad place to start for newcomers either. If you’ve played the series before, the gameplay is similar in the fact that you’ll […] The post Retro Review: Lost Planet 3 appeared first on Old School Gamer Magazine .",
-      "summary": "Set 50 years before the events of the first “Lost Planet,” this game is definitely geared more towards fans of the series. At the same time, since it’s a prequel, it’s not a bad place to start for newcomers either. If you’ve played the series before, the gameplay is similar in the fact that you’ll […] The post Retro Review: Lost Planet 3 appeared first on Old School Gamer Magazine .",
-      "source": "Old School gAmer Magazine"
+      "headline": "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix",
+      "dek": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
+      "summary": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 23,
-      "headline": "Pierrot retrasa los dos últimos episodios del anime de Bleach con un objetivo claro: hacer un final a la altura de la obra de Tite Kubo",
-      "dek": "El 2026 iba a marcar el final definitivo del anime de Bleach . Tras su vuelta hace unos años, Pierrot ha ido construyendo una última temporada que los fans están recibiendo con los brazos abiertos. Sin embargo, para su recta final, el estudio ha decidido tomar medidas preventivas. A través de su cuenta oficial, el anime de Bleach ha anunciado que los dos últimos episodio s de la serie, el 49 y el 50, sufrirán un retraso de poco más de un mes. La razón de este cambio se debe, según la propia Pierrot, a crear la mejor experiencia posible para el final de este shonen. \"Con respecto a las fechas de emisión y distribución de los episodios 49 y 50, y con el objetivo de aumentar la calidad de producción de cara al clímax de la serie y ofrecer al público los episodios finales con una calidad aún mayor, se ha decidido modificar el calendario de emisión y distribución\". En Vida Extra ¿Por qué reco",
-      "summary": "El 2026 iba a marcar el final definitivo del anime de Bleach . Tras su vuelta hace unos años, Pierrot ha ido construyendo una última temporada que los fans están recibiendo con los brazos abiertos. Sin embargo, para su recta final, el estudio ha decidido tomar medidas preventivas. A través de su cuenta oficial, el anime de Bleach ha anunciado que los dos últimos episodio s de la serie, el 49 y el 50, sufrirán un retraso de poco más de un mes. La razón de este cambio se debe, según la propia Pierrot, a crear la mejor experiencia posible para el final de este shonen. \"Con respecto a las fechas de emisión y distribución de los episodios 49 y 50, y con el objetivo de aumentar la calidad de producción de cara al clímax de la serie y ofrecer al público los episodios finales con una calidad aún mayor, se ha decidido modificar el calendario de emisión y distribución\". En Vida Extra ¿Por qué reco",
-      "source": "Vida Extra"
+      "article_id": 26,
+      "headline": "Kickstarter Kompilation: September 2026 edition",
+      "dek": "Featuring books and shelves but no bookshelves",
+      "summary": "Featuring books and shelves but no bookshelves",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 33,
-      "headline": "OpenAI’s rogue AI tried to hack another company in May",
-      "dek": "In May, hundreds of malicious and spam packages were uploaded to RubyGems, causing a serious disruption for the host. Now independent researchers have said that a swarm of OpenAI agents were responsible for the attack. Not only that, but the AI tried to steal users' API keys. At the time, RubyGems described it as a […]",
-      "summary": "In May, hundreds of malicious and spam packages were uploaded to RubyGems, causing a serious disruption for the host. Now independent researchers have said that a swarm of OpenAI agents were responsible for the attack. Not only that, but the AI tried to steal users' API keys. At the time, RubyGems described it as a […]",
-      "source": "The Verge"
-    },
-    {
-      "article_id": 40,
-      "headline": "Estos 7 juegos de PS4 y PS5, en oferta en formato físico, nos siguen recordando que muchas gangas están fuera de las tiendas digitales",
-      "dek": "Te vamos a indicar cómo conseguir 7 juegos para PS4 y PS5 de oferta en formato físico y que, aunque parezca increíble, muchas gangas están fuera de las tiendas digitales.",
-      "summary": "Te vamos a indicar cómo conseguir 7 juegos para PS4 y PS5 de oferta en formato físico y que, aunque parezca increíble, muchas gangas están fuera de las tiendas digitales.",
-      "source": "HobbyConsolas"
-    },
-    {
-      "article_id": 41,
-      "headline": "Linternas no para de triunfar en HBO Max, pero su renovación para una temporada 2 sigue siendo incierta",
-      "dek": "Linterna Verde regresó a la televisión este verano con una serie exclusiva de HBO Max que está arrasando entre el público, pero todavía no sabemos si tendrá más temporadas.",
-      "summary": "Linterna Verde regresó a la televisión este verano con una serie exclusiva de HBO Max que está arrasando entre el público, pero todavía no sabemos si tendrá más temporadas.",
-      "source": "HobbyConsolas"
-    },
-    {
-      "article_id": 45,
-      "headline": "BlizzCon 2026 Opening Ceremony: Everything Announced",
-      "dek": "BlizzCon 2026 is upon is, and IGN is reporting live on all the announcements direct from the opening ceremony. Expect big news on everything from World of Warcraft to Diablo, amid strong rumors of a StarCraft announcement.",
-      "summary": "BlizzCon 2026 is upon is, and IGN is reporting live on all the announcements direct from the opening ceremony. Expect big news on everything from World of Warcraft to Diablo, amid strong rumors of a StarCraft announcement.",
-      "source": "IGN"
-    },
-    {
-      "article_id": 49,
-      "headline": "UK studio Bulkhead's Wardogs sells over a million copies and tops 350,000 concurrent players on launch day",
-      "dek": "Wardogs, the new tactical shooter from Derby-based studio Bulkhead, has sold more than a million copies and passed 350,000 concurrent players within hours of launching into Steam early access. Read more",
-      "summary": "Wardogs, the new tactical shooter from Derby-based studio Bulkhead, has sold more than a million copies and passed 350,000 concurrent players within hours of launching into Steam early access. Read more",
-      "source": "Eurogamer"
-    },
-    {
-      "article_id": 50,
-      "headline": "Scalpers are already reselling the sold-out Zelda 40th Anniversary Switch 2 for £700+",
-      "dek": "Nintendo's new Legend of Zelda 40th anniversary Switch 2 sold out within hours of preorders opening, and scalpers are already scalping, with dozens of orders popping up on eBay for close to double its retail price. Read more",
-      "summary": "Nintendo's new Legend of Zelda 40th anniversary Switch 2 sold out within hours of preorders opening, and scalpers are already scalping, with dozens of orders popping up on eBay for close to double its retail price. Read more",
-      "source": "Eurogamer"
-    },
-    {
-      "article_id": 66,
-      "headline": "Glen’s Retro Show – by Ryan Burger",
-      "dek": "Let’s start this out by telling you that Glen Planamento is one of the nicest people I have ever met in the ten years that I’ve been actively involved in the retro gaming community. I have had the pleasure of being his friend for a couple of years now and have been doing business with […] The post Glen’s Retro Show – by Ryan Burger appeared first on Old School Gamer Magazine .",
-      "summary": "Let’s start this out by telling you that Glen Planamento is one of the nicest people I have ever met in the ten years that I’ve been actively involved in the retro gaming community. I have had the pleasure of being his friend for a couple of years now and have been doing business with […] The post Glen’s Retro Show – by Ryan Burger appeared first on Old School Gamer Magazine .",
-      "source": "Old School gAmer Magazine"
-    },
-    {
-      "article_id": 70,
-      "headline": "I spent $4,000 on a robot dog from China",
-      "dek": "Unitree might be the world’s most important robotics company.",
-      "summary": "Unitree might be the world’s most important robotics company.",
-      "source": "ARSTECHNICA"
-    },
-    {
-      "article_id": 87,
-      "headline": "Delta Is Getting A Huge iPhone Duo Update For Nintendo DS Emulation",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! If you've ever emulated on an iPhone or an iPad, it's very likely that you have come across Delta ; it's one of",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! If you've ever emulated on an iPhone or an iPad, it's very likely that you have come across Delta ; it's one of",
-      "source": "Retro Dodo"
-    },
-    {
-      "article_id": 93,
-      "headline": "Some satellite companies still have an appetite for boutique launch services",
-      "dek": "\"Dedicated launch is pretty essential for us for most of our missions.\"",
-      "summary": "\"Dedicated launch is pretty essential for us for most of our missions.\"",
-      "source": "ARSTECHNICA"
-    },
-    {
-      "article_id": 94,
-      "headline": "‘Please,’ ‘God Is Shy,’ ‘Ball Face’ Among 2026 Viborg Animation Festival Winners",
-      "dek": "VAF handed out awards for its 2026 competition on Friday evening in the quaint Danish city, where Anna Mantzaris’ 'Please' emerged as the event’s big winner.",
-      "summary": "VAF handed out awards for its 2026 competition on Friday evening in the quaint Danish city, where Anna Mantzaris’ 'Please' emerged as the event’s big winner.",
-      "source": "Cartoon Brew"
-    },
-    {
-      "article_id": 126,
-      "headline": "Why Xbox’s New Disc Feature Matters to the Generation That Grew Up With Cartridges",
-      "dek": "Anyone who grew up with an NES, Mega Drive, SNES or early PlayStation probably remembers what owning a game looked like. It had a box, a cartridge or disc, sometimes a thick manual and a permanent place on a shelf. You could lend it to... The post Why Xbox’s New Disc Feature Matters to the Generation That Grew Up With Cartridges first appeared on Retromash .",
-      "summary": "Anyone who grew up with an NES, Mega Drive, SNES or early PlayStation probably remembers what owning a game looked like. It had a box, a cartridge or disc, sometimes a thick manual and a permanent place on a shelf. You could lend it to... The post Why Xbox’s New Disc Feature Matters to the Generation That Grew Up With Cartridges first appeared on Retromash .",
-      "source": "RETROMASH"
-    },
-    {
-      "article_id": 167,
-      "headline": "Retroid Pocket Duo & Duo Lite Full Specifications Finally Revealed",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! It was only this morning when I finished writing a new post about the Retroid Pocket Duo's pricing , and then, just a few hours later, the",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! It was only this morning when I finished writing a new post about the Retroid Pocket Duo's pricing , and then, just a few hours later, the",
-      "source": "Retro Dodo"
+      "article_id": 27,
+      "headline": "The Master System Directory (An-Ar)",
+      "dek": "What would I give if I could live out of these waters",
+      "summary": "What would I give if I could live out of these waters",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     }
   ],
-  "generatedAt": "2026-09-13T08:17:14.370881+00:00",
+  "sections": [
+    {
+      "name": "WEEKLY PICKS",
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        21,
+        26,
+        27
+      ]
+    }
+  ],
+  "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
+  "generatedAt": "2026-09-08T00:22:27.971208+00:00",
+  "model": "zero-cost",
+  "status": "rss",
   "editorial_profile": {
     "name": "Fernando Mode",
-    "voice": "inteligente, curioso, informal y editorial",
-    "humor": "seco y ocasional; nunca forzado",
-    "attitude": "opinión clara pero justa, escéptica con el hype y atenta a conexiones raras",
-    "writing": "titulares fuertes, párrafos cortos, explicaciones claras y remates ocasionales",
-    "rule": "informar primero, entretener después; no inventar hechos"
+    "voice": "intelligent, curious, informal and editorial",
+    "humor": "dry and occasional; never force jokes",
+    "attitude": "opinionated but fair, skeptical of hype, interested in weird connections",
+    "writing": "strong headlines, short paragraphs, clear explanations, occasional punchlines",
+    "rule": "inform first, entertain second; never invent facts"
   }
 }
