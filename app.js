@@ -1,535 +1,253 @@
-const state={sources:[],articles:[],selected:[],selectedTags:new Set(),customTags:new Set(),editorial:null,archiveIssues:[],clusters:[],readerPage:0,readerView:"single",shuffled:false,readerModel:null,issueSourceCount:0,archiveMode:false,activeArchiveNumber:null};
-const titles={dashboard:"Inicio",sources:"Mis fuentes",articles:"Esta semana",magazine:"Revista",reader:"Lector",archive:"Archivo"};
+const DB_NAME = "biblioteca_lector";
+const DB_VERSION = 1;
+const STORE = "books";
+let db, currentBook=null, currentObjectUrl=null, currentEpubBook=null, currentEpubRendition=null, currentEpubUrl=null;
+let activeTag=null, activeCollection=null, activeFilter="all", sortMode="updated", viewMode="grid", modalBook=null, modalTags=[], currentView="home";
+let collections=[];
+const COLLECTIONS_KEY="pulenta_collections_v1";
+if(window.pdfjsLib?.GlobalWorkerOptions) window.pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
 const $=s=>document.querySelector(s);
-const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-const cfg=window.WEEKLY_CONFIG||{};
-const hasSupabase=()=>Boolean(cfg.supabaseUrl&&(cfg.supabaseAnonKey||cfg.supabasePublishableKey)&&!cfg.supabaseUrl.includes("YOUR_PROJECT_REF"));
-const supabaseKey=()=>cfg.supabaseAnonKey||cfg.supabasePublishableKey||"";
-const apiBase=()=>cfg.supabaseUrl.replace(/\/$/,"")+"/rest/v1";
-function show(id){document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));document.querySelectorAll(".nav-btn").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));$("#screen-title").textContent=titles[id]||"Dashboard"}
-function setConnection(text,ok=false){const el=$("#connection-status");if(!el)return;el.textContent=text;el.classList.toggle("ok",ok)}
-async function db(path,options={}){const key=supabaseKey();const headers={apikey:key,Authorization:`Bearer ${key}`,...(options.headers||{})};const r=await fetch(apiBase()+path,{...options,headers});if(!r.ok){let msg=await r.text();throw new Error(`${r.status} ${msg}`)}if(r.status===204)return null;return r.json()}
-async function loadSources(){if(!hasSupabase())throw new Error("Supabase no está configurado. Crea config.js.");return db("/sources?select=id,name,url,category,enabled,created_at&order=created_at.asc")}
-async function addSource(){if(!hasSupabase()){alert("Primero configura Supabase en config.js. Mira README.md.");return}const name=prompt("Nombre del medio:","");if(name===null)return;const url=prompt("URL del RSS / Atom:","");if(url===null)return;const category=prompt("Categoría (Technology, Games, Culture, World, Other):","Other");if(category===null)return;if(!name.trim()||!url.trim()){alert("El nombre y la URL son obligatorios.");return}try{await db("/sources",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=representation"},body:JSON.stringify({name:name.trim(),url:url.trim(),category:category.trim()||"Other",enabled:true})});await refreshSources();show("sources");alert("Feed añadido correctamente. 🎉")}catch(err){console.error(err);alert("No pude guardar el feed.\n\n"+err.message)}}
-async function removeSource(id,name){if(!confirm(`¿Eliminar "${name}" de WEEKLY?`))return;try{await db(`/sources?id=eq.${encodeURIComponent(id)}`,{method:"DELETE"});await refreshSources()}catch(err){console.error(err);alert("No pude eliminar el feed.\n\n"+err.message)}}
-function renderSources(){const box=$("#source-grid");box.innerHTML="";state.sources.forEach(s=>{const e=document.createElement("div");e.className="source";e.innerHTML='<span class="dot"></span><div class="source-copy"><strong></strong><small></small><em></em></div><button class="remove">ELIMINAR</button>';e.querySelector("strong").textContent=s.name;e.querySelector("small").textContent=`${s.category||"Other"} · RSS`;e.querySelector("em").textContent=s.url;e.querySelector(".remove").onclick=()=>removeSource(s.id,s.name);box.appendChild(e)});$("#source-count").textContent=`${state.sources.filter(s=>s.enabled!==false).length} ACTIVE FEEDS`}
-async function refreshSources(){if(!hasSupabase()){setConnection("SUPABASE NO CONFIGURADO");renderSources();return}try{state.sources=await loadSources();setConnection("SUPABASE CONECTADO",true);renderSources();updateDash()}catch(err){console.error(err);setConnection("ERROR DE SUPABASE");alert("No pude leer Supabase.\n\n"+err.message)}}
-const TAG_STOP=new Set("the a an and or of to in on for with from by is are was were this that how why what your you new news more into about after as at it its there their they has have had will would could should just than then very been being not you our their from about today week best one two three get gets can may might while over under who where when into onto only also says said according latest plus here this these those all any any more most some such other another much many much new own its his her them he she we us i me my mine de an der die das und für mit von ist sind auf den im die der ein eine the los las del para por con que una uno como sus más este esta estos estas puede pueden fue han ha hay ya hoy según sobre entre tras al se su es en de".split());
-function deriveTags(a){const text=`${a.title||""} ${a.description||""} ${(a.headings?.h1||[]).join(" ")} ${(a.headings?.h2||[]).join(" ")}`.toLowerCase();const words=(text.match(/[a-zA-ZÀ-ÿ0-9]{4,}/g)||[]).map(w=>w.toLowerCase()).filter(w=>!TAG_STOP.has(w));const freq={};words.forEach(w=>freq[w]=(freq[w]||0)+1);const generic=new Set(["history","story","article","selected","source","week","today","best","world","thing","things","edition","review","technology","games"]);const keywords=Object.entries(freq).filter(([w])=>!generic.has(w)).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).slice(0,5).map(([w])=>w.toUpperCase());const base=[];if(a.category)base.push(String(a.category).toUpperCase());if(Array.isArray(a.tags))base.push(...a.tags.map(x=>String(x).toUpperCase()));return [...new Set([...base,...keywords])].slice(0,8)}
-const CUSTOM_ALIASES={
-  "ANIME":["anime","manga","otaku","japanese animation","shonen","isekai","studio ghibli"],
-  "MARVEL":["marvel","mcu","avengers","spider-man","spiderman","x-men","xmen","deadpool","fantastic four","guardians of the galaxy"],
-  "DC":["dc comics","dc","batman","superman","wonder woman","justice league","joker","gotham"],
-  "RETRO GAMING":["retro gaming","retro game","classic games","arcade","nes","snes","game boy","gameboy","mega drive","genesis","dreamcast","playstation 1","ps1","playstation 2","ps2","n64","sega saturn"],
-  "POKEMON":["pokemon","pokémon","pikachu","game freak"],
-  "MANGA":["manga","shonen","shojo","seinen","josei"],
-  "STAR WARS":["star wars","lightsaber","jedi","sith","mandalorian","skywalker"],
-  "HORROR":["horror","horr","slasher","survival horror","creepy","ghost","vampire","zombie"]
-};
-function allTags(){const m=new Map();state.articles.filter(isUsableArticle).forEach(a=>{(a.tags?.length?a.tags:deriveTags(a)).forEach(t=>m.set(t,(m.get(t)||0)+1))});return [...m.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))}
-function articleSearchText(a){return `${a.title||""} ${a.description||""} ${a.source||""} ${(a.category||"")} ${(a.headings?.h1||[]).join(" ")} ${(a.headings?.h2||[]).join(" ")} ${(a.tags||[]).join(" ")}`.toLowerCase()}
-function topicAliases(topic){const key=String(topic||"").trim().toUpperCase();return [key.toLowerCase(),...(CUSTOM_ALIASES[key]||[])].filter(Boolean)}
-function matchesCustomTopic(a,topic){const text=articleSearchText(a);return topicAliases(topic).some(alias=>{const q=alias.toLowerCase().trim();return q.length>=2&&text.includes(q)})}
-function matchesTags(a){if(!state.selectedTags.size&&!state.customTags.size)return true;const tags=a.tags?.length?a.tags:deriveTags(a);const auto=tags.some(t=>state.selectedTags.has(String(t).toUpperCase()));const custom=[...state.customTags].some(t=>matchesCustomTopic(a,t));return auto||custom}
-function normalizeSource(s){return String(s||"").toLowerCase().replace(/https?:\/\//g,"").replace(/^www\./,"").replace(/\/$/,"").trim()}
-function activeSourceNames(){return new Set(state.sources.filter(s=>s.enabled!==false).flatMap(s=>[normalizeSource(s.name),normalizeSource(s.url),normalizeSource((()=>{try{return new URL(s.url).hostname}catch(e){return ""}})())]).filter(Boolean))}
-function articleBelongsToActiveSource(a){
-  if(!state.sources.length)return true;
-  const active=activeSourceNames();
-  if(!active.size)return true;
-  const raw=[a?.source,a?.sourceName,a?.feed,a?.feedTitle].map(normalizeSource).filter(Boolean);
-  if(raw.some(x=>[...active].some(n=>x===n||x.includes(n)||n.includes(x))))return true;
-  const linkHost=(()=>{try{return normalizeSource(new URL(a?.link||"").hostname)}catch(e){return ""}})();
-  if(linkHost && [...active].some(n=>linkHost===n||linkHost.endsWith("."+n)||n.endsWith("."+linkHost)))return true;
-  return false;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+function toast(m){const e=$("#toast");e.textContent=m;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),2400)}
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VERSION);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE,{keyPath:"id"})};r.onsuccess=()=>{db=r.result;res(db)};r.onerror=()=>rej(r.error)})}
+function tx(m="readonly"){return db.transaction(STORE,m).objectStore(STORE)}
+function getAllBooks(){return new Promise((res,rej)=>{const r=tx().getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function putBook(b){return new Promise((res,rej)=>{const r=tx("readwrite").put(b);r.onsuccess=res;r.onerror=()=>rej(r.error)})}
+function makeId(){return crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)}
+function titleFromFilename(n){return n.replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').trim()||'Sin título'}
+function normTag(t){return String(t||'').trim().toLowerCase().replace(/\s+/g,'-')}
+function loadCollections(){try{const x=JSON.parse(localStorage.getItem(COLLECTIONS_KEY)||'[]');collections=Array.isArray(x)?x.filter(Boolean):[]}catch(e){collections=[]}}
+function saveCollections(){localStorage.setItem(COLLECTIONS_KEY,JSON.stringify(collections))}
+function collectionLabel(c){return String(c||'').replace(/\s+/g,' ').trim()}
+async function generatePdfCover(file){if(!window.pdfjsLib||!file)return null;try{const pdf=await window.pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const p=await pdf.getPage(1),base=p.getViewport({scale:1}),vp=p.getViewport({scale:520/base.height}),c=document.createElement('canvas');c.width=Math.ceil(vp.width);c.height=Math.ceil(vp.height);await p.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;return c.toDataURL('image/jpeg',.78)}catch(e){console.warn(e);return null}}
+function coverFor(b,large=false){const type=(b.type||'pdf').toUpperCase(), pct=Math.round((b.progress||0)*100);if(b.coverData)return `<div class="cover ${large?'large':''}"><img src="${b.coverData}" alt=""><span class="type">${type}</span></div>`;return `<div class="cover ${large?'large':''}"><div class="type">${type}</div><div class="cover-title">${esc(b.title)}</div><div class="source">${pct?pct+'% leído':'Sin empezar'}</div></div>`}
+function sorted(list){return [...list].sort((a,b)=>{if(sortMode==='title')return (a.title||'').localeCompare(b.title||'','es',{sensitivity:'base'});if(sortMode==='author')return (a.author||'Sin autor').localeCompare(b.author||'Sin autor','es',{sensitivity:'base'});if(sortMode==='progress')return (b.progress||0)-(a.progress||0);return (b.updatedAt||0)-(a.updatedAt||0)})}
+function filtered(all){const q=$("#searchInput").value.trim().toLowerCase();return sorted(all.filter(b=>{const hay=[b.title,b.author,b.fileName,...(b.tags||[])].join(' ').toLowerCase();const mq=!q||hay.includes(q);const mf=activeFilter==='all'||(activeFilter==='favorites'&&b.favorite)||(activeFilter==='pdf'&&b.type==='pdf')||(activeFilter==='epub'&&b.type==='epub');const mt=!activeTag||(b.tags||[]).includes(activeTag);const mc=!activeCollection||(b.collections||[]).includes(activeCollection);return mq&&mf&&mt&&mc}))}
+function renderCollectionBar(all){
+  const bar=$("#collectionBar");
+  const counts=new Map(collections.map(c=>[c,0]));
+  all.forEach(b=>(b.collections||[]).forEach(c=>{if(counts.has(c))counts.set(c,counts.get(c)+1)}));
+  if(!collections.length){bar.classList.add("hidden");bar.innerHTML="";return}
+  bar.classList.remove("hidden");
+  bar.innerHTML=`<div class="collection-head"><strong>Mis colecciones</strong><button id="newCollectionQuick" class="secondary" type="button">＋ Nueva</button></div><div class="collection-list"><button class="collection-chip ${!activeCollection?'active':''}" data-collection="">📚 Todas <span>${all.length}</span></button>${collections.map(c=>`<button class="collection-chip ${activeCollection===c?'active':''}" data-collection="${esc(c)}">${esc(c)} <span>${counts.get(c)||0}</span></button>`).join('')}</div>`;
+  bar.querySelectorAll('.collection-chip').forEach(b=>b.onclick=async()=>{activeCollection=b.dataset.collection||null;renderLibrary(await getAllBooks())});
+  const quick=$("#newCollectionQuick"); if(quick) quick.onclick=()=>createCollectionPrompt();
 }
-const COMMERCIAL_PATTERNS=[/\bpromo(?:tion)?\s*code\b/i,/\bcoupon\s*code\b/i,/\bdiscount\s*code\b/i,/\bpromo\s*codes?\b/i,/\bcoupon\s*codes?\b/i,/\bdeals?\b/i,/\bdiscounts?\b/i,/\bgroupon\b/i,/\bsave\s+\d{1,3}%/i,/\b(?:up to|save)\s+\d{1,3}%\s+off\b/i,/\bsponsored\b/i,/\badvertorial\b/i,/\baffiliate\b/i,/\bshopping\s+guide\b/i];
-function isCommercial(a){const text=`${a?.title||""} ${a?.description||""} ${(a?.tags||[]).join(" ")}`;return COMMERCIAL_PATTERNS.some(re=>re.test(text));}
-function isUsableArticle(a){return articleBelongsToActiveSource(a)&&!isCommercial(a)}
-function clusterLeadIds(){
-  const ids=new Set();
-  if(Array.isArray(state.clusters)&&state.clusters.length){
-    state.clusters.forEach(c=>{
-      const lead=Number(c?.lead); if(Number.isInteger(lead)&&state.articles[lead])ids.add(state.articles[lead].id||state.articles[lead].link);
-    });
-  }
-  return ids;
+function createCollectionPrompt(){
+  const name=collectionLabel(prompt("Nombre de la nueva colección:"));
+  if(!name)return;
+  if(collections.some(c=>c.toLowerCase()===name.toLowerCase())){toast("Esa colección ya existe.");return}
+  collections.push(name);collections.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));saveCollections();toast(`Colección “${name}” creada.`);renderLibrary(lastBooks);if(currentView==='collections')showView('collections');
 }
-function candidatePool(){
-  const base=state.articles.filter(isUsableArticle).filter(matchesTags);
-  const leadIds=clusterLeadIds();
-  return leadIds.size?base.filter(a=>leadIds.has(a.id||a.link)):base;
+function renderTagBar(all){const tags=[...new Set(all.flatMap(b=>b.tags||[]))].sort((a,b)=>a.localeCompare(b,'es'));const bar=$("#tagBar");if(!tags.length){bar.classList.add('hidden');bar.innerHTML='';return}bar.classList.remove('hidden');bar.innerHTML=`<button class="tag-chip ${!activeTag?'active':''}" data-tag="">Todos</button>`+tags.map(t=>`<button class="tag-chip ${activeTag===t?'active':''}" data-tag="${esc(t)}">#${esc(t)}</button>`).join('');bar.querySelectorAll('.tag-chip').forEach(b=>b.onclick=async()=>{activeTag=b.dataset.tag||null;renderLibrary(await getAllBooks())})}
+function renderCollectionSummary(all,shown){const e=$("#collectionSummary");if(!all.length){e.classList.add('hidden');return}const tags=[...new Set(shown.flatMap(b=>b.tags||[]))];e.classList.remove('hidden');e.innerHTML=`<span><b>${shown.length}</b> ${shown.length===1?'resultado':'resultados'}</span>${activeCollection?`<span>en <b>📚 ${esc(activeCollection)}</b></span>`:''}${activeTag?`<span>en <b>#${esc(activeTag)}</b></span>`:''}${activeFilter!=='all'?`<span>· ${activeFilter==='favorites'?'favoritos':activeFilter.toUpperCase()}</span>`:''}${tags.length&&!activeTag?`<span class="summary-tags">${tags.slice(0,5).map(t=>`#${esc(t)}`).join(' ')}</span>`:''}`}
+function shelfCard(b){return `<button class="shelf-book" data-id="${esc(b.id)}" type="button">${coverFor(b)}<span class="shelf-title">${esc(b.title)}</span><span class="shelf-author">${esc(b.author||'Sin autor')}</span></button>`}
+function renderHomeDashboard(all){
+  const el=$("#homeCurrent"), empty=$("#homeEmpty");
+  // Una lectura actual es un libro que ya fue abierto, aunque todavía vaya en 0%.
+  // Así también aparecen en Inicio los libros que recién empezaste.
+  const current=[...all].filter(b=>(b.lastOpenedAt||0)>0 || (b.progress||0)>0).sort((a,b)=>((b.lastOpenedAt||b.updatedAt||0)-(a.lastOpenedAt||a.updatedAt||0))).slice(0,20);
+  if(current.length){
+    el.classList.remove('hidden'); empty.classList.add('hidden');
+    el.innerHTML=`<div class="shelf-head"><div><span class="eyebrow">HASTA 20</span><h3>Continúa donde quedaste</h3></div><button class="secondary shelf-link" id="homeAllLibraryBtn" type="button">Ver biblioteca →</button></div><div class="book-shelf current-reading-shelf">${current.map(shelfCard).join('')}</div>`;
+    el.querySelectorAll('.shelf-book').forEach(btn=>btn.onclick=()=>openBookDetails(btn.dataset.id));
+    $("#homeAllLibraryBtn").onclick=()=>showView('library');
+  }else{el.classList.add('hidden');empty.classList.remove('hidden')}
 }
-function shuffleArray(arr){const out=[...arr];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
-function chooseRandomStories(pool=candidatePool()){const ranked=shuffleArray(pool.slice()).sort((a,b)=>((b.editorialScore||0)-(a.editorialScore||0))*(Math.random()*.55+.45));const out=[],counts={};for(const a of ranked){const cat=a.category||"Other";if((counts[cat]||0)>=8)continue;out.push(a);counts[cat]=(counts[cat]||0)+1;if(out.length>=24)break}return out}
-function sync(){if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories();state.shuffled=false}if(!state.selected.length)state.selected=candidatePool().filter(a=>a.selected).slice(0,24);updateCounts()}
-function saveTopics(){localStorage.setItem("weekly.selectedTags",JSON.stringify([...state.selectedTags]));localStorage.setItem("weekly.customTags",JSON.stringify([...state.customTags]))}
-function rerenderTopicSelection(){state.selected=[];state.readerModel=null;state.shuffled=true;saveTopics();renderTags();renderArticles();renderMagazine()}
-function addCustomTopic(raw){const topic=String(raw||"").trim().replace(/\s+/g," ");if(!topic)return false;const key=topic.toUpperCase();if(state.customTags.has(key)||state.selectedTags.has(key))return false;state.customTags.add(key);rerenderTopicSelection();return true}
-function removeCustomTopic(topic){state.customTags.delete(String(topic).toUpperCase());rerenderTopicSelection()}
-function renderTags(){const box=$("#tag-cloud");if(!box)return;box.innerHTML="";const custom=[...state.customTags];if(custom.length){const head=document.createElement("div");head.className="custom-topic-list";head.innerHTML=custom.map(t=>`<button class="tag-chip custom-chip active" data-custom-topic="${esc(t)}"><span>${esc(t)}</span><small>×</small></button>`).join("");box.appendChild(head);head.querySelectorAll("[data-custom-topic]").forEach(b=>b.onclick=()=>removeCustomTopic(b.dataset.customTopic))}
-const tags=allTags();const cloud=document.createElement("div");cloud.className="auto-tag-list";tags.forEach(([tag,count])=>{const b=document.createElement("button");b.className="tag-chip"+(state.selectedTags.has(tag)?" active":"");b.innerHTML=`<span>${esc(tag)}</span><small>${count}</small>`;b.onclick=()=>{if(state.selectedTags.has(tag))state.selectedTags.delete(tag);else state.selectedTags.add(tag);rerenderTopicSelection()};cloud.appendChild(b)});box.appendChild(cloud);$("#tag-count").textContent=`${state.selectedTags.size+state.customTags.size} SELECTED`}
-function renderArticles(){const box=$("#article-list");if(!box)return;const pool=candidatePool();if(!state.selected.length||state.shuffled){state.selected=chooseRandomStories(pool);state.shuffled=false}$("#pool-stat").textContent=`${pool.length} STORIES IN POOL`;const activeTopics=[...state.selectedTags,...state.customTags];$("#pool-note").textContent=activeTopics.length?`Temas: ${activeTopics.join(" · ")}`:"Todo el feed está disponible. WEEKLY elegirá una combinación al azar.";box.innerHTML="";shuffleArray(pool).slice(0,12).forEach(a=>{const l=document.createElement("div");l.className="article preview-article";const tags=(a.tags?.length?a.tags:deriveTags(a)).slice(0,4);l.innerHTML=`<div class="article-thumb">${a.image?`<img src="${esc(a.image)}" alt="">`:""}</div><div><span class="cat">${esc((a.category||"OTHER").toUpperCase())}</span><h3>${esc(a.title)}</h3><p>${esc(a.source)} · ${esc((a.published||"").slice(0,10))}</p><div class="mini-tags">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div></div><span class="score">${a.editorialScore||"-"}</span>`;box.appendChild(l)});updateCounts()}
-function updateCounts(){const pool=candidatePool();$("#article-count").textContent=`${state.selected.length} SELECTED · ${pool.length} IN POOL`;$("#selected-stat").textContent=`${state.selected.length} SELECTED`}
-function storyFor(a){return(state.editorial?.stories||[]).find(s=>s.article_id===state.articles.indexOf(a))||null}
-function articleTags(a){return(a?.tags?.length?a.tags:deriveTags(a)).slice(0,5)}
-function layoutFor(index){
-  const layouts=["layout-feature","layout-news","layout-image","layout-quote","layout-short","layout-dark"];
-  return layouts[Math.abs(Number(index)||0)%layouts.length]
+function renderCollectionsPage(all){
+  const grid=$("#collectionsPageGrid"), empty=$("#collectionsEmpty");
+  const items=collections.map(name=>({name,books:all.filter(b=>(b.collections||[]).includes(name))}));
+  if(!items.length){grid.innerHTML='';grid.classList.add('hidden');empty.classList.remove('hidden');return}
+  grid.classList.remove('hidden');empty.classList.add('hidden');
+  grid.innerHTML=items.map(c=>{
+    const books=[...c.books].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+    const covers=books.filter(b=>b.coverData).slice(0,3);
+    const fallback=books[0];
+    const preview=covers.length?covers.map(b=>coverFor(b)).join(''):coverFor(fallback||{title:c.name,type:'pdf'});
+    return `<article class="collection-page-card" data-collection-card="${esc(c.name)}">
+      <button class="collection-open" data-collection-page="${esc(c.name)}" type="button" aria-label="Abrir colección ${esc(c.name)}">
+        <div class="collection-page-covers">${preview}</div>
+        <div class="collection-page-copy"><span class="eyebrow">COLECCIÓN</span><strong>${esc(c.name)}</strong><span>${c.books.length} ${c.books.length===1?'libro':'libros'}</span>${books[0]?`<small>${esc(books[0].title)}</small>`:''}</div>
+      </button>
+      <div class="collection-page-actions"><button class="secondary collection-action" data-rename-collection="${esc(c.name)}" type="button">✏️ Renombrar</button><button class="secondary collection-action danger" data-delete-collection="${esc(c.name)}" type="button">Eliminar</button></div>
+    </article>`;
+  }).join('');
+  grid.querySelectorAll('[data-collection-page]').forEach(btn=>btn.onclick=()=>{activeCollection=btn.dataset.collectionPage;showView('library');setTimeout(()=>{renderLibrary(lastBooks);$("#collectionBar")?.scrollIntoView({behavior:'smooth',block:'center'})},0)});
+  grid.querySelectorAll('[data-rename-collection]').forEach(btn=>btn.onclick=()=>renameCollection(btn.dataset.renameCollection));
+  grid.querySelectorAll('[data-delete-collection]').forEach(btn=>btn.onclick=()=>deleteCollection(btn.dataset.deleteCollection));
 }
-function coverImage(a,cls="cover-image",label="DESTACADO WEEKLY"){return a?.image?`<div class="${cls}"><img src="${esc(a.image)}" alt=""><span>${esc(label)}</span></div>`:`<div class="${cls}"><span>${esc(label)}</span></div>`}
-function issueCoverImage(cls="cover-image",label="PORTADA"){const src=state.editorial?.coverImage||"assets/weekly-cover-fallback.svg";return `<div class="${cls} issue-cover-image"><img src="${esc(src)}" alt="Portada de WEEKLY"><span>${esc(label)}</span></div>`}
-function editorialParagraphs(){const text=String(state.editorial?.editorial||"").trim();if(!text)return [];return text.split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean)}
-function issueDateLabel(){const w=state.editorial?.issueWindow||{};if(w.start&&w.end){const end=new Date(w.end+"T00:00:00Z");end.setUTCDate(end.getUTCDate()-1);const fmt=d=>d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric",timeZone:"UTC"}).toUpperCase();return `${fmt(new Date(w.start+"T00:00:00Z"))} — ${fmt(end)}`}return ""}
-function editorialPageHtml(globalNumber){const paras=editorialParagraphs();const title=state.editorial?.headline||"DESDE LA REDACCIÓN";const label=state.editorial?.editorialSource==="ai"?"EDITORIAL DE LA SEMANA":"MANIFIESTO WEEKLY";return `<section class="page editorial-page editorial-opening"><div class="story-running"><span>WEEKLY · ${label}</span><span>EDICIÓN #${esc(state.editorial?.issueNumber||"—")}</span></div><div class="editorial-kicker">DESDE LA REDACCIÓN</div><h2>${esc(title)}</h2><div class="editorial-copy">${paras.map(p=>`<p>${esc(p).replace(/\n/g,"<br>")}</p>`).join("")}</div><div class="editorial-sign">${state.editorial?.editorialSource==="ai"?"FERNANDON™ · EDITORIAL":"WEEKLY · MANIFIESTO"}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div></section>`}
-function storyTitle(a){const st=storyFor(a);return st?.headline||a?.title||"HISTORIA SIN TÍTULO"}
-function layoutFor(index){
-  const layouts=["layout-feature","layout-news","layout-image","layout-quote","layout-short","layout-dark"];
-  return layouts[Math.abs(Number(index)||0)%layouts.length]
+async function renameCollection(oldName){
+  const name=collectionLabel(prompt(`Nuevo nombre para “${oldName}”:`,oldName));
+  if(!name||name===oldName)return;
+  if(collections.some(c=>c.toLowerCase()===name.toLowerCase()&&c!==oldName)){toast('Esa colección ya existe.');return}
+  collections=collections.map(c=>c===oldName?name:c).sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));
+  const books=await getAllBooks();
+  for(const b of books){if((b.collections||[]).includes(oldName)){b.collections=[...new Set((b.collections||[]).map(c=>c===oldName?name:c))];await putBook(b)}}
+  if(activeCollection===oldName)activeCollection=name;
+  saveCollections();
+  renderLibrary(await getAllBooks());
+  toast(`Colección renombrada a “${name}”.`);
 }
-function storyWords(a){
-  return storyBlocks(a).map(b=>b.text).join(" ").replace(/\s+/g," ").trim();
+async function deleteCollection(name){
+  if(!confirm(`¿Eliminar la colección “${name}”? Tus libros NO se eliminarán.`))return;
+  collections=collections.filter(c=>c!==name);
+  const books=await getAllBooks();
+  for(const b of books){if((b.collections||[]).includes(name)){b.collections=(b.collections||[]).filter(c=>c!==name);await putBook(b)}}
+  if(activeCollection===name)activeCollection=null;
+  saveCollections();
+  renderLibrary(await getAllBooks());
+  toast(`Colección “${name}” eliminada.`);
 }
-function pullQuote(a){
-  const blocks=storyBlocks(a);
-  const explicit=blocks.find(b=>b.type==="blockquote" && b.text.length>35);
-  if(explicit)return explicit.text;
-  const text=storyWords(a);
-  const sentences=(text.match(/[^.!?]+[.!?]+/g)||[]).map(x=>x.trim()).filter(x=>x.length>=45&&x.length<=150);
-  if(sentences.length)return sentences[Math.min(1,sentences.length-1)];
-  return text.slice(0,150).trim()+ (text.length>150?"…":"");
+
+async function showView(view){
+  currentView=view;
+  try{if(view==='home'||view==='collections') renderLibrary(await getAllBooks())}catch(e){}
+  ["home","collections","library"].forEach(v=>$("#view"+v.charAt(0).toUpperCase()+v.slice(1))?.classList.toggle('hidden',v!==view));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+  if(view==='home') window.scrollTo({top:0,behavior:'smooth'});
+  if(view==='collections') window.scrollTo({top:0,behavior:'smooth'});
+  if(view==='library') window.scrollTo({top:0,behavior:'smooth'});
 }
-function sectionName(a){return String(a?.category||"SELECCIÓN WEEKLY").toUpperCase();}
-function sectionOpener(a,number){
-  const name=sectionName(a);
-  const lead=storyTitle(a);
-  return `<section class="page section-opener"><div class="section-opener-grid"><div class="section-marker">SECCIÓN ${String(number).padStart(2,"0")}</div><div class="section-name">${esc(name)}</div><div class="section-rule"></div><div class="section-lead"><span>A CONTINUACIÓN</span><h2>${esc(lead)}</h2><p>${esc(a?.description||pullQuote(a))}</p></div><div class="section-giant">${esc(name.slice(0,1))}</div></div><div class="page-number">${String(number).padStart(2,"0")}</div></section>`;
+function renderLibrary(all){const shown=filtered(all);renderHomeDashboard(all);renderCollectionsPage(all);$("#stats").textContent=`${all.length} libro${all.length===1?'':'s'}`;$("#emptyState").classList.toggle('hidden',all.length!==0);$("#noResults").classList.toggle('hidden',!all.length||shown.length!==0);$("#libraryGrid").classList.toggle('list-view',viewMode==='list');renderCollectionBar(all);renderTagBar(all);renderCollectionSummary(all,shown);$("#libraryGrid").innerHTML=shown.map(b=>`<button class="book" data-id="${b.id}" type="button">${coverFor(b)}<div class="book-content"><div class="book-title">${esc(b.title)}</div><div class="book-author">${esc(b.author||'Sin autor')}</div><div class="book-meta">${(b.type||'pdf').toUpperCase()} · ${Math.round((b.progress||0)*100)}%</div><div class="progress"><span style="width:${Math.max(0,Math.min(100,(b.progress||0)*100))}%"></span></div><div class="book-meta tags">${(b.tags||[]).slice(0,4).map(t=>'#'+esc(t)).join(' ')}</div></div></button>`).join('');$("#libraryGrid").querySelectorAll('.book').forEach(x=>x.onclick=()=>openBookDetails(x.dataset.id))}
+function renderContinue(all){const candidates=all.filter(b=>(b.progress||0)>0).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));const b=candidates[0];$("#continueSection").classList.toggle('hidden',!b);if(!b)return;$("#continueTitle").textContent=b.title;$("#continueMeta").textContent=`${Math.round(b.progress*100)}% leído · ${(b.type||'pdf').toUpperCase()}${b.author?' · '+b.author:''}`;$("#continueCover").innerHTML=coverFor(b,true);$("#continueBtn").onclick=()=>openBook(b.id,all)}
+async function openBookDetails(id){const b=(await getAllBooks()).find(x=>x.id===id);if(!b)return;modalBook=b;modalTags=[...(b.tags||[])];$("#modalTitle").textContent=b.title;$("#editTitle").value=b.title;$("#editAuthor").value=b.author||'';updateFavoriteButton();const modalPct=Math.round((b.progress||0)*100);$("#modalProgressText").textContent=modalPct+"%";$("#modalProgressBar").style.width=modalPct+"%";$("#modalMeta").innerHTML=`<b>Formato:</b> ${(b.type||'pdf').toUpperCase()}<br><b>Archivo:</b> ${esc(b.fileName)}<br><b>Origen:</b> ${b.source==='drive'?'Google Drive':'Dispositivo'}`;if(!b.coverData&&b.type==='pdf'&&b.file){$("#modalCover").innerHTML='<div class="cover"><div class="type">PDF</div><div class="cover-title">Generando portada…</div></div>';const c=await generatePdfCover(b.file);if(c){b.coverData=c;await putBook(b)}}$("#modalCover").innerHTML=b.coverData?`<img src="${b.coverData}" alt="Portada">`:coverFor(b);renderModalTags();renderModalCollections();$("#bookModal").classList.remove('hidden')}
+function renderModalCollections(){
+  const e=$("#modalCollections");
+  if(!collections.length){e.innerHTML='<span class="book-meta">Todavía no tienes colecciones. Crea una con “＋ Crear”.</span>';return}
+  const selected=new Set(modalBook?.collections||[]);
+  e.innerHTML=collections.map(c=>`<button type="button" class="collection-edit-chip ${selected.has(c)?'on':''}" data-collection="${esc(c)}">${selected.has(c)?'✓ ':'＋ '}${esc(c)}</button>`).join('');
+  e.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{const c=btn.dataset.collection;const set=new Set(modalBook.collections||[]);if(set.has(c))set.delete(c);else set.add(c);modalBook.collections=[...set];renderModalCollections()});
 }
-function issuePdfUrl(){const n=state.editorial?.issueNumber;return n?`data/issues/issue-${encodeURIComponent(n)}.pdf`:""}
-function downloadIssuePdf(){const url=issuePdfUrl();if(!url){alert("El PDF de esta edición todavía no está disponible.");return;}window.open(url,"_blank","noopener");}
-function renderMagazine(){sync();const s=state.selected;const cover=s[0];const issue=state.editorial||{};const sourceCount=state.issueSourceCount||state.sources.length;$("#cover-dek").textContent=`${s.length} historias · ${sourceCount} fuentes · ${issue.status==="ai"?"EDITORIAL IA":"MANIFIESTO WEEKLY"}`;$("#mag-cover-title").textContent=issue.headline||storyTitle(cover)||"WEEKLY";$("#issue-number").textContent=String(issue.issueNumber||"—");$("#issue-date").textContent=issueDateLabel();const activeTopics=[...state.selectedTags,...state.customTags];$("#cover-tags").textContent=activeTopics.length?activeTopics.join(" · "):"EDICIÓN SEMANAL · CERRADA";$("#cover-count").textContent=`${s.length} HISTORIAS`;const box=$("#cover-stories");box.innerHTML="";s.slice(0,6).forEach((a,i)=>{const e=document.createElement("button");e.className="mini mini-link";e.innerHTML=`<b>${esc((a.category||"OTROS").toUpperCase())}</b><h4>${esc(storyTitle(a))}</h4><small>${String(i+2).padStart(2,"0")}</small>`;e.onclick=()=>{state.readerPage=0;state._readerTargetStory=i;show("reader");requestAnimationFrame(()=>renderReader())};box.appendChild(e)});const old=$(".cover-image");if(old){const holder=document.createElement("div");holder.innerHTML=issueCoverImage("cover-image","PORTADA");old.replaceWith(holder.firstElementChild)}}
-// V0.9.6 — Smart page composer: budgets are tuned for the actual single-page canvas.
-// Continuation pages intentionally carry much more text than the old 900-char cap.
-const PAGE_CHAR_TARGET_DESKTOP=2500;
-const PAGE_CHAR_TARGET_TABLET=2100;
-const PAGE_CHAR_TARGET_MOBILE=1500;
-const PAGE_CHAR_TARGET_FIRST={
-  "layout-feature":820,
-  "layout-news":900,
-  "layout-image":760,
-  "layout-quote":700,
-  "layout-short":980,
-  "layout-dark":820
-};
-function storyBlocks(a){
-  const blocks=Array.isArray(a?.contentBlocks)?a.contentBlocks:[];
-  if(blocks.length)return blocks.filter(b=>b&&b.text).map(b=>({type:b.type||"p",text:String(b.text).trim()}));
-  // Some generated article feeds have contentText but no structured blocks.
-  // Recover that body before falling back to the one-line RSS description.
-  if(typeof a?.contentText==="string" && a.contentText.trim()){
-    return a.contentText.split(/\n{2,}|(?<=[.!?])\s+(?=[A-ZÁÉÍÓÚÑ])/u).map(t=>t.trim()).filter(t=>t.length>=25).map(text=>({type:"p",text}));
-  }
-  const fallback=[];
-  if(a?.headings?.h1?.length) fallback.push({type:"h1",text:a.headings.h1[0]});
-  if(a?.description) fallback.push({type:"p",text:a.description});
-  return fallback;
+function renderModalTags(){$("#modalTags").innerHTML=modalTags.length?modalTags.map((t,i)=>`<span class="tag-edit-chip">#${esc(t)}<button data-i="${i}" type="button">✕</button></span>`).join(''):'<span class="book-meta">Sin tags todavía.</span>';$("#modalTags").querySelectorAll('button').forEach(x=>x.onclick=()=>{modalTags.splice(+x.dataset.i,1);renderModalTags()})}
+function updateFavoriteButton(){const on=!!modalBook?.favorite;$("#favoriteBook").textContent=on?'♥ En favoritos':'♡ Favorito';$("#favoriteBook").classList.toggle('on',on)}
+function closeBookDetails(){$("#bookModal").classList.add('hidden');modalBook=null;modalTags=[]}
+async function saveBookDetails(){if(!modalBook)return;modalBook.title=$("#editTitle").value.trim()||modalBook.title;modalBook.author=$("#editAuthor").value.trim();modalBook.tags=[...new Set(modalTags.map(normTag).filter(Boolean))];modalBook.collections=[...new Set((modalBook.collections||[]).filter(c=>collections.includes(c)))];modalBook.updatedAt=Date.now();await putBook(modalBook);closeBookDetails();renderLibrary(await getAllBooks());toast('Cambios guardados.')}
+function fileUrl(f){if(currentObjectUrl)URL.revokeObjectURL(currentObjectUrl);currentObjectUrl=URL.createObjectURL(f);return currentObjectUrl}
+async function closeReader(){
+  if(currentBook){try{await putBook(currentBook)}catch(e){}}
+  if(currentEpubRendition){try{currentEpubRendition.destroy()}catch(e){}}
+  if(currentEpubBook){try{currentEpubBook.destroy()}catch(e){}}
+  currentEpubRendition=null;
+  currentEpubBook=null;
+  if(currentEpubUrl){URL.revokeObjectURL(currentEpubUrl);currentEpubUrl=null}
+  if(currentObjectUrl){URL.revokeObjectURL(currentObjectUrl);currentObjectUrl=null}
+  $("#readerBody").innerHTML='';
+  $("#reader").classList.add('hidden');
+  currentBook=null
+  try{renderLibrary(await getAllBooks())}catch(e){}
 }
-function splitLongBlock(b,target){
-  const out=[]; let rest=String(b.text||"").trim();
-  while(rest.length>target){
-    let cut=rest.lastIndexOf(" ",target);
-    if(cut<Math.floor(target*.55))cut=target;
-    out.push({type:b.type,text:rest.slice(0,cut).trim()});
-    rest=rest.slice(cut).trim();
-  }
-  if(rest)out.push({type:b.type,text:rest});
-  return out;
-}
-function paginateBlocks(blocks,target){
-  const pages=[]; let page=[]; let chars=0;
-  const pushPage=()=>{if(page.length){pages.push(page);page=[];chars=0}};
-  for(const original of blocks){
-    if(!original?.text)continue;
-    const chunks=original.text.length>target?splitLongBlock(original,target):[original];
-    for(const b of chunks){
-      const cost=b.text.length+2;
-      if(page.length && chars+cost>target)pushPage();
-      page.push(b); chars+=cost;
-    }
-  }
-  pushPage();
-  return pages.length?pages:[[{type:"p",text:"La fuente no expuso el texto completo. Lee el artículo original para consultar la historia completa."}]];
-}
-function firstPageBudget(a){
-  const type=layoutFor((a?._storyIndex||0));
-  return PAGE_CHAR_TARGET_FIRST[type]||340;
-}
-function pageCharTarget(){
-  const width=window.innerWidth||1200;
-  if(state.readerView==="spread") return width<=720?1300:1600;
-  if(width<=720) return PAGE_CHAR_TARGET_MOBILE;
-  if(width<1050) return PAGE_CHAR_TARGET_TABLET;
-  return PAGE_CHAR_TARGET_DESKTOP;
-}
-function articleTextPages(a){
-  const blocks=storyBlocks(a);
-  const target=pageCharTarget();
-  if(!blocks.length)return paginateBlocks(blocks,target);
-  const firstBudget=Math.min(firstPageBudget(a), Math.round(target*.48));
-  const first=paginateBlocks(blocks,firstBudget);
-  if(first.length>1){
-    const used=first.reduce((n,p)=>n+p.length,0);
-    const restBlocks=[...first.slice(1).flat(),...blocks.slice(used)];
-    return [first[0],...paginateBlocks(restBlocks,target)];
-  }
-  return paginateBlocks(blocks,target);
-}
-function headlineClassFor(title){
-  const n=(title||"").length;
-  if(n>110)return " headline-ultra-long";
-  if(n>82)return " headline-long";
-  if(n>62)return " headline-medium";
-  return "";
-}
-function blockHtml(b){if(b.type==="h1"||b.type==="h2"||b.type==="h3"||b.type==="h4")return `<h3 class="source-body-heading">${esc(b.text)}</h3>`;if(b.type==="blockquote")return `<blockquote class="source-quote">${esc(b.text)}</blockquote>`;return `<p>${esc(b.text)}</p>`}
-function articleImages(a){
-  const raw=Array.isArray(a?.images)?a.images:[];
-  const out=[]; const seen=new Set();
-  for(const item of raw){
-    const url=typeof item==="string"?item:item?.url;
-    if(!url)continue;
-    const key=String(url).trim();
-    if(!key||seen.has(key))continue;
-    seen.add(key); out.push(typeof item==="string"?{url:key,caption:""}:{url:key,caption:String(item?.caption||"")});
-  }
-  if(!out.length&&a?.image)out.push({url:a.image,caption:""});
-  return out;
-}
-function inlineArticleImage(a,index){
-  const imgs=articleImages(a);
-  if(index<0||index>=imgs.length)return "";
-  const item=imgs[index];
-  return `<figure class="reader-inline-image"><img src="${esc(item.url)}" alt="${esc(item.caption||storyTitle(a))}" loading="lazy">${item.caption?`<figcaption>${esc(item.caption)}</figcaption>`:""}<span>IMAGEN ORIGINAL</span></figure>`;
-}
-function readerColumnCount(width){
-  const viewport=window.innerWidth||1200;
-  return (viewport>=1050 && width>=620 && state.readerView!=="spread") ? 2 : 1;
-}
-function normalizeColumns(columns){
-  if(Array.isArray(columns) && columns.length && Array.isArray(columns[0])) return columns;
-  if(Array.isArray(columns)) return [columns];
-  return [[]];
-}
-function columnHtml(blocks){
-  return `<div class="source-column">${(blocks||[]).map(blockHtml).join("")}</div>`;
-}
-function articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,columns,imageIndex=-1){
-  const first=pageIndex===0; const imgs=articleImages(a); const h=a.headings||{};
-  const image=first?coverImage(a,"reader-story-image","IMAGEN ORIGINAL"):"";
-  const type=layoutFor((a._storyIndex||0)+pageIndex);
-  const headlineClass=headlineClassFor(storyTitle(a));
-  const quote=esc(pullQuote(a));
-  const tags=articleTags(a); const sourceLabel=esc(a.source||"FUENTE ORIGINAL");
-  const date=esc((a.published||"").slice(0,10));
-  const featureNumber=String((a._storyIndex||0)+1).padStart(2,"0");
-  const firstExtras=first && type==="layout-quote" ? `<aside class="pull-quote">“${quote}”</aside>` : "";
-  const continuationImage=(!first && imageIndex>=0 && imageIndex<imgs.length)?inlineArticleImage(a,imageIndex):"";
-  const cols=normalizeColumns(columns);
-  const colCount=cols.length;
-  return `<section class="page article-page source-text-page source-cols-${colCount} ${first?"source-first":"source-continuation"} ${type}${headlineClass}">
-    <div class="story-running"><span>${sourceLabel}</span><span>${date}</span></div>
-    ${first?`<div class="tag">${esc((a.category||"OTHER").toUpperCase())}</div><h2>${esc(storyTitle(a))}</h2><p class="dek">${esc(a.description||h.h1?.[1]||"")}</p>${image}`:`<div class="continued-kicker">CONTINÚA · ${String(pageIndex+1).padStart(2,"0")} / ${String(totalPages).padStart(2,"0")}</div>`}
-    ${firstExtras}
-    ${continuationImage}
-    <div class="source-body source-body-grid">${cols.map(columnHtml).join("")}</div>
-    ${first&&tags.length?`<div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div>`:""}
-    ${first?otherSourcesHtml(a):""}
-    ${pageIndex===totalPages-1?`<div class="source-end"><span>FIN DE LA HISTORIA · ${featureNumber}</span>${linkButton(a)}</div>`:""}
-    <div class="feature-number">${featureNumber}</div><div class="page-number">${String(globalNumber).padStart(2,"0")}</div>
-  </section>`;
-}
-function articlePageHtml(a,pageIndex,totalPages,globalNumber){
-  const pages=articleTextPages(a); return articlePageHtmlFromParts(a,pageIndex,totalPages,globalNumber,[pages[pageIndex]||[]],-1);
-}
-function measurementDimensions(){
-  const spread=document.querySelector("#spread");
-  let width=0,height=0;
-  if(spread && spread.clientWidth){
-    width=Math.min(spread.clientWidth, state.readerView==="spread"?Math.floor(spread.clientWidth/2):spread.clientWidth);
-    const page=spread.querySelector(".page"); if(page){width=page.clientWidth||width;height=page.clientHeight||0;}
-  }
-  if(!width) width=Math.min(window.innerWidth>720?760:Math.max(300,window.innerWidth-32),760);
-  if(!height) height=state.readerView==="spread"?Math.max(560,Math.min(760,window.innerHeight-250)):Math.round(width*4/3);
-  if(document.fullscreenElement || document.querySelector("#reader.reader-fullscreen")) height=Math.max(420,window.innerHeight-105);
-  return {width:Math.max(260,Math.round(width)),height:Math.max(420,Math.round(height))};
-}
-function measureArticleCandidate(a,pageIndex,columns,imageIndex,forceTotal=99){
-  const dims=measurementDimensions();
-  const host=document.createElement("div");
-  host.className="spread single-view weekly-measure-host";
-  host.style.cssText=`position:fixed!important;left:-100000px!important;top:0!important;width:${dims.width}px!important;height:${dims.height}px!important;display:block!important;visibility:hidden!important;pointer-events:none!important;overflow:hidden!important;`;
-  host.innerHTML=articlePageHtmlFromParts(a,pageIndex,forceTotal,1,columns,imageIndex);
-  const page=host.firstElementChild;
-  if(!page){host.remove();return {fits:false,scroll:999999,height:dims.height};}
-  page.style.width=dims.width+"px"; page.style.height=dims.height+"px"; page.style.maxHeight=dims.height+"px";
-  document.body.appendChild(host);
-  const columnEls=[...page.querySelectorAll(".source-column")];
-  const verticalOverflow=columnEls.some(col=>col.scrollHeight>col.clientHeight+1);
-  const horizontalOverflow=page.scrollWidth>page.clientWidth+1;
-  const pageOverflow=false;
-  const fits=!verticalOverflow && !horizontalOverflow;
-  const scroll=Math.max(page.scrollHeight,page.scrollWidth,...columnEls.map(col=>col.scrollHeight));
-  host.remove();
-  return {fits,scroll,height:dims.height,verticalOverflow,horizontalOverflow,pageOverflow};
-}
-function expandPaginationBlocks(blocks){
-  const out=[];
-  for(const b of blocks){
-    if(!b?.text)continue;
-    const text=String(b.text).trim();
-    const max=900;
-    if(text.length<=max){out.push({...b,text});continue;}
-    let rest=text;
-    while(rest.length>max){
-      let cut=rest.lastIndexOf(" ",max);
-      if(cut<Math.floor(max*.55))cut=max;
-      out.push({...b,text:rest.slice(0,cut).trim()});
-      rest=rest.slice(cut).trim();
-    }
-    if(rest)out.push({...b,text:rest});
-  }
-  return out;
-}
-function blockFits(a,pageIndex,columns,imageIndex){
-  return measureArticleCandidate(a,pageIndex,columns,imageIndex).fits;
-}
-function fitBlockIntoColumn(a,pageIndex,columns,colIndex,block,imageIndex){
-  const target=Array.isArray(columns[colIndex])?columns[colIndex]:[];
-  let candidate=[...target,block];
-  const test=columns.map((c,i)=>i===colIndex?candidate:c);
-  if(blockFits(a,pageIndex,test,imageIndex)) return {ok:true,block,columns:test};
-  let text=String(block.text||"");
-  if(text.length<120) return {ok:false,columns};
-  let lo=60, hi=Math.max(60,text.length-1), best=null;
-  while(lo<=hi){
-    const mid=Math.floor((lo+hi)/2);
-    let cut=text.lastIndexOf(" ",mid);
-    if(cut<Math.floor(mid*.55))cut=mid;
-    const piece={...block,text:text.slice(0,cut).trim()};
-    const probe=columns.map((c,i)=>i===colIndex?[...target,piece]:c);
-    if(piece.text && blockFits(a,pageIndex,probe,imageIndex)){best={piece,columns:probe};lo=cut+1;}else hi=cut-1;
-  }
-  return best?{ok:true,block:best.piece,columns:best.columns,remaining:{...block,text:text.slice(best.piece.text.length).trim()}}:{ok:false,columns};
-}
-function paginateArticleFast(a){
-  // V0.9.17: deliberately simple magazine flow — one column, complete paragraphs.
-  // We use a conservative character budget only to decide page breaks; we never
-  // discard content and we avoid DOM measurements entirely.
-  const blocks=storyBlocks(a).filter(b=>b&&b.text).map(b=>({...b,text:String(b.text).trim()}));
-  if(!blocks.length)return [{columns:[[]],imageIndex:-1}];
-  const width=window.innerWidth||1200;
-  const target=width<=720?1050:(width<1050?1350:1650);
-  const firstTarget=Math.round(target*.62);
-  const pages=[]; let queue=blocks.slice(); let pageIndex=0; let imageCursor=1; const images=articleImages(a);
-  while(queue.length){
-    const page=[]; let budget=pageIndex===0?firstTarget:target; let imageIndex=-1;
-    if(pageIndex>0 && imageCursor<images.length){ imageIndex=imageCursor++; budget-=260; }
-    while(queue.length){
-      const b=queue[0]; const cost=b.text.length+34;
-      if(!page.length){
-        if(cost<=budget){ page.push(queue.shift()); budget-=cost; continue; }
-        // Keep paragraphs intact whenever possible. Only split a pathological
-        // single block if it cannot fit even on an otherwise empty page.
-        if(b.text.length>Math.max(300,budget-34)){
-          const max=Math.max(320,budget-34);
-          let cut=b.text.lastIndexOf(' ',Math.min(max,b.text.length-1));
-          if(cut<180)cut=Math.min(b.text.length,Math.max(180,max));
-          const piece=b.text.slice(0,cut).trim(); const rest=b.text.slice(cut).trim();
-          page.push({...b,text:piece});
-          queue[0]={...b,text:rest};
-          budget=0; break;
+function nextFrame(){return new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}
+async function createEpubRendition(b, holder){
+  // epub.js 0.3.x is more reliable with archived EPUBs when JSZip is loaded
+  // separately and the archive is opened explicitly as binary data.
+  if(typeof JSZip==='undefined') throw new Error('JSZip no está disponible');
+  const buffer = await b.file.arrayBuffer();
+  currentEpubBook = ePub();
+  await currentEpubBook.open(buffer, 'binary');
+  await currentEpubBook.ready;
+  // Generamos una tabla de posiciones para poder calcular un porcentaje fiable.
+  try{await currentEpubBook.locations.generate(1000)}catch(e){console.warn('No pude generar posiciones EPUB',e)}
+  await nextFrame();
+  const rect=holder.getBoundingClientRect();
+  const width=Math.max(320,Math.floor(rect.width));
+  const height=Math.max(320,Math.floor(rect.height));
+  currentEpubRendition=currentEpubBook.renderTo(holder,{method:'default',width,height,spread:'auto',flow:'paginated',allowScriptedContent:false});
+  currentEpubRendition.on('relocated',async loc=>{
+    if(!currentBook)return;
+    const cfi=loc?.start?.cfi;
+    if(cfi){
+      currentBook.cfi=cfi;
+      // epub.js no siempre rellena loc.start.percentage. La fuente fiable es
+      // la tabla de posiciones que generamos al abrir el EPUB.
+      let pct=NaN;
+      try{
+        if(currentEpubBook?.locations?.length){
+          pct=Number(currentEpubBook.locations.percentageFromCfi(cfi));
         }
-        page.push(queue.shift()); budget=0; break;
+      }catch(e){}
+      if(!Number.isFinite(pct)){
+        const raw=Number(loc?.start?.percentage);
+        if(Number.isFinite(raw)) pct=raw;
       }
-      if(cost<=budget){ page.push(queue.shift()); budget-=cost; }
-      else break;
+      if(Number.isFinite(pct)) currentBook.progress=Math.max(0,Math.min(1,pct));
+      currentBook.updatedAt=Date.now();
+      try{await putBook(currentBook)}catch(e){console.warn('No pude guardar progreso EPUB',e)}
+      updateReaderInfo();
     }
-    if(!page.length && queue.length){ page.push(queue.shift()); }
-    pages.push({columns:[page],imageIndex}); pageIndex++;
-  }
-  return pages;
-}
-
-function buildReaderPages(){
-  const stories=state.selected.length?state.selected:state.articles;
-  const pages=[]; const articleStarts={};
-  if(!stories.length)return {pages,articleStarts};
-  const fullStories=stories.filter(a=>a.contentStatus!=='short');
-  const shortStories=stories.filter(a=>a.contentStatus==='short');
-  const cover=fullStories[0]||stories[0];
-  const tags=articleTags(cover);
-  pages.push(`<section class="page cover-page">${issueCoverImage("reader-cover-image","PORTADA")}<div class="tag">WEEKLY · EDICIÓN #${esc(state.editorial?.issueNumber||"—")}</div><h2>${esc(state.editorial?.headline||storyTitle(cover))}</h2><p class="dek">${esc(issueDateLabel())} · ${stories.length} historias</p><div class="tag-row">${tags.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p class="cover-kicker"><strong>WEEKLY · EDICIÓN CERRADA</strong></p></section>`);
-  const tocItems=stories.map((a,i)=>`<button data-reader-target="${i}"><span>${String(i+1).padStart(2,"0")}</span><strong>${esc(storyTitle(a))}</strong><em>${a.contentStatus==='short'?'NOTICIA BREVE':esc((a.category||"OTROS").toUpperCase())}</em></button>`).join("");
-  pages.push(`<section class="page index-page"><div class="index-kicker">ÍNDICE</div><h2>ESTA EDICIÓN</h2><p class="index-intro">${fullStories.length} historias completas · ${shortStories.length} noticias breves.</p><div class="toc">${tocItems}</div></section>`);
-  pages.push(editorialPageHtml(3));
-  let physical=3; let lastSection=""; let sectionNumber=0;
-  fullStories.forEach(a=>{
-    const i=stories.indexOf(a); a._storyIndex=i;
-    const section=sectionName(a);
-    if(section!==lastSection){ sectionNumber++; pages.push(sectionOpener(a,physical+1)); physical++; lastSection=section; }
-    articleStarts[i]=physical;
-    const parts=paginateArticleFast(a); const total=parts.length;
-    parts.forEach((part,pi)=>{pages.push(articlePageHtmlFromParts(a,pi,total,physical+1,part.columns,part.imageIndex));physical++});
   });
-  if(shortStories.length){
-    pages.push(`<section class="page section-opener short-news-opener"><div class="section-opener-grid"><div class="section-marker">SECCIÓN ${String(sectionNumber+1).padStart(2,"0")}</div><div class="section-name">NOTICIAS BREVES</div><div class="section-rule"></div><div class="section-lead"><span>LECTURAS RÁPIDAS</span><h2>EL RESTO DE LA SEMANA.</h2><p>Stories where the available source only provides a short lead. Read the original for the complete article.</p></div><div class="section-giant">S</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
-    const perPage=5;
-    for(let off=0;off<shortStories.length;off+=perPage){
-      const batch=shortStories.slice(off,off+perPage); const shortPage=physical;
-      batch.forEach(a=>{articleStarts[stories.indexOf(a)]=shortPage});
-      const cards=batch.map((a,n)=>`<article class="short-news-card"><div class="short-news-meta"><span>${esc((a.source||"FUENTE").toUpperCase())}</span><span>${esc((a.published||"").slice(0,10))}</span></div><h3>${esc(storyTitle(a))}</h3><p>${esc(a.description||storyWords(a).slice(0,420))}</p><div class="short-news-foot">${linkButton(a)}</div></article>`).join("");
-      pages.push(`<section class="page short-news-page"><div class="story-running"><span>WEEKLY · NOTICIAS BREVES</span><span>${String(off+1).padStart(2,"0")}–${String(Math.min(off+batch.length,shortStories.length)).padStart(2,"0")}</span></div><div class="short-news-header"><span>NOTICIAS BREVES</span><h2>LECTURAS RÁPIDAS</h2></div><div class="short-news-list">${cards}</div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`); physical++;
-    }
-  }
-  pages.push(`<section class="page closing-page"><div class="closing-mark">W</div><div class="closing-copy"><span>FIN DE LA EDICIÓN</span><h2>NOS VEMOS<br>LA PRÓXIMA SEMANA.</h2><p>WEEKLY reúne las fuentes que elegiste y las convierte en una revista que se puede leer de principio a fin.</p><div class="closing-meta">${stories.length} HISTORIAS · ${state.issueSourceCount||state.sources.length} FUENTES · EDICIÓN ${state.editorial?.issueNumber||"—"}</div></div><div class="page-number">${String(physical+1).padStart(2,"0")}</div></section>`);
-  return {pages,articleStarts};
+  await currentEpubRendition.display(b.cfi||undefined);
+  return currentEpubRendition;
 }
-
-function totalReaderPages(){const model=state.readerModel||buildReaderPages();return Math.max(1,model.pages.length)}
-function totalSpreads(){return Math.max(1,Math.ceil(totalReaderPages()/2))}
-function otherSourcesFor(a){
-  const leadSource=String(a?.source||"").trim().toLowerCase();
-  const explicit=Array.isArray(a?.otherSources)?a.otherSources:[];
-  const idx=state.articles.indexOf(a);
-  const c=state.clusters?.find(x=>Array.isArray(x?.articleIds)&&x.articleIds.includes(idx));
-  const derived=c?c.articleIds.filter(i=>i!==idx).map(i=>state.articles[i]).filter(Boolean).map(o=>({source:o.source,link:o.link,title:o.title})):[];
-  const all=[...explicit,...derived]; const seen=new Set();
-  return all.filter(o=>{const source=String(o?.source||"").trim(); const k=(source+"|"+(o?.link||"")).toLowerCase(); if(!source||source.toLowerCase()===leadSource||seen.has(k))return false; seen.add(k); return true;});
+function updateReaderInfo(){
+  if(!currentBook)return;
+  const pct=Math.round((currentBook.progress||0)*100);
+  $("#readerInfo").textContent=`${(currentBook.type||'pdf').toUpperCase()} · ${currentBook.source==='drive'?'Google Drive':'Dispositivo'} · ${pct}%`;
 }
-function otherSourcesHtml(a){
-  const others=otherSourcesFor(a); if(!others.length)return "";
-  const seen=new Set();
-  const items=others.filter(o=>{const k=o.link||o.id||o.source;if(seen.has(k))return false;seen.add(k);return true;}).slice(0,6);
-  return `<div class="other-sources"><span>OTRAS FUENTES</span><div>${items.map(o=>`<a href="${esc(o.link||'#')}" target="_blank" rel="noopener">${esc(o.source||"FUENTE")}</a>`).join("")}</div></div>`;
-}
-function linkButton(a){return a?.link?`<a class="source-link" href="${esc(a.link)}" target="_blank" rel="noopener">LEER ORIGINAL ↗</a>`:""}
-function renderReader(){
-  sync();
-  if(!state.readerModel){
-    const spread=document.querySelector("#spread");
-    if(spread && !state.readerBuilding){
-      state.readerBuilding=true;
-      spread.classList.add("single-view");
-      spread.innerHTML=`<section class="page loading-page"><div class="loading-mark">W</div><div class="loading-copy"><span>WEEKLY</span><h2>CARGANDO<br>REVISTA…</h2><p>Preparando la edición…</p></div></section>`;
-      requestAnimationFrame(()=>setTimeout(()=>{
-        try{ state.readerModel=buildReaderPages(); }
-        finally{ state.readerBuilding=false; renderReader(); }
-      },0));
+async function openBook(id,books){
+  const b=(books||await getAllBooks()).find(x=>x.id===id);if(!b)return;
+  // Registrar que el usuario abrió este libro para que aparezca en Lecturas actuales.
+  b.lastOpenedAt=Date.now();
+  b.updatedAt=b.lastOpenedAt;
+  try{await putBook(b)}catch(e){console.warn('No pude registrar la lectura actual',e)}
+  currentBook=b;
+  $("#readerTitle").textContent=b.title;
+  updateReaderInfo();
+  $("#readerBody").innerHTML='';
+  $("#reader").classList.remove('hidden');
+  if(b.type==='pdf'){
+    const e=document.createElement('embed');
+    e.src=fileUrl(b.file);e.type='application/pdf';
+    $("#readerBody").appendChild(e);
+  }else{
+    if(typeof ePub!=='function'){
+      $("#readerBody").innerHTML='<div class="epub-reader epub-error"><h3>No se pudo cargar el motor EPUB</h3><p>Revisa tu conexión a internet y vuelve a abrir la app.</p><button class="secondary" type="button" onclick="closeReader()">Cerrar</button></div>';
       return;
     }
+    const holder=document.createElement('div');
+    holder.className='epub-reader';
+    $("#readerBody").appendChild(holder);
+    try{
+      await nextFrame();
+      await createEpubRendition(b,holder);
+    }catch(e){
+      console.error('EPUB:',e);
+      const detail=esc(e?.message||String(e)||'Error desconocido');
+      $("#readerBody").innerHTML=`<div class="epub-reader epub-error"><h3>No pude abrir este EPUB</h3><p>El archivo está bien guardado en la biblioteca, pero el lector no pudo interpretar su contenido.</p><p class="book-meta">Detalle técnico: ${detail}</p><button class="secondary" type="button" onclick="closeReader()">Cerrar</button></div>`;
+    }
   }
-  const model=state.readerModel||buildReaderPages(); state.readerModel=model; if(Number.isInteger(state._readerTargetStory)){ const t=model.articleStarts[state._readerTargetStory]; if(typeof t==="number"){ state.readerPage=state.readerView==="spread"?Math.floor(t/2)*2:t; } delete state._readerTargetStory; } const pages=model.pages; if(!pages.length)return;
-  const total=pages.length;
-  state.readerPage=Math.max(0,Math.min(state.readerPage,total-1));
-  const spread=document.querySelector("#spread");
-  if(state.readerView==="spread") {
-    const spreadStart=Math.floor(state.readerPage/2)*2;
-    state.readerPage=spreadStart;
-    $("#reader-page").textContent=`${String(spreadStart+1).padStart(2,"0")}–${String(Math.min(spreadStart+2,total)).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-    $("#reader-status").textContent=`DOBLE PÁGINA ${String(Math.floor(spreadStart/2)+1).padStart(2,"0")} / ${String(Math.ceil(total/2)).padStart(2,"0")}`;
-    const right=pages[spreadStart+1]||`<section class="page blank-page"><span>WEEKLY</span></section>`;
-    spread.classList.remove("single-view"); spread.classList.add("spread-view");
-    spread.innerHTML=`${pages[spreadStart]}${right}`;
-  } else {
-    $("#reader-page").textContent=`${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-    $("#reader-status").textContent=`PÁGINA ${String(state.readerPage+1).padStart(2,"0")} / ${String(total).padStart(2,"0")}`;
-    spread.classList.remove("spread-view"); spread.classList.add("single-view");
-    spread.innerHTML=pages[state.readerPage];
-  }
-  $("#spread").querySelectorAll("[data-reader-target]").forEach(b=>b.onclick=()=>{const idx=Number(b.dataset.readerTarget);const target=model.articleStarts[idx]??0;state.readerPage=state.readerView==="spread"?Math.floor(target/2)*2:target;renderReader()});
-  updateReaderViewButtons();
 }
-function updateReaderViewButtons(){
-  document.querySelectorAll("[data-reader-view]").forEach(b=>b.classList.toggle("active",b.dataset.readerView===state.readerView));
-}
-function setReaderView(view){
-  state.readerView=view==="spread"?"spread":"single";
-  if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;
-  renderReader();
-}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function setLoading(show,title='',detail='',cur=0,total=0,done=false){const p=$("#loadingPanel");if(!show){p.classList.add('hidden');return}p.classList.remove('hidden');$("#loadingTitle").textContent=title;$("#loadingDetail").textContent=detail;const t=Math.max(0,+total||0),c=Math.max(0,Math.min(+cur||0,t||+cur||0)),pct=done?100:t?Math.round(c/t*100):0;$("#loadingBar").style.width=pct+'%';$("#loadingCount").textContent=t?`${c} / ${t}`:'Preparando…';$("#loadingPercent").textContent=pct+'%';$("#loadingDone").classList.toggle('hidden',!done);$("#loadingHint").classList.toggle('hidden',done)}
+async function addFiles(fileList){const files=[...fileList].filter(f=>/\.(pdf|epub)$/i.test(f.name));if(!files.length){toast('No encontré PDF o EPUB en la selección.');return}$("#addMenu").classList.add('hidden');setLoading(true,'Añadiendo libros…','Preparando la importación',0,files.length);await wait(250);let added=0,skipped=0;for(const f of files){const lower=f.name.toLowerCase(),relativePath=f.webkitRelativePath||f.name,folders=relativePath.split('/').slice(0,-1),tags=[...new Set(folders.map(normTag).filter(Boolean))];try{let coverData=null;if(lower.endsWith('.pdf')){setLoading(true,'Preparando portada…',`Generando miniatura: ${f.name}`,added,files.length);coverData=await generatePdfCover(f)}await putBook({id:makeId(),title:titleFromFilename(f.name),fileName:f.name,type:lower.endsWith('.epub')?'epub':'pdf',source:'local',file:f,relativePath,progress:0,cfi:null,tags,collections:[],favorite:false,author:'',coverData,updatedAt:Date.now()});added++;setLoading(true,'Añadiendo libros…',`Procesando: ${f.name}`,added,files.length);await wait(45)}catch(e){console.error(e);skipped++;setLoading(true,'Añadiendo libros…',`No se pudo añadir: ${f.name}`,added,files.length);await wait(120)}}renderLibrary(await getAllBooks());setLoading(true,'✓ Importación completada',`${added} añadido${added===1?'':'s'}${skipped?` · ${skipped} con problemas`:''}`,files.length,files.length,true);await wait(1600);setLoading(false);toast(skipped?`${added} libros añadidos · ${skipped} con problemas.`:`${added} libro${added===1?'':'s'} añadido${added===1?'':'s'} a tu biblioteca.`)}
+$("#addBtn").onclick=()=>$("#addMenu").classList.toggle('hidden');$("#addFilesBtn").onclick=()=>{$("#addMenu").classList.add('hidden');$("#fileInput").click()};$("#addFolderBtn").onclick=()=>{$("#addMenu").classList.add('hidden');$("#folderInput").click()};$("#emptyAddBtn").onclick=()=>$("#fileInput").click();$("#fileInput").onchange=async e=>{await addFiles(e.target.files);e.target.value=''};$("#folderInput").onchange=async e=>{await addFiles(e.target.files);e.target.value=''};
+document.addEventListener('click',e=>{if(!e.target.closest('.add-wrap'))$("#addMenu").classList.add('hidden')});
+$("#showTagsBtn").onclick=async()=>{const b=$("#tagBar");if(b.classList.contains('hidden'))renderTagBar(await getAllBooks());else{activeTag=null;renderLibrary(await getAllBooks())}};
+$("#sortSelect").onchange=async e=>{sortMode=e.target.value;renderLibrary(await getAllBooks())};
+$("#searchInput").oninput=async()=>renderLibrary(await getAllBooks());
+$("#filterPills").querySelectorAll('.filter-pill').forEach(b=>b.onclick=async()=>{activeFilter=b.dataset.filter;$("#filterPills").querySelectorAll('.filter-pill').forEach(x=>x.classList.toggle('active',x===b));renderLibrary(await getAllBooks())});
+$("#gridViewBtn").onclick=()=>{viewMode='grid';$("#gridViewBtn").classList.add('active');$("#listViewBtn").classList.remove('active');renderLibrary(lastBooks)};
+$("#listViewBtn").onclick=()=>{viewMode='list';$("#listViewBtn").classList.add('active');$("#gridViewBtn").classList.remove('active');renderLibrary(lastBooks)};
+let lastBooks=[];const originalRender=renderLibrary;renderLibrary=function(all){lastBooks=all;originalRender(all)};
+$("#modalClose").onclick=closeBookDetails;$("#bookModal").onclick=e=>{if(e.target===$("#bookModal"))closeBookDetails()};$("#saveBook").onclick=saveBookDetails;$("#favoriteBook").onclick=async()=>{if(!modalBook)return;modalBook.favorite=!modalBook.favorite;modalBook.updatedAt=Date.now();await putBook(modalBook);updateFavoriteButton();renderLibrary(await getAllBooks());toast(modalBook.favorite?'Añadido a favoritos.':'Quitado de favoritos.')};$("#addTag").onclick=()=>{const i=$("#newTag"),t=normTag(i.value);if(t&&!modalTags.includes(t)){modalTags.push(t);renderModalTags()}i.value='';i.focus()};$("#newTag").onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$("#addTag").click()}};
+$("#createCollection").onclick=()=>{const i=$("#newCollection"),name=collectionLabel(i.value);if(!name){i.focus();return}if(collections.some(c=>c.toLowerCase()===name.toLowerCase())){toast("Esa colección ya existe.");i.select();return}collections.push(name);collections.sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'}));saveCollections();if(modalBook){modalBook.collections=[...new Set([...(modalBook.collections||[]),name])]}i.value='';renderModalCollections();renderLibrary(lastBooks);toast(`Colección “${name}” creada y asignada.`)};
+$("#newCollection").onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();$("#createCollection").click()}};
+$("#showCollectionsBtn").onclick=async()=>{const b=$("#collectionBar");if(b.classList.contains('hidden'))renderCollectionBar(await getAllBooks());else{activeCollection=null;renderLibrary(await getAllBooks())}};
+document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+$("#homeLibraryBtn").onclick=()=>showView("library");
+$("#newCollectionPageBtn").onclick=()=>createCollectionPrompt();
+$("#newCollectionEmptyBtn").onclick=()=>createCollectionPrompt();
+$("#readBook").onclick=async()=>{if(!modalBook)return;const id=modalBook.id;closeBookDetails();await openBook(id,await getAllBooks())};$("#closeReaderBtn").onclick=closeReader;$("#saveProgressBtn").onclick=async()=>{if(!currentBook)return;if(currentEpubRendition){const loc=currentEpubRendition.currentLocation(),cfi=loc?.start?.cfi;if(cfi){currentBook.cfi=cfi;let pct=Number(loc?.start?.percentage);if(!Number.isFinite(pct)){try{pct=Number(currentEpubBook.locations.percentageFromCfi(cfi))}catch(e){}}if(Number.isFinite(pct))currentBook.progress=Math.max(0,Math.min(1,pct));currentBook.updatedAt=Date.now();await putBook(currentBook)}}toast('Posición guardada.')};
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!$("#bookModal").classList.contains('hidden'))closeBookDetails();else if(!$("#reader").classList.contains('hidden'))closeReader()});
+(async()=>{try{loadCollections();await openDB();renderLibrary(await getAllBooks())}catch(e){console.error(e);toast('No se pudo iniciar la biblioteca en este navegador.')}})();
 
-function formatArchiveDate(start,end){
-  const fmt=(v)=>{if(!v)return "";const d=new Date(String(v).length<=10?`${v}T00:00:00Z`:v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric",timeZone:"UTC"}).toUpperCase()};
-  const a=fmt(start),b=fmt(end);return a&&b?`${a} → ${b}`:(a||b||"EDICIÓN SEMANAL");
-}
-function renderArchive(){
-  const box=$("#archive-list"); if(!box)return; box.innerHTML="";
-  const issues=Array.isArray(state.archiveIssues)?state.archiveIssues:[];
-  if(!issues.length){box.innerHTML='<div class="archive-empty">Todavía no hay ediciones archivadas.</div>';return;}
-  issues.slice().sort((a,b)=>Number(b.number||0)-Number(a.number||0)).forEach(issue=>{
-    const card=document.createElement("article");
-    const cover=issue.cover||"assets/weekly-cover-fallback.svg";
-    const isCurrent=Number(issue.number)===Number(state.editorial?.issueNumber);
-    const file=issue.file||`data/issues/issue-${encodeURIComponent(issue.number)}.json`;
-    const pdf=issue.pdf||`data/issues/issue-${encodeURIComponent(issue.number)}.pdf`;
-    const canRead=Boolean(issue.file)||isCurrent;
-    card.innerHTML=`<div class="archive-cover archive-cover-image"><img src="${esc(cover)}" alt="Portada WEEKLY #${esc(issue.number)}"><b>WEEKLY<br>#${esc(issue.number)}</b></div><small>${esc(formatArchiveDate(issue.start,issue.end))} · ${esc(issue.stories||0)} HISTORIAS</small><div class="archive-actions">${canRead?'<button class="primary archive-read">LEER</button>':''}${issue.pdf?`<a class="archive-pdf" href="${esc(pdf)}" download>PDF ↓</a>`:''}</div>`;
-    if(canRead) card.querySelector('.archive-read').onclick=()=>openArchivedIssue(issue,file,isCurrent);
-    box.appendChild(card);
-  });
-}
-async function openArchivedIssue(issue,file,isCurrent=false){
-  if(isCurrent && !issue.file){
-    state.archiveMode=false; state.activeArchiveNumber=null; show("magazine"); renderMagazine(); return;
-  }
-  try{
-    const r=await fetch(`${file}?ts=${Date.now()}`);
-    if(!r.ok)throw new Error(`HTTP ${r.status}`);
-    const snap=await r.json();
-    if(!snap?.editorial?.locked)throw new Error("La copia archivada no está cerrada.");
-    state.archiveMode=true;
-    state.activeArchiveNumber=snap.issueNumber;
-    state.editorial=snap.editorial;
-    state.articles=Array.isArray(snap.articles)?snap.articles:[];
-    state.clusters=Array.isArray(snap.clusters)?snap.clusters:[];
-    state.selected_ids=snap.selected_ids||snap.editorial.selected_ids||[];
-    state.selected=state.selected_ids.map(i=>state.articles[i]).filter(Boolean);
-    state.issueSourceCount=Number(snap.sourceCount||0);
-    state.readerPage=0; state.readerModel=null; state.readerView="single";
-    show("magazine"); renderMagazine();
-  }catch(err){console.error(err);alert("No pude abrir esta edición archivada.\n\n"+err.message)}
-}
-function restoreCurrentIssue(){
-  state.archiveMode=false; state.activeArchiveNumber=null; state.readerModel=null;
-  loadArticles().then(()=>{state.issueSourceCount=state.sources.length;renderAll()});
-}
 
-async function loadArchive(){
-  try{const r=await fetch("data/issues/index.json?ts="+Date.now());state.archiveIssues=r.ok?((await r.json()).issues||[]):[];}
-  catch(err){state.archiveIssues=[];console.warn("No se pudo cargar el archivo de ediciones",err)}
-}
-async function loadArticles(){try{const[a,e]=await Promise.all([fetch("data/articles.json?ts="+Date.now()),fetch("data/editorial.json?ts="+Date.now())]);const ad=await a.json();state.articles=ad.articles||[];state.clusters=ad.clusters||[];state.editorial=e.ok?await e.json():null}catch(err){console.warn(err)}state.selected=[];state.readerModel=null;state.articles.forEach(a=>{if(!Array.isArray(a.tags)||!a.tags.length)a.tags=deriveTags(a);if(!a.contentStatus){const blocks=Array.isArray(a.contentBlocks)?a.contentBlocks:[];const chars=blocks.reduce((n,b)=>n+String(b?.text||"").length,0);a.contentStatus=(chars>=700&&blocks.length>=2)?"full":"short";}});if(Array.isArray(state.editorial?.selected_ids)&&state.editorial.selected_ids.length){state.selected=state.editorial.selected_ids.map(i=>state.articles[i]).filter(Boolean);state.shuffled=false;}try{const saved=JSON.parse(localStorage.getItem("weekly.selectedTags")||"[]");state.selectedTags=new Set(saved.map(x=>String(x).toUpperCase()))}catch(e){}
-try{const savedCustom=JSON.parse(localStorage.getItem("weekly.customTags")||"[]");state.customTags=new Set(savedCustom.map(x=>String(x).toUpperCase()))}catch(e){}
-state.archiveMode=false; state.activeArchiveNumber=null; state.issueSourceCount=state.sources.length;}
-function updateDash(){$("#source-stat").textContent=`${state.sources.filter(s=>s.enabled!==false).length} FUENTES`;$(`#found-stat`).textContent=`${state.articles.filter(isUsableArticle).length} STORIES`;$(`#selected-stat`).textContent=`${state.selected.length} SELECTED`}
-async function load(){await Promise.all([loadArticles(),refreshSources(),loadArchive()]);state.issueSourceCount=state.sources.length;renderAll()}
-function renderAll(){renderSources();renderTags();renderArticles();renderMagazine();renderArchive();updateDash()}
-document.querySelectorAll("[data-reader-view]").forEach(b=>b.onclick=()=>setReaderView(b.dataset.readerView));document.querySelectorAll(".nav-btn").forEach(b=>b.onclick=()=>{if(b.dataset.screen==="magazine"&&state.archiveMode)restoreCurrentIssue();else show(b.dataset.screen)});document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));const topicInput=$("#custom-topic-input");const addTopicBtn=$("#add-custom-topic");if(addTopicBtn&&topicInput){const submitTopic=()=>{if(addCustomTopic(topicInput.value))topicInput.value=""};addTopicBtn.onclick=submitTopic;topicInput.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();submitTopic()}})}document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>addCustomTopic(b.dataset.topic));$("#generate").onclick=()=>alert("Esta edición ya fue cerrada. WEEKLY conserva el número semanal tal como fue generado.");$("#reshuffle").onclick=()=>alert("Esta edición ya fue cerrada. La selección semanal no se vuelve a barajar.");$("#back-to-articles").onclick=()=>{if(state.archiveMode){show("archive");renderArchive()}else show("articles")};$("#open-reader").onclick=()=>{state.readerPage=0;show("reader");requestAnimationFrame(()=>renderReader())};$("#download-pdf").onclick=downloadIssuePdf;$("#download-pdf-reader").onclick=downloadIssuePdf;$("#close-reader").onclick=()=>{if(readerEl.classList.contains("reader-fullscreen"))exitReaderFullscreen();if(state.archiveMode){state.readerModel=null;show("archive");renderArchive();}else show("magazine")};$("#prev-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage-step+total)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#next-page").onclick=()=>{const total=totalReaderPages();const step=state.readerView==="spread"?2:1;state.readerPage=(state.readerPage+step)%total;if(state.readerView==="spread")state.readerPage=Math.floor(state.readerPage/2)*2;renderReader()};$("#add-source").onclick=addSource;$("#refresh-sources").onclick=refreshSources;const readerEl=$("#reader");
-const fullscreenBtn=$("#fullscreen-reader");
-async function enterReaderFullscreen(){
-  readerEl.classList.add("reader-fullscreen");
-  try{if(!document.fullscreenElement && readerEl.requestFullscreen) await readerEl.requestFullscreen();}catch(err){console.warn("Fullscreen API unavailable",err)}
-  fullscreenBtn.textContent="EXIT FULLSCREEN ✕";
-}
-async function exitReaderFullscreen(){
-  try{if(document.fullscreenElement && document.exitFullscreen) await document.exitFullscreen();}catch(err){console.warn("Could not exit fullscreen",err)}
-  readerEl.classList.remove("reader-fullscreen");
-  fullscreenBtn.textContent="FULLSCREEN ⛶";
-}
-fullscreenBtn.onclick=()=>readerEl.classList.contains("reader-fullscreen")?exitReaderFullscreen():enterReaderFullscreen();
-document.addEventListener("fullscreenchange",()=>{
-  const active=!!document.fullscreenElement;
-  readerEl.classList.toggle("reader-fullscreen",active || readerEl.classList.contains("reader-fullscreen"));
-  if(!active && !document.fullscreenElement){readerEl.classList.remove("reader-fullscreen");fullscreenBtn.textContent="FULLSCREEN ⛶";}
+// Controles EPUB explícitos: además de los gestos/teclas del lector, permiten avanzar
+// en tablet y PC sin depender del comportamiento del iframe.
+const prevPageBtn=$("#prevPageBtn"), nextPageBtn=$("#nextPageBtn");
+if(prevPageBtn) prevPageBtn.onclick=async()=>{if(currentEpubRendition){try{await currentEpubRendition.prev()}catch(e){console.warn(e)}}};
+if(nextPageBtn) nextPageBtn.onclick=async()=>{if(currentEpubRendition){try{await currentEpubRendition.next()}catch(e){console.warn(e)}}};
+document.addEventListener('keydown',async e=>{
+  if($("#reader").classList.contains('hidden')||!currentEpubRendition)return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'){e.preventDefault();try{await currentEpubRendition.next()}catch(err){console.warn(err)}}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();try{await currentEpubRendition.prev()}catch(err){console.warn(err)}}
 });
-document.addEventListener("keydown",e=>{if(!$("#reader").classList.contains("active"))return;if(e.key==="Escape" && readerEl.classList.contains("reader-fullscreen")){exitReaderFullscreen();return;}if(e.key==="ArrowLeft")$("#prev-page").click();if(e.key==="ArrowRight")$("#next-page").click()});const d=new Date();$("#today").textContent=d.toLocaleDateString("es-CL",{day:"2-digit",month:"short",year:"numeric"}).toUpperCase();$("#issue-date").textContent=$("#today").textContent;load();

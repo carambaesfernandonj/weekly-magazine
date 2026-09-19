@@ -1,8 +1,7 @@
-# WEEKLY v0.9.21 — True Archive
+# La Pulenta Biblioteca v0.8.2.1
 
-- Archived issues are snapshotted to `data/issues/issue-N.json`.
-- The workflow snapshots the previous locked issue before fetching new RSS data, then snapshots the new issue after editorial generation.
-- Archive entries with a snapshot can be opened online with their own editorial, stories, clusters and cover.
-- PDFs remain downloadable per issue.
-- Current issue remains locked; opening an archived issue does not replace the current data permanently.
-- Use the Archive screen to read any archived issue that has a snapshot.
+Corrección de v0.8.2:
+- Inicio ahora muestra hasta 20 lecturas actuales según el último libro abierto, incluso si recién comenzaron y llevan 0%.
+- Se registra `lastOpenedAt` sin alterar los libros existentes.
+- La barra de progreso de la ficha queda forzada a mostrarse siempre, incluso en 0%.
+- Se mantiene el lector PDF/EPUB de v0.7.2 sin cambios.
