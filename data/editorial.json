@@ -1,224 +1,303 @@
 {
-  "issueNumber": 38,
-  "issueWindow": {
-    "start": "2026-09-13",
-    "end": "2026-09-20",
-    "timezone": "UTC",
-    "endExclusive": true
-  },
-  "locked": true,
-  "status": "rss",
-  "model": "zero-cost",
-  "headline": "UNA SEMANA. UN NÚMERO.",
-  "editorial": "WEEKLY existe porque internet produce demasiadas cosas interesantes como para intentar leerlas todas y demasiadas cosas absurdas como para dejar que el algoritmo decida por nosotros.\n\nEsta revista junta las fuentes que elegiste, encuentra historias que merecen atención y las convierte en un número que se puede leer de principio a fin. No pretende ser neutral sobre lo que resulta interesante: pretende ser curiosa.\n\nAquí conviven videojuegos, cine, animación, tecnología, retro y todas esas cosas raras que terminan apareciendo cuando uno sigue un enlace porque decía que algo era prácticamente magia.\n\nWEEKLY no quiere reemplazar a las fuentes originales. Quiere ser el lugar desde donde descubres qué vale la pena abrir. Cuando una historia está completa, la leemos aquí. Cuando una fuente solo permite ofrecer un resumen, te mandamos a leerla donde corresponde.\n\nUna semana. Un número. Un montón de cosas interesantes.\n\nNos vemos la próxima semana.",
-  "editorialSource": "manifesto",
-  "coverImage": "assets/weekly-cover-fallback.svg",
-  "coverSource": "fallback",
-  "coverPrompt": "Editorial magazine cover for WEEKLY issue #38. Visual language inspired by glossy videogame, film and technology magazines from the early 2000s: bold Y2K editorial design, dramatic central visual, slightly chaotic but deliberate cover composition, glossy print feel, strong shapes, energetic lighting, subtle retro-futurist details. The cover should feel like a real magazine, not a generic poster. No readable words, no fake logos, no watermarks, no UI, no collage of unrelated tiny objects. Build one coherent visual metaphor from these weekly themes and stories: [{\"source\": \"Deadline\", \"title\": \"Ed Sheeran Met With Pro-Palestine Protest Outside Philadelphia Concert: “F*ck Your Concert, F*ck Your Fans. Palestine Is Our Demand!”\", \"summary\": \"Ed Sheeran’s return to the Loop Tour drew protesters to the City of Brotherly Love amid ongoing fallout. After the 4x Grammy winner dropped Macklemore from his tour over pressure around the “Hind’s Hall” artist’s Palestinian onstage remarks, Sheeran’s Saturday stop at Philadelphia’s Lincoln Financial Field was met with pro-Palestine protesters. “The fact of the […]\"}, {\"source\": \"RETROMASH\", \"title\": \"The Best Windows 95 Games You Can Still Play Today\", \"summary\": \"The launch of Windows 95 sparked a new era for PC gaming. It moved away from the DOS command prompt and embraced a more user-friendly, mouse-driven interface. This change laid the groundwork for the modern gaming experiences we enjoy today. There are numerous PC games... The post The Best Windows 95 Games You Can Still Play Today first appeared on Retromash .\"}, {\"source\": \"RETROMASH\", \"title\": \"As Sony Says, Are CDs Really Going Out of Style?\", \"summary\": \"When Sony announced plans to discontinue physical disc production for PlayStation games, the reaction was predictable: some players saw it as another step toward the future, while others saw it as another thing they would lose. Yet there is an odd part to the backlash.... The post As Sony Says, Are CDs Really Going Out of Style? first appeared on Retromash .\"}, {\"source\": \"Nintenderos\", \"title\": \"Hoy vuelve a estar disponible el evento de saltar a la cuerda de Bulbasaur en Pokémon Pokopia\", \"summary\": \"Ya está de vuelta este evento en Pokémon Pokopia, que ya ha llegado Nintendo Switch 2. Si queréis conocer todos los códigos disponibles para Pokemon Pokopia, podéis consultar nuestra lista actualizada de todos los códigos que están disponibles. Ahora se ha confirmado el regreso de este evento lanzado en abril: Evento: Concurso de Cuerda de Bulbasaur. Fechas: del 20 de septiembre […]\"}, {\"source\": \"Hollywood Reporter\", \"title\": \"Tom Cruise Reveals How He Cut ‘Digger’ Transformation Time From Six Hours to Under One\", \"summary\": \"Alejandro G. Iñárritu’s dark comedy with an unrecognizable Cruise as the lead opens in theaters Oct. 2.\"}, {\"source\": \"IGN\", \"title\": \"Big Bang Theory Spinoff Features Surprise Live-Action Cameos from The Flash and Mr. Freeze\", \"summary\": \"Big Bang Theory spinoff Stuart Fails to Save the Universe featured a surprise fight between a live-action Flash and Mr. Freeze, but the show's creators originally wanted a different DC hero cameo.\"}, {\"source\": \"Hollywood Reporter\", \"title\": \"Naomi Watts Dedicates Donostia Award to Her ‘Mulholland Drive’ Director David Lynch: “I Miss You”\", \"summary\": \"At the San Sebastian Film Festival Saturday night, Watts also shouted out her 'The Impossible' co-star Tom Holland and explained why she was grateful to be getting opportunities \\\"as a woman of my age.\\\"\"}, {\"source\": \"Deadline\", \"title\": \"Melissa Barrera Says It’s “So Beautiful” To See Support For Macklemore Speaking Up On Palestine: “I Didn’t Get That When It Happened To Me”\", \"summary\": \"Nearly three years after she was fired from the Scream franchise for speaking up in support of Palestinians, Melissa Barrera sees the tides changing. The actress recently expressed how “emotional” it made her to see Fennias and Ed Sheeran’s other openers dropping out of his Loop Tour in support of Macklemore, who was dropped from […]\"}, {\"source\": \"Tech Crunch\", \"title\": \"Flock reportedly tries to shrink workforce with employee buyouts\", \"summary\": \"Without buyouts, Flock would \\\"almost certainly\\\" need to lay off staff.\"}, {\"source\": \"Tech Crunch\", \"title\": \"Trump says it’s time to rebrand AI with a new name — and he’s also creating an AI Force\", \"summary\": \"Trump claimed, without evidence, that the AI backlash is a Democratic hoax.\"}, {\"source\": \"Nintenderos\", \"title\": \"Norma Editorial detalla el estreno del cofre especial de The Legend of Zelda con los cinco tomos de la Perfect Edition por su 40º aniversario\", \"summary\": \"¡Parece que hay más contenidos para los fans de Zelda! Nos llegan más anuncios por el 40º aniversario de The Legend of Zelda, ya que Norma Editorial lanzará en diciembre de 2026 The Legend of Zelda Perfect Edition Box, un cofre de edición limitada que reunirá los cinco volúmenes de la Perfect Edition del manga […]\"}, {\"source\": \"Vida Extra\", \"title\": \"Tal vez no lo sepas, pero Lucia Caminos de GTA VI hizo una fugaz aparición en el UCM gracias a Netflix\", \"summary\": \"Aunque Rockstar no ha hecho oficialmente quién da vida a los protagonistas de GTA VI , el público se encargó hace años de intentar desentrañar quiénes iban a ser los protagonistas de la próxima entrega de la franquicia. Para Lucia Caminos, la elegida fue Manni L. Perez , una actriz que, si bien no ha tenido papeles enormemente famosos, sí que tuvo ciertos pinitos en algunas series o películas. Uno\"}, {\"source\": \"IGN\", \"title\": \"We Ranked The 10 Best Eevee Pokémon Cards of All Time\", \"summary\": \"We've ranked the 10 best Eevee Pokémon cards of all time, from priceless Japanese trophy promos to iconic vintage classics and modern chase cards.\"}, {\"source\": \"HobbyConsolas\", \"title\": \"7 grandes AAA de PS5 en oferta en físico y digital que están a precio de derribo por tiempo limitado\", \"summary\": \"Si estás buscando nuevos AAA de oferta y con un buen descuento para PlayStation 5, echa un vistazo a estas rebajas de juegos tanto en formato físico como en digital en PS Store.\"}, {\"source\": \"HobbyConsolas\", \"title\": \"Zachary Levi pasa el testigo de Flynn Rider con miedo por el live action de Enredados: “No siempre funciona”\", \"summary\": \"Zachary Levi tiene sus dudas sobre la versión en imagen real de Enredados, pero le desea lo mejor al nuevo Flynn Rider y espera que la película esté a la altura de la original.\"}, {\"source\": \"The Verge\", \"title\": \"Meta’s Muse is creepy, but maybe not for the reasons you think\", \"summary\": \"Meta's Muse is apparently an effective AI assistant, but one that's a little creepy. Part of that is because of its new Mac app, which can access Messages, Calendar, and Notes. But for all its smarts, Muse doesn't actually know how to describe itself. Jason Aten, a contributing editor at Inc Magazine, posted on Threads […]\"}]",
-  "coverStory": 0,
+  "cover_story": 0,
   "selected_ids": [
     0,
     1,
+    2,
     3,
+    4,
     5,
-    6,
     8,
     9,
     10,
     11,
-    14,
+    12,
     15,
+    16,
     21,
-    30,
-    31,
-    33,
-    34,
-    45,
-    56,
-    61,
-    69,
-    72,
-    77,
-    128,
-    136
+    26,
+    27
   ],
   "stories": [
     {
       "article_id": 0,
-      "headline": "Ed Sheeran Met With Pro-Palestine Protest Outside Philadelphia Concert: “F*ck Your Concert, F*ck Your Fans. Palestine Is Our Demand!”",
-      "dek": "Ed Sheeran’s return to the Loop Tour drew protesters to the City of Brotherly Love amid ongoing fallout. After the 4x Grammy winner dropped Macklemore from his tour over pressure around the “Hind’s Hall” artist’s Palestinian onstage remarks, Sheeran’s Saturday stop at Philadelphia’s Lincoln Financial Field was met with pro-Palestine protesters. “The fact of the […]",
-      "summary": "Ed Sheeran’s return to the Loop Tour drew protesters to the City of Brotherly Love amid ongoing fallout. After the 4x Grammy winner dropped Macklemore from his tour over pressure around the “Hind’s Hall” artist’s Palestinian onstage remarks, Sheeran’s Saturday stop at Philadelphia’s Lincoln Financial Field was met with pro-Palestine protesters. “The fact of the […]",
-      "source": "Deadline"
+      "headline": "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
+      "dek": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
+      "summary": "There are some arcade games that simply don’t need much introduction. ARKANOID is one of them. Originally released by Taito in 1986, the paddle-and-ball classic became one of the defining block-breaking games of the arcade era. Its 1987 sequel, ARKANOID: REVENGE OF DOH, took the basic formula and expanded it with new enemies, stage designs, […] The post HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S",
+        "H2: Arcade Archives 2 Features"
+      ],
+      "headings": {
+        "h1": [
+          "HAMSTER Corporation | “Arcade Archives ARKANOID REVENGE OF DOH” Releases Sep 3 on Switch, Switch 2, PS4/5, Xbox Series X|S"
+        ],
+        "h2": [
+          "Arcade Archives 2 Features"
+        ]
+      }
     },
     {
       "article_id": 1,
-      "headline": "The Best Windows 95 Games You Can Still Play Today",
-      "dek": "The launch of Windows 95 sparked a new era for PC gaming. It moved away from the DOS command prompt and embraced a more user-friendly, mouse-driven interface. This change laid the groundwork for the modern gaming experiences we enjoy today. There are numerous PC games... The post The Best Windows 95 Games You Can Still Play Today first appeared on Retromash .",
-      "summary": "The launch of Windows 95 sparked a new era for PC gaming. It moved away from the DOS command prompt and embraced a more user-friendly, mouse-driven interface. This change laid the groundwork for the modern gaming experiences we enjoy today. There are numerous PC games... The post The Best Windows 95 Games You Can Still Play Today first appeared on Retromash .",
-      "source": "RETROMASH"
+      "headline": "Atari and Vice Beer Introduce New Beer Collection",
+      "dek": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
+      "summary": "ATARI AND VICE BEER INTRODUCE NEW BEER COLLECTION The four-pack of Atari-themed beer is available now. September 5, 2026 – Atari and Vice Beer are celebrating a new licensing collaboration during PAX West in Seattle. Vancouver, Washington-based Vice Beer has released a four-pack of Atari-themed 16 oz. beers, including One-Button Joystick WC IPA, Gemstone Sour, […] The post Atari and Vice Beer Introduce New Beer Collection appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Atari and Vice Beer Introduce New Beer Collection"
+      ],
+      "headings": {
+        "h1": [
+          "Atari and Vice Beer Introduce New Beer Collection"
+        ],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 2,
+      "headline": "Prácticamente magia o El diablo viste de Prada muestran que la nostalgia es el más efectivo de los engaños",
+      "dek": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "summary": "La nostalgia nos hace creer que queremos pagar para ver segundas partes de películas que nos gustaron en su día, pero al salir del cine nos encontramos con una oscura realidad.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 3,
-      "headline": "As Sony Says, Are CDs Really Going Out of Style?",
-      "dek": "When Sony announced plans to discontinue physical disc production for PlayStation games, the reaction was predictable: some players saw it as another step toward the future, while others saw it as another thing they would lose. Yet there is an odd part to the backlash.... The post As Sony Says, Are CDs Really Going Out of Style? first appeared on Retromash .",
-      "summary": "When Sony announced plans to discontinue physical disc production for PlayStation games, the reaction was predictable: some players saw it as another step toward the future, while others saw it as another thing they would lose. Yet there is an odd part to the backlash.... The post As Sony Says, Are CDs Really Going Out of Style? first appeared on Retromash .",
-      "source": "RETROMASH"
+      "headline": "Streets of Rage Micro Player Pro Licensed By SEGA",
+      "dek": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "summary": "lease note that DGUNL-7162 Streets of Rage Micro Player Pro includes 2 games – Streets of Rage and Streets of Rage 2. There has been some confusion as the number of games has changed since it was first announced. 🎮 Officially licensed SEGA titles. Take on the roles of vigilante heroes battling through waves of […] The post Streets of Rage Micro Player Pro Licensed By SEGA appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Streets of Rage Micro Player Pro Licensed By SEGA"
+      ],
+      "headings": {
+        "h1": [
+          "Streets of Rage Micro Player Pro Licensed By SEGA"
+        ],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 4,
+      "headline": "An Emulation Mod Kit For The LEGO PlayStation Is In The Works",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! A couple of days ago, Sony & LEGO announced the PlayStation set , featuring 1,911 bricks, releasing on October 4th and priced at £139.99/$179.99.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 5,
-      "headline": "Hoy vuelve a estar disponible el evento de saltar a la cuerda de Bulbasaur en Pokémon Pokopia",
-      "dek": "Ya está de vuelta este evento en Pokémon Pokopia, que ya ha llegado Nintendo Switch 2. Si queréis conocer todos los códigos disponibles para Pokemon Pokopia, podéis consultar nuestra lista actualizada de todos los códigos que están disponibles. Ahora se ha confirmado el regreso de este evento lanzado en abril: Evento: Concurso de Cuerda de Bulbasaur. Fechas: del 20 de septiembre […]",
-      "summary": "Ya está de vuelta este evento en Pokémon Pokopia, que ya ha llegado Nintendo Switch 2. Si queréis conocer todos los códigos disponibles para Pokemon Pokopia, podéis consultar nuestra lista actualizada de todos los códigos que están disponibles. Ahora se ha confirmado el regreso de este evento lanzado en abril: Evento: Concurso de Cuerda de Bulbasaur. Fechas: del 20 de septiembre […]",
-      "source": "Nintenderos"
-    },
-    {
-      "article_id": 6,
-      "headline": "Tom Cruise Reveals How He Cut ‘Digger’ Transformation Time From Six Hours to Under One",
-      "dek": "Alejandro G. Iñárritu’s dark comedy with an unrecognizable Cruise as the lead opens in theaters Oct. 2.",
-      "summary": "Alejandro G. Iñárritu’s dark comedy with an unrecognizable Cruise as the lead opens in theaters Oct. 2.",
-      "source": "Hollywood Reporter"
+      "headline": "Pac-Man, Space Invaders, Tetris, and other classic games",
+      "dek": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
+      "summary": "Pac-Man cabinets did not whisper. They chirped, thumped, and pulled people toward the glow. Space Invaders made the same promise with less color and more pressure. Tetris, later, proved that a falling block could make a lunch break vanish in five minutes. These games still feel alive because their rules fit inside a child’s sentence. […] The post Pac-Man, Space Invaders, Tetris, and other classic games appeared first on Old School Gamer Magazine .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H1: Pac-Man, Space Invaders, Tetris, and other classic games",
+        "H2: The arcade rulebook was tiny",
+        "H2: Why cabinets made people brave",
+        "H2: Home ports changed the argument"
+      ],
+      "headings": {
+        "h1": [
+          "Pac-Man, Space Invaders, Tetris, and other classic games"
+        ],
+        "h2": [
+          "The arcade rulebook was tiny",
+          "Why cabinets made people brave",
+          "Home ports changed the argument",
+          "Patterns, panic, and score chasing"
+        ]
+      }
     },
     {
       "article_id": 8,
-      "headline": "Big Bang Theory Spinoff Features Surprise Live-Action Cameos from The Flash and Mr. Freeze",
-      "dek": "Big Bang Theory spinoff Stuart Fails to Save the Universe featured a surprise fight between a live-action Flash and Mr. Freeze, but the show's creators originally wanted a different DC hero cameo.",
-      "summary": "Big Bang Theory spinoff Stuart Fails to Save the Universe featured a surprise fight between a live-action Flash and Mr. Freeze, but the show's creators originally wanted a different DC hero cameo.",
-      "source": "IGN"
+      "headline": "Retro YouTuber Announces A Cool New Emulation Frontend Called Jump",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is the year of awesome frontends. Independent developers, handheld enthusiasts, and app makers are all building something cool in the space. It was only recently that I",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 9,
-      "headline": "Naomi Watts Dedicates Donostia Award to Her ‘Mulholland Drive’ Director David Lynch: “I Miss You”",
-      "dek": "At the San Sebastian Film Festival Saturday night, Watts also shouted out her 'The Impossible' co-star Tom Holland and explained why she was grateful to be getting opportunities \"as a woman of my age.\"",
-      "summary": "At the San Sebastian Film Festival Saturday night, Watts also shouted out her 'The Impossible' co-star Tom Holland and explained why she was grateful to be getting opportunities \"as a woman of my age.\"",
-      "source": "Hollywood Reporter"
+      "headline": "Hyperkin Bring Modern Power To Retro Consoles With New USB-C Charging System Range",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! I'm a big fan of Hyperkin and their mission to make it even easier to play the consoles of yesteryear, especially when it comes to providing",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 10,
-      "headline": "Melissa Barrera Says It’s “So Beautiful” To See Support For Macklemore Speaking Up On Palestine: “I Didn’t Get That When It Happened To Me”",
-      "dek": "Nearly three years after she was fired from the Scream franchise for speaking up in support of Palestinians, Melissa Barrera sees the tides changing. The actress recently expressed how “emotional” it made her to see Fennias and Ed Sheeran’s other openers dropping out of his Loop Tour in support of Macklemore, who was dropped from […]",
-      "summary": "Nearly three years after she was fired from the Scream franchise for speaking up in support of Palestinians, Melissa Barrera sees the tides changing. The actress recently expressed how “emotional” it made her to see Fennias and Ed Sheeran’s other openers dropping out of his Loop Tour in support of Macklemore, who was dropped from […]",
-      "source": "Deadline"
+      "headline": "The Interface Details That Made Computer Solitaire Feel Timeless",
+      "dek": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
+      "summary": "Computer solitaire became memorable because it made a new machine feel understandable. A modern round on PlaySolitaire still uses the same essential visual language: a deck, clear columns, visible suits and cards that respond directly to the player. The technology around the game has changed... The post The Interface Details That Made Computer Solitaire Feel Timeless first appeared on Retromash .",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "H2: The Interface Details That Made Computer Solitaire Feel Timeless"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": [
+          "The Interface Details That Made Computer Solitaire Feel Timeless"
+        ]
+      }
     },
     {
       "article_id": 11,
-      "headline": "Flock reportedly tries to shrink workforce with employee buyouts",
-      "dek": "Without buyouts, Flock would \"almost certainly\" need to lay off staff.",
-      "summary": "Without buyouts, Flock would \"almost certainly\" need to lay off staff.",
-      "source": "Tech Crunch"
+      "headline": "GAME anuncia GAME Legend, un reconocimiento a los clientes más históricos de la cadena",
+      "dek": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
+      "summary": "GAME celebra la gran acogida de GAME Premium durante las primeras 24 horas y anuncia GAME Legend, el reconocimiento a los clientes más fieles y que llevan comprando más tiempo.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 14,
-      "headline": "Trump says it’s time to rebrand AI with a new name — and he’s also creating an AI Force",
-      "dek": "Trump claimed, without evidence, that the AI backlash is a Democratic hoax.",
-      "summary": "Trump claimed, without evidence, that the AI backlash is a Democratic hoax.",
-      "source": "Tech Crunch"
+      "article_id": 12,
+      "headline": "PlayCase Is A New Retro iPhone Controller With Real Triggers",
+      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
+      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! This is a product I have been following for a long time, and I have even been in discussions with their team regarding review samples, but I'",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: Retro Dodo"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 15,
-      "headline": "Norma Editorial detalla el estreno del cofre especial de The Legend of Zelda con los cinco tomos de la Perfect Edition por su 40º aniversario",
-      "dek": "¡Parece que hay más contenidos para los fans de Zelda! Nos llegan más anuncios por el 40º aniversario de The Legend of Zelda, ya que Norma Editorial lanzará en diciembre de 2026 The Legend of Zelda Perfect Edition Box, un cofre de edición limitada que reunirá los cinco volúmenes de la Perfect Edition del manga […]",
-      "summary": "¡Parece que hay más contenidos para los fans de Zelda! Nos llegan más anuncios por el 40º aniversario de The Legend of Zelda, ya que Norma Editorial lanzará en diciembre de 2026 The Legend of Zelda Perfect Edition Box, un cofre de edición limitada que reunirá los cinco volúmenes de la Perfect Edition del manga […]",
-      "source": "Nintenderos"
+      "headline": "Final Fantasy VII Revelation ya se puede reservar en formato físico en GAME, incluyendo la impresionante Deluxe Edition para PS5, Switch 2 y Xbox",
+      "dek": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
+      "summary": "GAME abre las reservas de Final Fantasy VII Revelation, la tercera entrega de la trilogía que llegará el 8 de abril de 2027, tanto de su edición estándar como de la Deluxe Edition para PS5, Switch 2 y Xbox.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
+    },
+    {
+      "article_id": 16,
+      "headline": "Retro Re-release Roundup, week of September 3, 2026",
+      "dek": "Ufouria, plus four more.",
+      "summary": "Ufouria, plus four more.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
       "article_id": 21,
-      "headline": "Tal vez no lo sepas, pero Lucia Caminos de GTA VI hizo una fugaz aparición en el UCM gracias a Netflix",
-      "dek": "Aunque Rockstar no ha hecho oficialmente quién da vida a los protagonistas de GTA VI , el público se encargó hace años de intentar desentrañar quiénes iban a ser los protagonistas de la próxima entrega de la franquicia. Para Lucia Caminos, la elegida fue Manni L. Perez , una actriz que, si bien no ha tenido papeles enormemente famosos, sí que tuvo ciertos pinitos en algunas series o películas. Uno de estos papeles fue en Marvel Studios , concretamente, durante el episodio 11 de la segunda temporada de Jessica Jones , donde interpretaba a una veterinaria que acababa siendo encerrada en una jaula tras un pequeño forcejeo con el personaje interpretado por Krysten Ritter . Goth Lucia (Manni L Perez) made an appearance in Jessica Jones season 2 (episode 11) by u/Seroko in GTA6unmoderated Si bien su aparición es bastante breve, se puede apreciar que es la misma actriz, sobre todo por su voz, a",
-      "summary": "Aunque Rockstar no ha hecho oficialmente quién da vida a los protagonistas de GTA VI , el público se encargó hace años de intentar desentrañar quiénes iban a ser los protagonistas de la próxima entrega de la franquicia. Para Lucia Caminos, la elegida fue Manni L. Perez , una actriz que, si bien no ha tenido papeles enormemente famosos, sí que tuvo ciertos pinitos en algunas series o películas. Uno de estos papeles fue en Marvel Studios , concretamente, durante el episodio 11 de la segunda temporada de Jessica Jones , donde interpretaba a una veterinaria que acababa siendo encerrada en una jaula tras un pequeño forcejeo con el personaje interpretado por Krysten Ritter . Goth Lucia (Manni L Perez) made an appearance in Jessica Jones season 2 (episode 11) by u/Seroko in GTA6unmoderated Si bien su aparición es bastante breve, se puede apreciar que es la misma actriz, sobre todo por su voz, a",
-      "source": "Vida Extra"
+      "headline": "Crítica de The Gentlemen temporada 2: Guy Ritchie regresa por sus fueros a Netflix",
+      "dek": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
+      "summary": "Crítica de la segunda temporada de The Gentlemen: La serie, de estreno en Netflix el 3 de septiembre.",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: HobbyConsolas"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 30,
-      "headline": "We Ranked The 10 Best Eevee Pokémon Cards of All Time",
-      "dek": "We've ranked the 10 best Eevee Pokémon cards of all time, from priceless Japanese trophy promos to iconic vintage classics and modern chase cards.",
-      "summary": "We've ranked the 10 best Eevee Pokémon cards of all time, from priceless Japanese trophy promos to iconic vintage classics and modern chase cards.",
-      "source": "IGN"
+      "article_id": 26,
+      "headline": "Kickstarter Kompilation: September 2026 edition",
+      "dek": "Featuring books and shelves but no bookshelves",
+      "summary": "Featuring books and shelves but no bookshelves",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     },
     {
-      "article_id": 31,
-      "headline": "7 grandes AAA de PS5 en oferta en físico y digital que están a precio de derribo por tiempo limitado",
-      "dek": "Si estás buscando nuevos AAA de oferta y con un buen descuento para PlayStation 5, echa un vistazo a estas rebajas de juegos tanto en formato físico como en digital en PS Store.",
-      "summary": "Si estás buscando nuevos AAA de oferta y con un buen descuento para PlayStation 5, echa un vistazo a estas rebajas de juegos tanto en formato físico como en digital en PS Store.",
-      "source": "HobbyConsolas"
-    },
-    {
-      "article_id": 33,
-      "headline": "Zachary Levi pasa el testigo de Flynn Rider con miedo por el live action de Enredados: “No siempre funciona”",
-      "dek": "Zachary Levi tiene sus dudas sobre la versión en imagen real de Enredados, pero le desea lo mejor al nuevo Flynn Rider y espera que la película esté a la altura de la original.",
-      "summary": "Zachary Levi tiene sus dudas sobre la versión en imagen real de Enredados, pero le desea lo mejor al nuevo Flynn Rider y espera que la película esté a la altura de la original.",
-      "source": "HobbyConsolas"
-    },
-    {
-      "article_id": 34,
-      "headline": "Meta’s Muse is creepy, but maybe not for the reasons you think",
-      "dek": "Meta's Muse is apparently an effective AI assistant, but one that's a little creepy. Part of that is because of its new Mac app, which can access Messages, Calendar, and Notes. But for all its smarts, Muse doesn't actually know how to describe itself. Jason Aten, a contributing editor at Inc Magazine, posted on Threads […]",
-      "summary": "Meta's Muse is apparently an effective AI assistant, but one that's a little creepy. Part of that is because of its new Mac app, which can access Messages, Calendar, and Notes. But for all its smarts, Muse doesn't actually know how to describe itself. Jason Aten, a contributing editor at Inc Magazine, posted on Threads […]",
-      "source": "The Verge"
-    },
-    {
-      "article_id": 45,
-      "headline": "Brad Bird, Pixar, DreamWorks, Aardman, And More Headline View Conference 2026",
-      "dek": "The five-day event will feature sessions on 'Toy Story 5,' 'Forgotten Island,' 'GOAT,' and more, plus talks on AI and the future of filmmaking.",
-      "summary": "The five-day event will feature sessions on 'Toy Story 5,' 'Forgotten Island,' 'GOAT,' and more, plus talks on AI and the future of filmmaking.",
-      "source": "Cartoon Brew"
-    },
-    {
-      "article_id": 56,
-      "headline": "Learning another language may be one of the best ways to keep your brain healthy",
-      "dek": "Research suggests that bilingualism can offer cognitive benefits.",
-      "summary": "Research suggests that bilingualism can offer cognitive benefits.",
-      "source": "ARSTECHNICA"
-    },
-    {
-      "article_id": 61,
-      "headline": "Rings around a tiny body have changed over the past decade",
-      "dek": "Chariklo is only about 250 km across, but it has two rings, and they're changing.",
-      "summary": "Chariklo is only about 250 km across, but it has two rings, and they're changing.",
-      "source": "ARSTECHNICA"
-    },
-    {
-      "article_id": 69,
-      "headline": "HoYoverse's Nodusfall might look like Elden Ring, but there's a promising dark fantasy action game here that took me by surprise",
-      "dek": "Nodusfall, aesthetically at least, is about as far from a typical HoYoverse game as you can get. Gone are the bright colours, cute creatures, and bountiful anime women. In their place, we get all the familiar trappings of dark fantasy: mysterious magics, vicious monsters, and a dingier kind of realism that - and I'm sure we've all thought it - feels a little bit Elden Ring . But from what I played at Gamescom, Nodusfall has the potential to shake off those FromSoftware comparisons and come into its own. Read more",
-      "summary": "Nodusfall, aesthetically at least, is about as far from a typical HoYoverse game as you can get. Gone are the bright colours, cute creatures, and bountiful anime women. In their place, we get all the familiar trappings of dark fantasy: mysterious magics, vicious monsters, and a dingier kind of realism that - and I'm sure we've all thought it - feels a little bit Elden Ring . But from what I played at Gamescom, Nodusfall has the potential to shake off those FromSoftware comparisons and come into its own. Read more",
-      "source": "Eurogamer"
-    },
-    {
-      "article_id": 72,
-      "headline": "Yes, The FPGB Mini Handheld Is Being Restocked \"In 20 Days\", But There's A Catch",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! You've probably seen a new mini FPGA GAME BOY flying around your feeds recently, and that's for good reason; it's a",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! You've probably seen a new mini FPGA GAME BOY flying around your feeds recently, and that's for good reason; it's a",
-      "source": "Retro Dodo"
-    },
-    {
-      "article_id": 77,
-      "headline": "What we've been playing - \"the rest of the party is, frankly, absolutely feral, so I've been trying to balance that out\"",
-      "dek": "Hello and welcome back to our regular feature where we write a little about the games we've been playing. This week, it's a Chris Tapsell (that's me!) triple-bill - a triple-Tap? - as the team's been either quite stretched or rightfully enjoying a few days off here and there to catch up from a hectic Gamescom period, leaving me to do a proper bodge job of filling in. Expect the usual mobile game addiction, late review apology, and a rule-bending wildcard (it's not that wild). Read more",
-      "summary": "Hello and welcome back to our regular feature where we write a little about the games we've been playing. This week, it's a Chris Tapsell (that's me!) triple-bill - a triple-Tap? - as the team's been either quite stretched or rightfully enjoying a few days off here and there to catch up from a hectic Gamescom period, leaving me to do a proper bodge job of filling in. Expect the usual mobile game addiction, late review apology, and a rule-bending wildcard (it's not that wild). Read more",
-      "source": "Eurogamer"
-    },
-    {
-      "article_id": 128,
-      "headline": "Dead Space Gets Reimagined As A Nokia 3310 Game In This Retro Demake",
-      "dek": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! Dead Space is a creepy game. It's a fine example of the survival-horror genre, and it would have been so much cooler than having",
-      "summary": "🤝 Don't want to see ads? Become a premium member for $3 a month and support an independent publication today! Dead Space is a creepy game. It's a fine example of the survival-horror genre, and it would have been so much cooler than having",
-      "source": "Retro Dodo"
-    },
-    {
-      "article_id": 136,
-      "headline": "How Arcades Shaped Modern Online Gaming",
-      "dek": "Many of today’s most dedicated gamers got their start in arcades. The late 70s and early 80s filled big rooms with giant cabinets that challenged players with tough games that, at times, bordered on unfair. The currency of the era was quarters: each coin marked one life, and each retry meant one less quarter in […] The post How Arcades Shaped Modern Online Gaming appeared first on Old School Gamer Magazine .",
-      "summary": "Many of today’s most dedicated gamers got their start in arcades. The late 70s and early 80s filled big rooms with giant cabinets that challenged players with tough games that, at times, bordered on unfair. The currency of the era was quarters: each coin marked one life, and each retry meant one less quarter in […] The post How Arcades Shaped Modern Online Gaming appeared first on Old School Gamer Magazine .",
-      "source": "Old School gAmer Magazine"
+      "article_id": 27,
+      "headline": "The Master System Directory (An-Ar)",
+      "dek": "What would I give if I could live out of these waters",
+      "summary": "What would I give if I could live out of these waters",
+      "why_it_matters": "WEEKLY presenta el material original de la fuente, sin generar ni inventar contenido adicional.",
+      "key_points": [
+        "Fuente: RETRONAUTS"
+      ],
+      "headings": {
+        "h1": [],
+        "h2": []
+      }
     }
   ],
-  "generatedAt": "2026-09-20T08:16:51.067898+00:00",
+  "sections": [
+    {
+      "name": "WEEKLY PICKS",
+      "ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        8,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        21,
+        26,
+        27
+      ]
+    }
+  ],
+  "editor_note": "Edición automática sin IA: WEEKLY utiliza títulos, imágenes, descripciones y headings de las fuentes originales.",
+  "generatedAt": "2026-09-08T00:22:27.971208+00:00",
+  "model": "zero-cost",
+  "status": "rss",
   "editorial_profile": {
     "name": "Fernando Mode",
-    "voice": "inteligente, curioso, informal y editorial",
-    "humor": "seco y ocasional; nunca forzado",
-    "attitude": "opinión clara pero justa, escéptica con el hype y atenta a conexiones raras",
-    "writing": "titulares fuertes, párrafos cortos, explicaciones claras y remates ocasionales",
-    "rule": "informar primero, entretener después; no inventar hechos"
+    "voice": "intelligent, curious, informal and editorial",
+    "humor": "dry and occasional; never force jokes",
+    "attitude": "opinionated but fair, skeptical of hype, interested in weird connections",
+    "writing": "strong headlines, short paragraphs, clear explanations, occasional punchlines",
+    "rule": "inform first, entertain second; never invent facts"
   }
 }

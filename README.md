@@ -1,4 +1,4 @@
-# WEEKLY v0.9.22 — Editorial PDF
+# WEEKLY v0.9.23 — Editorial PDF
 
 WEEKLY Personal Edition. Esta versión mantiene la base estable de v0.9.21 y mejora la salida PDF para que siga el mismo lenguaje editorial que el Reader web.
 

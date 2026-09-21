@@ -70,7 +70,7 @@ def fetch_image(url):
         if str(url).startswith(('http://','https://')):
             import subprocess, tempfile
             with tempfile.NamedTemporaryFile(suffix='.img') as tmp:
-                r=subprocess.run(['curl','-L','--silent','--show-error','--location','--connect-timeout','1','--max-time','3','-A','WEEKLY-PDF/0.9.22',str(url),'-o',tmp.name],capture_output=True,timeout=4)
+                r=subprocess.run(['curl','-L','--silent','--show-error','--location','--connect-timeout','1','--max-time','3','-A','WEEKLY-PDF/0.9.23',str(url),'-o',tmp.name],capture_output=True,timeout=4)
                 if r.returncode==0:
                     raw=Path(tmp.name).read_bytes()
                     if raw:
@@ -252,15 +252,28 @@ def draw_article(c,a,issue,page_no,story_index):
     y=H-M-27; width=W-2*M
     cat=str(a.get('category') or 'OTROS').upper()
     c.setFillColor(ACID if dark else colors.HexColor('#55524c')); c.setFont('Helvetica-Bold',7); c.drawString(M,y,cat); y-=13
-    max_title=38 if story_index%6==0 else (32 if story_index%6 in (1,2,3) else 28)
-    title_style=style('article_dark_title' if dark else 'article_title',max_title,max_title*.92,'Helvetica-Bold',ink,7); p=Paragraph(esc(article_title(a)),title_style); _,hh=p.wrap(width,210); p.drawOn(c,M,y-hh); y-=hh+3
+    # Reserve a real vertical box for the headline. Never let the image touch it.
+    max_title=34 if story_index%6==0 else (30 if story_index%6 in (1,2,3) else 27)
+    title_style=style('article_dark_title' if dark else 'article_title',max_title,max_title*.92,'Helvetica-Bold',ink,0)
+    p=Paragraph(esc(article_title(a)),title_style)
+    _,hh=p.wrap(width,165)
+    # If the headline is tall, use a slightly smaller size and re-wrap.
+    if hh>150:
+        max_title=max(21,max_title-4)
+        title_style=style('article_dark_title2' if dark else 'article_title2',max_title,max_title*.92,'Helvetica-Bold',ink,0)
+        p=Paragraph(esc(article_title(a)),title_style); _,hh=p.wrap(width,170)
+    p.drawOn(c,M,y-hh); y-=hh+16
     dek=str(a.get('description') or '').strip()
     if dek:
-        st=DEK_DARK if dark else DEK; p=Paragraph(esc(dek),st); _,ph=p.wrap(width,70); p.drawOn(c,M,y-ph); y-=ph+7
+        st=DEK_DARK if dark else DEK; p=Paragraph(esc(dek),st); _,ph=p.wrap(width,72); p.drawOn(c,M,y-ph); y-=ph+14
     imgs=article_images(a)
     if imgs:
-        ih=180 if story_index%6 in (0,2,5) else 135
-        if draw_image(c,imgs[0],M,y-ih,width,ih,contain=False): y-=ih+12
+        ih=175 if story_index%6 in (0,2,5) else 125
+        # The image occupies a hard box. Body text starts only after the box + margin.
+        if y-ih-18 < 55:
+            draw_footer(c,issue,page_no,dark); c.showPage(); page_no+=1
+            new_page(c,dark); draw_running(c,f'{source} · CONTINÚA',date,dark); y=H-M-30
+        if draw_image(c,imgs[0],M,y-ih,width,ih,contain=False): y-=ih+18
     # A single, continuous column. Never discard blocks; flow to new pages as needed.
     body=BODY_DARK if dark else BODY
     first=True
